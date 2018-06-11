@@ -81,7 +81,7 @@ class RegistrationController extends Controller
 
         // $registration->save();
         $pdf = new PDFClass;
-        $pdf->downloadPDF($client, $registration);
+        return $pdf->downloadPDF($client, $registration);
         
         return redirect('registration')->with('msg', 'Ajout réussi');
     }
