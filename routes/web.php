@@ -13,6 +13,7 @@
 
 Route::get('/', function () {
     return App\Brand::all();
+    // Comment
 });
 
 Route::get('/appareil', function () {
