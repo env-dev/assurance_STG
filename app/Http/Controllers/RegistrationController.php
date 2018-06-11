@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use App\Helpers\PDFClass;
 use App\Smartphone;
 use App\Registration;
 use App\Client;
-use PDF;
 
 class RegistrationController extends Controller
 {
@@ -80,8 +80,9 @@ class RegistrationController extends Controller
         $registration->client_id = $client->id;
 
         // $registration->save();
-        // $pdf = PDF::loadView('pdfs.registration', compact('client', 'registration'));
-        // return $pdf->download('test.pdf');
+        $pdf = new PDFClass;
+        $pdf->downloadPDF($client, $registration);
+        
         return redirect('registration')->with('msg', 'Ajout réussi');
     }
 
@@ -140,11 +141,5 @@ class RegistrationController extends Controller
         $smartphone = Smartphone::where('imei', $imei)->first();
         $smartphone->model->brand;
         return response()->json($smartphone);
-    }
-
-    public function downloadPDF()
-    {
-        $pdf = PDF::loadView('pdfs.registration');
-		return $pdf->download('test.pdf');
     }
 }
