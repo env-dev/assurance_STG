@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return App\Brand::all();
     // Comment
+    // dfdsfdsf
 });
 
 Route::get('/appareil', function () {
