@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('/appareil', function () {
     return view('appareil.main');
 });
+
 Route::get('/get_imei', 'RegistrationController@get_imei');
 Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
 Route::get("download-pdf","RegistrationController@downloadPDF");
@@ -28,3 +29,11 @@ Route::resource('brands','BrandController');
 Route::resource('models','ModelController');
 Route::resource('smartphones','SmartphoneController');
 Route::resource('registration', 'RegistrationController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('users', 'UserController');
+Route::resource('roles', 'RoleController');
+Route::resource('permissions','PermissionController');

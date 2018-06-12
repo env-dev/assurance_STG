@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use App\Brand;
 use App\BrandModel;
+use App\Role;
+use App\Permission;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('appareil.*', function ($view) {
             $view->withBrands(Brand::all());
             $view->withModels(BrandModel::all());
+        });
+        
+        view()->composer('*', function ($view) {
+            $view->withRoles(Role::all());
+            $view->withPermissions(Permission::all());
+
         });
     }
 
