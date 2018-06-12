@@ -77,6 +77,33 @@ function inputsValidation(inputs){
     return valid;
 }
 
+function deleteOperation(url,confirmMsg='',successMsg=''){
+    swal({
+        title: "Are you sure?",
+        text: confirmMsg,
+        icon: "warning",
+        buttons:  ["Annuler", true],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type:'DELETE',
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    swalSuccess('',successMsg);
+                    initialize();
+                },
+                error: function (data) {
+                    errorMessages(data);
+                }
+            });
+          
+        }
+    });
+}
+
 //#region Functions
 // This Part it should be in main.js
 // For global functions
@@ -397,12 +424,13 @@ $('body').on('click','.update-appareil',function(){
 
 */
 
-$('body').on('click','.delete-marque',function(){
+$('body').on('click','.delete-permission',function(){
 
     var id = $(this).data('id');
-    var url = url_brands+'/'+id;
-    var msg = "Once deleted, you will remove all Phones are related to this brand!";
-    deleteOperation(url,'',"Brand is deleted successfully");
+    var url = url_permissions+'/'+id;
+    var msg = "Once deleted, you will remove all Phones are related to this Permission!";
+    deleteOperation(url,'',"Permission is deleted successfully");
+    getPermissions();
     
 });
 
@@ -417,7 +445,7 @@ $('body').on('click','.delete-model',function(){
     var url = url_models+'/'+id;
     var msg = "Once deleted, you will remove all Phones are related to this brand!";
     deleteOperation(url,'',"Model is deleted successfully");
-    getBrands();
+    getModels();
     
 });
 

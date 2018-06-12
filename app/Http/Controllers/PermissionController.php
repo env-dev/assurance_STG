@@ -79,6 +79,6 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        return response()->json(Permission::findOrFail($permission)->delete());
+        return response()->json(Permission::findOrFail($permission)->first()->delete());
     }
 }

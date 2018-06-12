@@ -457,6 +457,7 @@ $('body').on('click','.delete-marque',function(){
     var url = url_brands+'/'+id;
     var msg = "Once deleted, you will remove all Phones are related to this brand!";
     deleteOperation(url,'',"Brand is deleted successfully");
+    getBrands();
     
 });
 
@@ -471,7 +472,7 @@ $('body').on('click','.delete-model',function(){
     var url = url_models+'/'+id;
     var msg = "Once deleted, you will remove all Phones are related to this brand!";
     deleteOperation(url,'',"Model is deleted successfully");
-    getBrands();
+    getModels();
     
 });
 
