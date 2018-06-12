@@ -84,7 +84,7 @@ class ModelController extends Controller
             ]);
             return response()->json($model->saveOrFail());
         }
-        return response()->json($brand);
+        return response()->json($model);
     }
 
     /**

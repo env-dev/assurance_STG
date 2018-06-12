@@ -13,6 +13,7 @@ var smartphones_table;
 function initialize(){
     getBrands();
     getModels();
+    getSmartphones();
 }
 
 //#region Functions
@@ -61,8 +62,10 @@ function getBrands(){
          serverSide: true,
           ajax: url_smartphones,
           columns: [
-              { data: "id", name: "id" },
-              { data: "name",name: "name" },
+              { data: "DT_Row_Index", name: "id" },
+              { data: "model.brand.name",name: "model.brand.name" },
+              { data: "model.name",name: "model.name" },
+              { data: "imei",name: "imei" },
               { data: "actions", name: "actions", orderable: false, searchable: false },
           ]
      });
@@ -262,7 +265,7 @@ $('#insert-appareil').click(function(e){
     $.ajax({
         type:'POST',
         data: {
-            model_id: appareil_model_field.val(),
+            brand_model_id: appareil_model_field.val(),
             imei: imei_field.val()
         },
         url: url_smartphones,
@@ -270,7 +273,7 @@ $('#insert-appareil').click(function(e){
         success: function (data) {
             swalSuccess('','Smartphone is inserted Successfully');
                getSmartphones();
-               $('input').val('')
+               $('input').val('');
         },
         error: function (data) {
             errorMessages(data);
@@ -393,49 +396,36 @@ $('body').on('click','.update-model',function(){
  * Update Appareil
  ************************************* 
 */
-    $('.update-appareil').click(function(){
+$('body').on('click','.update-appareil',function(){
     var imei_field = $('#imei_modal');
     var appareil_model_field = $('#appareil_model_modal');
-    var appareil_marque_field = $('#appareil_marque_modal');
-    
-    // Clean Input values
-    imei_field.val('');
     
     // Get appareil Information
     var id = $(this).data('id');
-    /*  $.get(url_smartphones+'/'+id, function (data) {
+      $.get(url_smartphones+'/'+id+'/edit', function (data) {
         // get field values
-        imei_field.val(data.name);
-        appareil_marque_field.val(data.marque_id);
-        appareil_model_field.val(data.model_id);
-    });*/
-
-    // dummy data
-    imei_field.val(id);
-    appareil_marque_field.val(1);
-    appareil_model_field.val(2);
+        imei_field.val(data.imei);
+        appareil_model_field.val(data.brand_model_id);
+    });
      
     // Show Modal
     $('.updateModalAppareil').modal('toggle');
     $('.update-data').unbind('click').click(function(){
-        console.log('update');
-        return;
         // Send Updated Data
         $.ajax({
             type:'PUT',
             data: {
                 imei: imei_field.val(),
-                marque: appareil_marque_field.val(),
-                model: appareil_model_field.val()
+                brand_model_id: appareil_model_field.val()
             },
             url: url_smartphones+'/'+id,
             dataType: 'json',
             success: function (data) {
-                // Updated Successfully
+                swalSuccess('','Smartphone Updated successfully')
+                getSmartphones();
             },
             error: function (data) {
-                console.log('Error:', data);
-                swalError("Error","Code: "+data.status+"\nError: "+data.statusText);
+                errorMessages(data);
             }
         });
     });
@@ -495,7 +485,8 @@ $('body').on('click','.delete-appareil',function(){
     var id = $(this).data('id');
     var url = url_smartphones+'/'+id;
     var msg = "Once deleted, you will not be able to recover it!";
-    deleteOperation(url,msg);
+    deleteOperation(url,'',"Smartphone is deleted successfully");
+    getSmartphones();
     
 });
 

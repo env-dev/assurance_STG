@@ -26,4 +26,5 @@ Route::get("download-pdf","RegistrationController@downloadPDF");
 
 Route::resource('brands','BrandController');
 Route::resource('models','ModelController');
+Route::resource('smartphones','SmartphoneController');
 Route::resource('registration', 'RegistrationController');

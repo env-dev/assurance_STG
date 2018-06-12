@@ -3,29 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Smartphone;
+use Yajra\Datatables\Datatables;
 class SmartphoneController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        // 
+        $phones = Smartphone::with('model.brand')->get();
+
+        return Datatables::of($phones)
+        ->addIndexColumn()
+        ->addColumn('actions', function ($phone) {
+            return '
+            <button type="button" class="btn btn-danger delete-appareil" data-id="'.$phone->id.'" title="Supprimer"><i class="fa fa-times"></i></button>
+            <button type="button" class="btn btn-info update-appareil" data-id="'.$phone->id.'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
+            ';
+        })
+        ->rawColumns(['actions'])
+        ->make(true); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -34,19 +37,18 @@ class SmartphoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $phone = new Smartphone();
+        $phone->imei = $request->imei;
+        $phone->brand_model_id = $request->brand_model_id;
+
+        $request->validate([
+            'imei' => 'required|unique:smartphones',
+            'brand_model_id' => 'required|numeric'
+        ]);
+        return response()->json($phone->saveOrFail());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -56,7 +58,7 @@ class SmartphoneController extends Controller
      */
     public function edit($id)
     {
-        //
+        return response()->json(Smartphone::findOrFail($id));
     }
 
     /**
@@ -68,7 +70,20 @@ class SmartphoneController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $phone = Smartphone::findOrFail($id);
+       
+
+        if($phone){
+            $unique = ($phone->imei != $phone->imei) ? '|unique:smartphones' : '';
+            $phone->imei = $request->imei;
+            $phone->brand_model_id = $request->brand_model_id;
+            $request->validate([
+                'imei' => 'required'.$unique,
+                'brand_model_id' => 'required|numeric'
+            ]);
+            return response()->json($phone->saveOrFail());
+        }
+        return response()->json($phone);
     }
 
     /**
@@ -79,6 +94,6 @@ class SmartphoneController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json(Smartphone::findOrFail($id)->delete());
     }
 }

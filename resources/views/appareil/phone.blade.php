@@ -30,61 +30,16 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="table-responsive table--no-card m-b-30">
-            <table class="table table-borderless table-striped table-earning">
+            <table class="table table-borderless table-striped table-earning text-center" id="smartphones-table" style="width:100%;">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Marque</th>
                         <th>Model</th>
                         <th>IMEI</th>
                         <th>action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>STG</td>
-                        <td>X1</td>
-                        <td>100398</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-danger delete-appareil" data-id="109" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fa fa-times"></i></button>
-                                <button type="button" class="btn btn-info update-appareil" data-id="111" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STG</td>
-                        <td>X1 Pro</td>
-                        <td>100398</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-danger delete-appareil" data-id="109" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fa fa-times"></i></button>
-                                <button type="button" class="btn btn-info update-appareil" data-id="121" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STG</td>
-                        <td>A1</td>
-                        <td>100398</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-danger delete-appareil" data-id="109" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fa fa-times"></i></button>
-                                <button type="button" class="btn btn-info update-appareil" data-id="114" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STG</td>
-                        <td>A1 Plus</td>
-                        <td>100398</td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-danger delete-appareil" data-id="109" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fa fa-times"></i></button>
-                                <button type="button" class="btn btn-info update-appareil" data-id="454" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
             </table>
         </div>
     </div>
