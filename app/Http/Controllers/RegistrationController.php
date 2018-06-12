@@ -69,6 +69,7 @@ class RegistrationController extends Controller
         // $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
+        $smartphone->model->brand;
         
         $registration = new Registration;
 
@@ -81,9 +82,7 @@ class RegistrationController extends Controller
 
         // $registration->save();
         $pdf = new PDFClass;
-        $pdf->downloadPDF($client, $registration);
-        
-        return redirect('registration')->with('msg', 'Ajout réussi');
+        return $pdf->downloadPDF($client, $registration, $smartphone);
     }
 
     /**
