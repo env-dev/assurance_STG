@@ -74,7 +74,7 @@ class SmartphoneController extends Controller
        
 
         if($phone){
-            $unique = ($phone->imei != $phone->imei) ? '|unique:smartphones' : '';
+            $unique = ($phone->imei != $request->imei) ? '|unique:smartphones' : '';
             $phone->imei = $request->imei;
             $phone->brand_model_id = $request->brand_model_id;
             $request->validate([
