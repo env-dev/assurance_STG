@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Request;
+use Jenssegers\Date\Date;
 use App\Helpers\PDFClass;
-use App\Smartphone;
 use App\Registration;
+use App\Smartphone;
 use App\Client;
 
 class RegistrationController extends Controller
@@ -73,7 +74,7 @@ class RegistrationController extends Controller
         
         $registration = new Registration;
 
-        $registration->mandat_num = request('mandat_num');
+        $registration->mandat_num = str_random(10);
         $registration->data_flow = request('date_flow_data');
         $registration->guarantee = request('guarantee');
         $registration->total_ttc = intval(request('total_ttc'));

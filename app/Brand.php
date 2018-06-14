@@ -11,7 +11,7 @@ class Brand extends Model
     use SoftDeletes, CascadeSoftDeletes;
     
     protected $guarded=[];
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $cascadeDeletes = ['brand_models'];
 
     public function brandModels()
