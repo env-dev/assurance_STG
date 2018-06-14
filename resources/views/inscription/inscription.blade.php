@@ -4,14 +4,14 @@
             <strong>Informations</strong> sur l'inscription
         </div>
         <div class="card-body card-block">
-                <div class="row form-group">
+                <!-- <div class="row form-group">
                     <div class="col col-md-3">
                         <label for="text-input" class=" form-control-label">Numero du mandat</label>
                     </div>
                     <div class="col-12 col-md-9">
                         <input type="text" id="mandat_num" name="mandat_num" placeholder="Text" class="form-control" required>
                     </div>
-                </div>
+                </div> -->
                 <div class="row form-group">
                     <div class="col col-md-3">
                         <label for="select" class=" form-control-label">La garantie</label>

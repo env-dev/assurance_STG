@@ -19,7 +19,6 @@ $( function() {
                 url: "/getSmartphoneByImei/"+ui.item.value,
                 dataType: 'json',
                 success: function( data ){
-                    console.log(data);
                     $('#brandName').text(data.model.brand.name);
                     $('#modelName').text(data.model.name);
                     $('#smartphonePrice').text(data.model.price_ttc);
