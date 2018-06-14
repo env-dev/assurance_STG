@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Smartphone extends Model
 {
     use SoftDeletes;
-    
+
     protected $guarded=[];
     protected $dates = ['deleted_at'];
 
