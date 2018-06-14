@@ -48,7 +48,7 @@ class RegistrationController extends Controller
             'nature' => 'required',
             'num_id' => 'required',
             'imei' => 'required',
-            'mandat_num' => 'required',
+            // 'mandat_num' => 'required',
             'date_flow_data' => 'required',
         ];
 
