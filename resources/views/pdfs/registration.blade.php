@@ -4,13 +4,14 @@
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 		<title>La facture d'achat</title>
 		<style>
+            body {
+                margin: 0;
+            }
 			.invoice-box {
-				/* max-width: 800px; */
 				margin: 0;
 				padding: 30px 30px 80px 30px;
 				border: 1px solid #eee;
-				box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-				font-size: 13px;
+				font-size: 13.5px;
 				line-height: 17px;
 				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
 				color: #555;
