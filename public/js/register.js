@@ -12,6 +12,8 @@ var users_table;
 
 function initialize(){
     getPermissions()
+    getRoles();
+    $('#role_permission_add').select2();
 }
 
 function swalError(title='',text=''){
@@ -77,10 +79,97 @@ function inputsValidation(inputs){
     return valid;
 }
 
+function deleteOperation(url,confirmMsg='',successMsg=''){
+    swal({
+        title: "Are you sure?",
+        text: confirmMsg,
+        icon: "warning",
+        buttons:  ["Annuler", true],
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                type:'DELETE',
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    swalSuccess('',successMsg);
+                    initialize();
+                },
+                error: function (data) {
+                    errorMessages(data);
+                }
+            });
+          
+        }
+    });
+}
+
 //#region Functions
 // This Part it should be in main.js
 // For global functions
 function getPermissions(){
+    $.ajax({
+        type:'GET',
+        url: url_permissions,
+        dataType: 'json',
+        success: function (permissions) {
+            let row =''
+            $.each(permissions, function(index,permission){
+                row += '\
+                <tr>\
+                    <td>'+(index+1)+'</td>\
+                    <td>'+permission.name+'</td>\
+                    <td>\
+                    <button type="button" class="btn btn-danger delete-permission" data-id="'+permission.id+'" title="Supprimer"><i class="fa fa-times"></i></button>\
+                    <button type="button" class="btn btn-info update-permission" data-id="'+permission.id+'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>\
+                    </td>\
+                </tr>\
+                ';
+            })
+
+            $('#permissions-table tbody').html(row)
+            // $('#permissions-table').DataTable();
+        },
+        error: function (errors) {
+            errorMessages(errors);
+        }
+    });
+}
+
+function getRoles(){
+    $.ajax({
+        type:'GET',
+        url: url_roles,
+        dataType: 'json',
+        success: function (roles) {
+            //  console.log(roles); return;
+            let row =''
+            $.each(roles, function(index,role){
+                row += '\
+                <tr>\
+                    <td>'+(index+1)+'</td>\
+                    <td>'+role.name+'</td>\
+                    <td>'+role.permissions+'</td>\
+                    <td>\
+                    <button type="button" class="btn btn-danger delete-role" data-id="'+role.id+'" title="Supprimer"><i class="fa fa-times"></i></button>\
+                    <button type="button" class="btn btn-info update-role" data-id="'+role.id+'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>\
+                    </td>\
+                </tr>\
+                ';
+            })
+
+            $('#roles-table tbody').html(row)
+            // $('#permissions-table').DataTable();
+        },
+        error: function (errors) {
+            errorMessages(errors);
+        }
+    });
+}
+
+function getUsers(){
     $.ajax({
         type:'GET',
         url: url_permissions,
@@ -160,33 +249,30 @@ $('#insert-permission').click(function(e){
  ************************************* 
 */
 
-$('#insert-model').click(function(e){
+$('#insert-role').click(function(e){
     e.preventDefault();
-    var model_field = $('#model_name_add');
-    var model_marque_add = $('#model_marque_add');
-    var model_price_add = $('#model_price_add');
+    var role_field = $('#role_name_add');
+    var role_permission_add = $('#role_permission_add');
     var validation = [
-        {'field': model_field, 'type': 'text'},
-        {'field': model_price_add, 'type': 'numeric'},
+        {'field': role_field, 'type': 'text'},
     ];
 
     if(inputsValidation(validation)){
         $.ajax({
             type:'POST',
             data: {
-                marque: model_marque_add.val(),
-                name: model_field.val(),
-                price_ttc: model_price_add.val()
+                name: role_field.val(),
+                permissions: role_permission_add.val()
             },
-            url: url_models,
+            url: url_roles,
             dataType: 'json',
             success: function (data) {
-               swalSuccess('','Model is inserted Successfully');
-               getModels();
-               $('form :input').val('');
+               swalSuccess('','Role is inserted Successfully');
+               getRoles();
+               $('form input').val('');
             },
-            error: function (data) {
-                errorMessages(data);
+            error: function (errors) {
+                errorMessages(errors);
             }
         });
     }
@@ -243,7 +329,7 @@ $('#insert-appareil').click(function(e){
 
 /**
  ************************************* 
- * Update Marque
+ * Update Permission
  ************************************* 
 */
 $('body').on('click','.update-permission',function(){
@@ -289,45 +375,43 @@ $('body').on('click','.update-permission',function(){
  * Update Model
  ************************************* 
 */
-$('body').on('click','.update-model',function(){
-    var model_marque_field = $('#model_marque_modal');
-    var model_name_field = $('#model_name_modal');
-    var model_price_model = $('#model_price_model');
+$('body').on('click','.update-role',function(){
+    var role_name_field = $('#permission_name_modal');
+    var role_permissions_field = $('#role_permission_modal');
     
    
-    // Get model Information
+    // Get role Information
     var id = $(this).data('id');
-    $.get(url_models+'/'+id+'/edit', function (data) {
+    $.get(url_roles+'/'+id+'/edit', function (role) {
+        console.log(role);return;
         // get field values
-        model_marque_field.val(data.brand_id)
-        model_name_field.val(data.name);
-        model_price_model.val(data.price_ttc);
+        role_name_field.val(role.name)
     });
-
+return;
     // Show Modal
-    $('.updateModalModel').modal('toggle');
+    $('.updateModalrole').modal('toggle');
     $('.update-data').unbind('click').click(function(e){
         event.stopPropagation();
         //Validation
         var validation = [
-            {'field': model_name_field, 'type': 'text'},
-            {'field': model_price_model, 'type': 'numeric'},
+            {'field': role_name_field, 'type': 'text'},
+            {'field': role_price_role, 'type': 'numeric'},
         ];
         if(!inputsValidation(validation)) return;
-        console.log(url_models+'/'+id);
+        console.log(url_roles+'/'+id);
             // Send Updated Data
             $.ajax({
                 type:'PUT',
                 data: {
-                    name: model_name_field.val(),
-                    marque: model_marque_field.val(),
-                    price_ttc: model_price_model.val()
+                    name: role_name_field.val(),
+                    marque: role_marque_field.val(),
+                    price_ttc: role_price_role.val()
                 },
-                url: url_models+'/'+id,
+                url: url_roles+'/'+id,
                 dataType: 'json',
                 success: function (data) {
-                    swalSuccess('','Model Updated successfully')
-                    getModels();
+                    swalSuccess('','role Updated successfully')
+                    getroles();
                 },
                 error: function (data) {
                     errorMessages(data);
@@ -397,12 +481,13 @@ $('body').on('click','.update-appareil',function(){
 
 */
 
-$('body').on('click','.delete-marque',function(){
+$('body').on('click','.delete-permission',function(){
 
     var id = $(this).data('id');
-    var url = url_brands+'/'+id;
-    var msg = "Once deleted, you will remove all Phones are related to this brand!";
-    deleteOperation(url,'',"Brand is deleted successfully");
+    var url = url_permissions+'/'+id;
+    var msg = "Once deleted, you will remove all Phones are related to this Permission!";
+    deleteOperation(url,'',"Permission is deleted successfully");
+    getPermissions();
     
 });
 
@@ -417,7 +502,7 @@ $('body').on('click','.delete-model',function(){
     var url = url_models+'/'+id;
     var msg = "Once deleted, you will remove all Phones are related to this brand!";
     deleteOperation(url,'',"Model is deleted successfully");
-    getBrands();
+    getModels();
     
 });
 
