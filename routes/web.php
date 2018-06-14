@@ -23,7 +23,6 @@ Route::get('/appareil', function () {
 
 Route::get('/get_imei', 'RegistrationController@get_imei');
 Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
-Route::get("download-pdf","RegistrationController@downloadPDF");
 
 Route::resource('brands','BrandController');
 Route::resource('models','ModelController');
