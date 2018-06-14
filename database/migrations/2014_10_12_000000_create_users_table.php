@@ -17,10 +17,14 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('password');
+            $table->integer('agence_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('agence_id')
+                    ->references('id')->on('agences');
         });
     }
 

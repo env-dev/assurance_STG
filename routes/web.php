@@ -51,14 +51,12 @@ Route::get('/', function () {
   
 });
 
-Route::get('/agency', function () {
-    return view('agency.index');
+Route::resource('agency', 'AgenceController');
+
+Route::get('/appareil', function () {
+    return view('appareil.main');
 });
-Route::group(['middleware' => ['role:admin']], function() {
-    Route::get('/appareil', function () {
-        return view('appareil.main');
-    });
-    Route::resource('users', 'UserController');
+Route::resource('users', 'UserController');
     Route::resource('roles', 'RoleController');
     Route::resource('permissions','PermissionController');
     Route::resource('brands','BrandController');
@@ -66,6 +64,9 @@ Route::group(['middleware' => ['role:admin']], function() {
     Route::resource('smartphones','SmartphoneController');
     Route::resource('agences','AgenceController');
     Route::resource('cities','CityController');
+Route::group(['middleware' => ['role:admin']], function() {
+    
+    
 });
 
 

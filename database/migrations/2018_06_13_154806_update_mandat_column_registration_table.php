@@ -14,9 +14,7 @@ class UpdateMandatColumnRegistrationTable extends Migration
     public function up()
     {
         Schema::table('registrations', function (Blueprint $table) {
-            
-            $table->unique('mandat_num');;
-
+            $table->unique('mandat_num');
         });
     }
 

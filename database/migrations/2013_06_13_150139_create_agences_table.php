@@ -18,11 +18,15 @@ class CreateAgencesTable extends Migration
             $table->string('full_name');
             $table->string('name');
             $table->string('reference');
-            $table->string('adress');
-            $table->string('email');
+            $table->string('address')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone');
-            $table->string('city_id');
+            $table->integer('city_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('city_id')
+                        ->references('id')->on('cities');
+            
         });
     }
 

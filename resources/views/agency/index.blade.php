@@ -13,7 +13,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
-                        <form class="cmxform" >
+                        <form id="insert-agence-frm" >
                             <div class="form-group">
                                 <label for="agence_name_add" class="control-label mb-1">Nom D'agence</label>
                                 <input id="agence_name_add" name="agence_name_add" type="text" class="form-control" aria-required="true" aria-invalid="false" required>
@@ -28,14 +28,24 @@
                             </div>
                             <div class="form-group">
                                 <label for="agence_tel_add" class="control-label mb-1">Telephone</label>
-                                <input id="agence_tel_add" name="agence_tel_add" type="tel" class="form-control" aria-required="true" aria-invalid="false" required>
+                                <input id="agence_tel_add" name="agence_tel_add" type="tel" class="form-control phone" aria-required="true" aria-invalid="false" required>
                             </div>
                             <div class="form-group">
                                 <label for="agence_email_add" class="control-label mb-1">Email</label>
                                 <input id="agence_email_add" name="agence_email_add" type="email" class="form-control" aria-required="true" aria-invalid="false" >
                             </div>
                             <div class="form-group">
+                                <label for="agence_email_add" class="control-label mb-1">Adresse</label>
+                                <textarea id="agence_address_add" name="agence_address_add" class="form-control" aria-required="true" aria-invalid="false"></textarea>
+                            </div>
+                            <div class="form-group">
                                 <label for="agence_ville_add" class="control-label mb-1">Ville</label>
+                                <select name="agence_city_add" id="agence_city_add" class="form-control" required>
+                                    <option value=""></option>
+                                    @foreach($cities as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div>
                                 <button id="insert-agence" type="submit" class="btn btn-lg btn-info btn-block">
@@ -47,7 +57,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <div class="table-responsive table--no-card m-b-30">
-                            <table style="width:100%" class="table table-borderless table-striped table-earning text-center" id="">
+                            <table style="width:100%" class="table table-borderless table-striped table-earning text-center" id="agency-table">
                                 <thead>
                                     <tr>
                                         <th>Agence</th>
@@ -56,33 +66,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($agences as $agence)
                                     <tr>
-                                        <td>Omran</td>
-                                        <td>Jhon Doe</td>
+                                        <td>{{$agence->name}}</td>
+                                        <td>{{$agence->full_name}}</td>
                                         <td>
-                                            <button type="button" class="btn btn-danger delete-" data-id="'.$phone->id.'" title="Supprimer"><i class="fa fa-times"></i></button>
-                                            <button type="button" class="btn btn-info update-" data-id="'.$phone->id.'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                                            <button type="button" class="btn btn-warning update-" data-id="'.$phone->id.'" title="info">&nbsp;<i class="fa fa-info"></i>&nbsp;</i></button>
+                                            <button type="button" class="btn btn-danger delete-agency" data-id="{{ $agence->id }}" title="Supprimer"><i class="fa fa-times"></i></button>
+                                            <button type="button" class="btn btn-info update-agency" data-id="{{ $agence->id }}" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
+                                            <button type="button" class="btn btn-warning info-agency" data-id="{{ $agence->id }}" title="info">&nbsp;<i class="fa fa-info"></i>&nbsp;</i></button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Omran</td>
-                                        <td>Jhon Doe</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger delete-" data-id="'.$phone->id.'" title="Supprimer"><i class="fa fa-times"></i></button>
-                                            <button type="button" class="btn btn-info update-" data-id="'.$phone->id.'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                                            <button type="button" class="btn btn-warning update-" data-id="'.$phone->id.'" title="info">&nbsp;<i class="fa fa-info"></i>&nbsp;</i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Omran</td>
-                                        <td>Jhon Doe</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger delete-" data-id="'.$phone->id.'" title="Supprimer"><i class="fa fa-times"></i></button>
-                                            <button type="button" class="btn btn-info update-" data-id="'.$phone->id.'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
-                                            <button type="button" class="btn btn-warning update-" data-id="'.$phone->id.'" title="info">&nbsp;<i class="fa fa-info"></i>&nbsp;</button>
-                                        </td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -98,5 +92,5 @@
 @endsection
 @section('js')
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="{{ asset('js/appareil.js') }}"></script>
+<script src="{{ asset('js/agency.js') }}"></script>
 @endsection

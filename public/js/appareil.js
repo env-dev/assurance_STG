@@ -98,7 +98,7 @@ function deleteOperation(url,confirmMsg='',successMsg=''){
     });
 }
  
- function swalError(title='',text=''){
+function swalError(title='',text=''){
      swal({
          title: title,
          text: text,
