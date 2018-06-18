@@ -1,3 +1,4 @@
+var url_agency = 'agency'
 function agenceInputMasks(){
 
     $('.phone').mask("00-00-00-00-00", {
@@ -8,7 +9,7 @@ function agenceInputMasks(){
 function getAgency(){
     $.ajax({
         type:'GET',
-        url:'agency',
+        url:url_agency,
         dataType: 'json',
         success: function(data){
             var rows = '';
@@ -89,32 +90,6 @@ $(function(){
     $("select").select2();
     agenceInputMasks()
 
-
-    // add New Agency
-    $('form#insert-agence-frm').submit(function(e){
-        e.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            type:'POST',
-            url:'agency',
-            dataType: 'json',
-            data: formData,
-            success: function (data) {
-                swalSuccess('','Agency Inserted successfully');
-                $('form :input').val('');
-                getAgency();
-            },
-            error: function(errors){
-                errorMessages(errors);
-            }
-        });
-    });
-
-    // update Agency
-
-
-    // delete Agency
-
     // View Agency's Information
     $('body').on('click','.info-agency',function(){
         var table = $('#agency-info-modal tbody');
@@ -153,7 +128,7 @@ $(function(){
                 </tr>\
                 <tr>\
                     <td>Ville</td>\
-                    <td>Tanger</td>\
+                    <td>'+agence.city.name+'</td>\
                 </tr>';
                 
                 table.html(rows);
@@ -163,4 +138,80 @@ $(function(){
             }
         });
     });
+
+
+    // add New Agency
+    $('form#insert-agence-frm').submit(function(e){
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type:'POST',
+            url:url_agency,
+            dataType: 'json',
+            data: formData,
+            success: function (data) {
+                swalSuccess('','Agency Inserted successfully');
+                $('form :input').val('');
+                getAgency();
+            },
+            error: function(errors){
+                errorMessages(errors);
+            }
+        });
+    });
+
+    // update Agency
+    $('body').on('click','.update-agency',function(){
+        var id = $(this).data('id');
+        $.ajax({
+            type:'GET',
+            url:url_agency+'/'+id,
+            dataType: 'json',
+            success: function (agence) {
+
+                $("#agence_name_modal").val(agence.name);
+                $("#agence_fullname_modal").val(agence.full_name);
+                $("#agence_reference_modal").val(agence.reference);
+                $("#agence_tel_modal" ).val(agence.phone);
+                $("#agence_email_modal").val(agence.email);
+                $("#agence_address_modal").val(agence.address);
+                $("#agence_city_modal").val(agence.city_id).trigger('change');
+                $('.updateModalAgency').modal('toggle');
+
+                $('.update-data').unbind('click').click(function(e){
+                    e.preventDefault();
+                    var formData = $('form#update-agence-frm').serialize();
+                    $.ajax({
+                        type:'PUT',
+                        url:'agency/'+id,
+                        dataType: 'json',
+                        data: formData,
+                        success: function (data) {
+                            swalSuccess('','Agency Updated successfully');
+                            getAgency();
+                        },
+                        error: function(errors){
+                            errorMessages(errors);
+                        }
+                    });
+                });
+            },
+            error: function (errors) {
+                errorMessages(errors);
+            }
+        });
+    });
+
+    // delete Agency
+
+    $('body').on('click','.delete-agency',function(){
+        var id = $(this).data('id');
+        var url = url_agency+'/'+id;
+        var msg = "Once deleted, you will not be able to recover it!";
+        deleteOperation(url,'',"Agency is deleted successfully");
+        getAgency();
+    });
+
+
+    
 });
