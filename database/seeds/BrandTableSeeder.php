@@ -20,5 +20,6 @@ class BrandTableSeeder extends Seeder
         //         })
         //     );
         // });
+        App\Brand::create(['name' => 'STG']);
     }
 }

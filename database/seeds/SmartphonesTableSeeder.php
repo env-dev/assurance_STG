@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Faker\Generator as Faker;
 
 class SmartphonesTableSeeder extends Seeder
 {
@@ -12,10 +11,12 @@ class SmartphonesTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i < 10; $i++){
+        $faker = Faker\Factory::create();
+        for($i = 1; $i < 3; $i++){
             App\Smartphone::create([
-                'imei' => '221544478745'.$i,
-                'brand_model_id' => $i
+                'imei' => $faker->randomNumber(8),
+                'brand_model_id' => $i,
+                'registration_id' => $i,
             ]);
         }
     }

@@ -9,7 +9,7 @@
                         <label for="text-input" class=" form-control-label">L'IMEI</label>
                     </div>
                     <div class="col-12 col-md-9 ui-widget">
-                        <input type="text" id="get_imei" name="imei" placeholder="Text" class="form-control" required>
+                        <input type="text" id="get_imei" name="imei" placeholder="imei" class="form-control" required>
                         <small class="form-text text-muted">L'imei de l'appareil</small>
                     </div>
                 </div>

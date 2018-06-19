@@ -76,6 +76,8 @@ Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneB
 
 
 Route::resource('registration', 'RegistrationController');
+Route::get('listing-registrations', 'RegistrationController@listingRegistrations');
+Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 
 Auth::routes();
 

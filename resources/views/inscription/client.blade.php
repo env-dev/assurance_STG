@@ -40,14 +40,14 @@
         <div class="col-6 ">
             <div class="form-group">
                 <label for="address" class="control-label mb-1">Adresse</label>
-                <input id="address" name="address" type="text" class="form-control">
+                <input id="address" name="address" type="text" class="form-control" required>
                 <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
             </div>
         </div>
         <div class="col-6 ">
             <div class="form-group">
                 <label for="address" class="control-label mb-1">Tel</label>
-                <input id="tel" name="tel" type="text" class="form-control">
+                <input id="tel" name="tel" type="text" class="form-control" required>
                 <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
             </div>
         </div>
@@ -65,6 +65,7 @@
                 </div>
                 <div class="input-group">
                     <select name="nature" id="nature" class="form-control" required>
+                        <option value="">-----</option>
                         <option value="Particulier">Particulier</option>
                         <option value="Entreprise">Entreprise</option>
                     </select>

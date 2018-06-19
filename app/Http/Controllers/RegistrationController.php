@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 use App\Helpers\PDFClass;
+use App\Helpers\RegistrationStatus;
 use App\Registration;
 use App\Smartphone;
 use App\Client;
@@ -48,7 +49,6 @@ class RegistrationController extends Controller
             'nature' => 'required',
             'num_id' => 'required',
             'imei' => 'required',
-            // 'mandat_num' => 'required',
             'date_flow_data' => 'required',
         ];
 
@@ -67,7 +67,7 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        // $client->save();
+        $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $smartphone->model->brand;
@@ -81,7 +81,7 @@ class RegistrationController extends Controller
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
 
-        // $registration->save();
+        $registration->save();
         $pdf = new PDFClass;
         return $pdf->downloadPDF($client, $registration, $smartphone);
     }
@@ -105,7 +105,11 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        //
+        $registration = Registration::with('smartphone.model.brand')
+        ->where('id', $id)
+        ->where('new', 1)
+        ->first();
+        return view('inscription.edit-registration')->with(['registration' => $registration]);
     }
 
     /**
@@ -117,7 +121,7 @@ class RegistrationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -129,6 +133,26 @@ class RegistrationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listingRegistrations()
+    {
+        // $new_memberships = Registration::with('smartphone.model.brand')->where('new', 1)->get();
+        // $new_memberships = Registration::status(new RegistrationStatus('newAdded'))->get();
+        // $new_memberships = $new_memberships->map(function ($item, $key) {
+        //    return $item->smartphone;
+        // });
+        $registrations = Registration::orderBy('data_flow', 'desc')->get();
+        $new_registrations = Registration::status(new RegistrationStatus('newAdded'))->count();
+        return view('inscription.listing-registrations', compact('registrations', 'new_registrations'));
+    }
+
+    public function listingNewRegistrations()
+    {
+        $new_memberships = Registration::status(new RegistrationStatus('newAdded'))->get();
+        // Registration::where('new', 1)
+        //     ->update(['new' => 0]);
+        return response()->json($new_memberships);
     }
 
     public function get_imei()

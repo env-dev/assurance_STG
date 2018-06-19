@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e28ac46e767dd0bcc70beaed83b305a",
+    "content-hash": "0a1523a99fd3b1713ffdcc9268bc7559",
     "packages": [
         {
             "name": "barryvdh/laravel-snappy",
@@ -907,6 +907,83 @@
                 "storage"
             ],
             "time": "2018-05-07T08:44:23+00:00"
+        },
+        {
+            "name": "makeabledk/laravel-eloquent-status",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/makeabledk/laravel-eloquent-status.git",
+                "reference": "54964bf7d4159380117c532734a3fe0dd7d85c4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/makeabledk/laravel-eloquent-status/zipball/54964bf7d4159380117c532734a3fe0dd7d85c4a",
+                "reference": "54964bf7d4159380117c532734a3fe0dd7d85c4a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4",
+                "makeabledk/laravel-querykit": "^1.1",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.3",
+                "laravel/laravel": "5.5",
+                "orchestra/testbench": "~3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Makeable\\EloquentStatus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-4.0"
+            ],
+            "time": "2018-05-23T21:55:28+00:00"
+        },
+        {
+            "name": "makeabledk/laravel-querykit",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/makeabledk/laravel-query-kit.git",
+                "reference": "6c7cf231e3a5fe67b26c1d59af6ae94591cf36d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/makeabledk/laravel-query-kit/zipball/6c7cf231e3a5fe67b26c1d59af6ae94591cf36d0",
+                "reference": "6c7cf231e3a5fe67b26c1d59af6ae94591cf36d0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.3",
+                "orchestra/testbench": "~3.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Makeable\\QueryKit\\QueryKitServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Makeable\\QueryKit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-4.0"
+            ],
+            "time": "2018-03-19T12:34:14+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3066,16 +3143,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "245958b02c6a9edf24627380f368333ac5413a51"
+                "reference": "b1f606399ae77e9479b5597cd1aa3d8ea0078176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/245958b02c6a9edf24627380f368333ac5413a51",
-                "reference": "245958b02c6a9edf24627380f368333ac5413a51",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/b1f606399ae77e9479b5597cd1aa3d8ea0078176",
+                "reference": "b1f606399ae77e9479b5597cd1aa3d8ea0078176",
                 "shasum": ""
             },
             "require": {
@@ -3086,7 +3163,8 @@
             },
             "require-dev": {
                 "laravel/framework": "5.6.*",
-                "phpunit/phpunit": "~7.0"
+                "phpstan/phpstan": "^0.9.2",
+                "phpunit/phpunit": "~7.2"
             },
             "type": "library",
             "extra": {
@@ -3124,7 +3202,7 @@
                 "php",
                 "symfony"
             ],
-            "time": "2018-03-21T20:11:24+00:00"
+            "time": "2018-06-16T22:05:52+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -3823,16 +3901,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "ed5fd2281113729f1ebcc64d101ad66028aeb3d5"
+                "reference": "591a30922f54656695e59b1f39501aec513403da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/ed5fd2281113729f1ebcc64d101ad66028aeb3d5",
-                "reference": "ed5fd2281113729f1ebcc64d101ad66028aeb3d5",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/591a30922f54656695e59b1f39501aec513403da",
+                "reference": "591a30922f54656695e59b1f39501aec513403da",
                 "shasum": ""
             },
             "require": {
@@ -3883,7 +3961,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2018-04-18T13:33:00+00:00"
+            "time": "2018-06-14T15:05:28+00:00"
         },
         {
             "name": "sebastian/diff",

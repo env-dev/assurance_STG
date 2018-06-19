@@ -128,6 +128,9 @@
             <li>
                 <a href="{{ url('registration') }}"><i class="fas fa-chart-bar"></i>Inscription</a>
             </li>
+            <li>
+                <a href="{{ url('listing-registrations') }}"><i class="fas fa-chart-bar"></i>Liste des souscriptions</a>
+            </li>
                 <li class="active has-sub">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-tachometer-alt"></i>Dashboard</a>

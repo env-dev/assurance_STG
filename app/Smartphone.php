@@ -13,7 +13,7 @@ class Smartphone extends Model
 
     public function registration()
     {
-        return $this->hasOne(Registration::class);
+        return $this->belongsTo(Registration::class);
     }
 
     public function model()
