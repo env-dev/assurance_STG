@@ -71,14 +71,11 @@ class SmartphoneController extends Controller
     public function update(Request $request, $id)
     {
         $phone = Smartphone::findOrFail($id);
-       
-
         if($phone){
-            $unique = ($phone->imei != $request->imei) ? '|unique:smartphones' : '';
             $phone->imei = $request->imei;
             $phone->brand_model_id = $request->brand_model_id;
             $request->validate([
-                'imei' => 'required'.$unique,
+                'imei' => 'required|unique:smartphones,name,'.$phone->id,
                 'brand_model_id' => 'required|numeric'
             ]);
             return response()->json($phone->saveOrFail());

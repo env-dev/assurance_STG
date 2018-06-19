@@ -71,15 +71,14 @@ class ModelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $model = BrandModel::findOrFail($id);
+        $model = BrandModel::find($id);
         
         if($model){
             $model->brand_id = $request->marque;
-            $unique = ($model->name != $request->name) ? '|unique:brand_models' : '';
             $model->name = $request->name;
             $model->price_ttc = $request->price_ttc;
             $request->validate([
-                'name' => 'required'.$unique,
+                'name' => 'required|unique:brand_models,name,'.$model->id,
                 'price_ttc' => 'required|numeric'
             ]);
             return response()->json($model->saveOrFail());

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-
+    return view('welcome');
     // $owner = new App\Role();
     // $owner->name         = 'owner';
     // $owner->display_name = 'Project Owner'; // optional
@@ -49,7 +49,7 @@ Route::get('/', function () {
     // $user = App\User::where('username', '=', 'adam')->first();
     // dd($user->hasRole('owner'), $user->hasRole('admin'),$user->can('edit-brand'), $user->can('create-brand'));
   
-});
+})->middleware('auth');
 
 Route::resource('agency', 'AgenceController');
 
@@ -57,13 +57,13 @@ Route::get('/appareil', function () {
     return view('appareil.main');
 });
 Route::resource('users', 'UserController');
-    Route::resource('roles', 'RoleController');
-    Route::resource('permissions','PermissionController');
-    Route::resource('brands','BrandController');
-    Route::resource('models','ModelController');
-    Route::resource('smartphones','SmartphoneController');
-    Route::resource('agences','AgenceController');
-    Route::resource('cities','CityController');
+Route::resource('roles', 'RoleController');
+Route::resource('permissions','PermissionController');
+Route::resource('brands','BrandController');
+Route::resource('models','ModelController');
+Route::resource('smartphones','SmartphoneController');
+Route::resource('agences','AgenceController');
+Route::resource('cities','CityController');
 Route::group(['middleware' => ['role:admin']], function() {
     
     
@@ -79,7 +79,7 @@ Route::resource('registration', 'RegistrationController');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 
 
