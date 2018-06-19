@@ -6,18 +6,19 @@
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="#">
-                            <img src="images/icon/logo.png" alt="CoolAdmin">
+                            <img src="{{ asset('images/logo.png') }}" alt="STG MAROC">
                         </a>
                     </div>
                     <div class="login-form">
-                        <form action="" method="post">
+                        <form action="{{ route('login') }}" method="post">
+                            @csrf
                             <div class="form-group">
                                 <label>Username</label>
-                                <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
+                                <input class="au-input au-input--full" type="text" name="username" placeholder="Username" value="{{ old('username') }}" required>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input class="au-input au-input--full" type="password" name="password" placeholder="*********">
+                                <input class="au-input au-input--full" type="password" name="password" placeholder="*********" required>
                             </div>
                             <div class="login-checkbox">
                                 <label>

@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use App\User;
+use App\Agence;
+use App\Role;
 class UserController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware(['auth','role:admin']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,17 +20,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if(request()->ajax()){
+            return response()->json(User::all());
+        }
+        return view('auth.register',['users'=>User::all(),'agences'=>Agence::all()]);
     }
 
     /**
@@ -34,7 +34,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user =  User::create([
+            'name' => $request['name'],
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'agence_id' => $request['agence'] ?? null
+        ]);
+
+        $user->attachRole($request['role']);
+
+        return response()->json($user);
     }
 
     /**
@@ -45,18 +62,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $user = User::find($id);
+        $userRoles = $user->roles->pluck('id')->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json(['user'=>$user,'role'=>$userRoles]);
     }
 
     /**
@@ -68,7 +77,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        if($user){
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users,name,'.$user->id,
+                'email' => 'string|email|max:255|unique:users,email,'.$user->id,
+            ]);
+            $user->name = $request->name;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->agence_id = $request->agence;
+            
+            // Remove All Roles 
+            $user->detachRoles();
+            $user->attachRole($request['role']);
+    
+            return response()->json($user);
+        }
+        return response()->json($user);
     }
 
     /**
@@ -79,6 +106,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        // // Remove All Roles 
+        // $user->detachRoles();
+        return response()->json($user->delete());
+
     }
 }

@@ -14,17 +14,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if(request()->ajax()){
+            return response()->json(Role::all());
+        }
+        return view('roles_permissions_users.role',['roles'=>Role::all()]);
     }
 
     /**
@@ -35,7 +28,19 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            //'display_name' => 'required',
+            //'description' => 'required',
+            //'permissions' => 'required',
+        ]);
+
+        $role = new Role();
+        $role->name = $request->name;
+        $role->display_name = $request->display_name;
+        $role->description = $request->description;
+
+        return response()->json($role->saveOrFail());
     }
 
     /**
@@ -44,20 +49,16 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Role $role)
-    {
-        //
+        $role = Role::find($id);
+        if($role){
+            if(request()->ajax()){
+                return response()->json($role);
+            }
+            //return view('roles_permissions_users.role',['roles'=>Role::all()]);
+        }
+        return response()->json('The role you are looking for is not exists ', 412);
     }
 
     /**
@@ -67,9 +68,23 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
-        //
+        $role = Role::find($id);
+        if($role){
+            $this->validate($request, [
+                'name' => 'required|unique:roles,name,'.$role->id,
+                //'display_name' => 'required',
+                //'description' => 'required',
+                //'permissions' => 'required',
+            ]);
+    
+            $role->name = $request->name;
+            $role->display_name = $request->display_name;
+            $role->description = $request->description;
+            return response()->json($role->saveOrFail());
+        }
+        return response()->json('The role you are trying to modify is not exists ', 412);
     }
 
     /**
@@ -78,8 +93,8 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
-        //
+        return response()->json(Role::destroy($id));
     }
 }

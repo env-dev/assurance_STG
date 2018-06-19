@@ -9,11 +9,10 @@ var permissions_table;
 var roles_table;
 var users_table;
 
-
 function initialize(){
-    getPermissions()
-    getRoles();
-    $('#role_permission_add').select2();
+    //getPermissions()
+    //getRoles();
+    //$('#role_permission_add').select2();
 }
 
 function swalError(title='',text=''){
@@ -37,48 +36,12 @@ function errorMessages(data){
     $.each(data.responseJSON.errors, function(i,error){
         errors+= i + ": " + error[0] + "\n";
     });
-    swalError("Invalid Data",errors + "\n ------- \n" + data.responseJSON.message);
-}
-
-function inputValidate(input,type)
-{
-    if(type == "numeric"){
-        return emptyInput(input) && checkIsNumber(input);
-    }
-    if(type == "text"){
-        return emptyInput(input)
+    if(data.responseJSON.message){
+        swalError("Invalid Data",errors + "\n ------- \n" + data.responseJSON.message);
+    }else{
+        swalError(data.responseJSON);
     }
 }
-function checkIsNumber(input){
-    if(isNaN(input.val())){
-        input.addClass('is-invalid');
-        input.focus();
-        return false;
-    }
-    input.removeClass('is-invalid');
-    return true;
-}
-function emptyInput(input){
-    if(input.val() == ''){
-        input.addClass('is-invalid');
-        input.focus();
-        return false;
-    }
-    input.removeClass('is-invalid');
-    return true;
-}
-
-function inputsValidation(inputs){
-    var valid = true;
-    $.each(inputs,function(i,input){
-        if(!inputValidate(input.field,input.type)){
-            valid = false;
-            return;
-        }
-    });
-    return valid;
-}
-
 function deleteOperation(url,confirmMsg='',successMsg=''){
     swal({
         title: "Are you sure?",
@@ -109,7 +72,7 @@ function deleteOperation(url,confirmMsg='',successMsg=''){
 //#region Functions
 // This Part it should be in main.js
 // For global functions
-function getPermissions(){
+/*function getPermissions(){
     $.ajax({
         type:'GET',
         url: url_permissions,
@@ -136,7 +99,7 @@ function getPermissions(){
             errorMessages(errors);
         }
     });
-}
+}*/
 
 function getRoles(){
     $.ajax({
@@ -144,17 +107,16 @@ function getRoles(){
         url: url_roles,
         dataType: 'json',
         success: function (roles) {
-            //  console.log(roles); return;
             let row =''
             $.each(roles, function(index,role){
                 row += '\
                 <tr>\
-                    <td>'+(index+1)+'</td>\
                     <td>'+role.name+'</td>\
-                    <td>'+role.permissions+'</td>\
+                    <td>'+role.display_name+'</td>\
                     <td>\
                     <button type="button" class="btn btn-danger delete-role" data-id="'+role.id+'" title="Supprimer"><i class="fa fa-times"></i></button>\
                     <button type="button" class="btn btn-info update-role" data-id="'+role.id+'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>\
+                    <button type="button" class="btn btn-warning info-role" data-id="'+role.id+'" title="Details">&nbsp;<i class="fa fa-info"></i>&nbsp;</i></button>\
                     </td>\
                 </tr>\
                 ';
@@ -172,25 +134,25 @@ function getRoles(){
 function getUsers(){
     $.ajax({
         type:'GET',
-        url: url_permissions,
+        url: url_users,
         dataType: 'json',
-        success: function (permissions) {
+        success: function (users) {
             let row =''
-            $.each(permissions, function(index,permission){
+            $.each(users, function(i,user){
                 row += '\
                 <tr>\
-                    <td>'+(index+1)+'</td>\
-                    <td>'+permission.name+'</td>\
+                    <td>'+user.name+'</td>\
+                    <td>'+user.username+'</td>\
                     <td>\
-                    <button type="button" class="btn btn-danger delete-permission" data-id="'+permission.id+'" title="Supprimer"><i class="fa fa-times"></i></button>\
-                    <button type="button" class="btn btn-info update-permission" data-id="'+permission.id+'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>\
+                    <button type="button" class="btn btn-danger delete-user" data-id="'+user.id+'" title="Supprimer"><i class="fa fa-times"></i></button>\
+                    <button type="button" class="btn btn-info update-user" data-id="'+user.id+'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>\
                     </td>\
                 </tr>\
                 ';
             })
 
-            $('#permissions-table tbody').html(row)
-            // $('#permissions-table').DataTable();
+            $('#users-table tbody').html(row)
+            // $('#users-table').DataTable();
         },
         error: function (errors) {
             errorMessages(errors);
@@ -199,7 +161,7 @@ function getUsers(){
 }
 $(function(){
     initialize();
-});
+
 
 
 //#region Insert Section
@@ -252,7 +214,9 @@ $('#insert-permission').click(function(e){
 $('#insert-role').click(function(e){
     e.preventDefault();
     var role_field = $('#role_name_add');
-    var role_permission_add = $('#role_permission_add');
+    // var role_permission_add = $('#role_permission_add');
+    var role_display_name_add = $('#role_display_name_add');
+    var role_description_add = $('#role_description_add');
     var validation = [
         {'field': role_field, 'type': 'text'},
     ];
@@ -262,7 +226,8 @@ $('#insert-role').click(function(e){
             type:'POST',
             data: {
                 name: role_field.val(),
-                permissions: role_permission_add.val()
+                display_name: role_display_name_add.val(),
+                description: role_description_add.val()
             },
             url: url_roles,
             dataType: 'json',
@@ -284,31 +249,22 @@ $('#insert-role').click(function(e){
  ************************************* 
 */
 
-$('#insert-appareil').click(function(e){
+$('form#insert-user-frm').submit(function(e){
     e.preventDefault();
-    var appareil_model_field = $('#appareil_model_add');
-    var imei_field = $('#imei_add');
-    
-    var validation = [
-        {'field': appareil_model_field, 'type': 'text'},
-        {'field': imei_field, 'type': 'numeric'},
-    ]
-    if(!inputsValidation(validation)) return;
+
+    var formData = $(this).serialize();
     $.ajax({
         type:'POST',
-        data: {
-            brand_model_id: appareil_model_field.val(),
-            imei: imei_field.val()
-        },
-        url: url_smartphones,
+        url:url_users,
         dataType: 'json',
+        data: formData,
         success: function (data) {
-            swalSuccess('','Smartphone is inserted Successfully');
-               getSmartphones();
-               $('input').val('');
+            swalSuccess('','User Inserted successfully');
+            $('form :input').val('');
+            getUsers();
         },
-        error: function (data) {
-            errorMessages(data);
+        error: function(errors){
+            errorMessages(errors);
         }
     });
 });
@@ -372,90 +328,90 @@ $('body').on('click','.update-permission',function(){
 
 /**
  ************************************* 
- * Update Model
+ * Update Role
  ************************************* 
 */
 $('body').on('click','.update-role',function(){
-    var role_name_field = $('#permission_name_modal');
-    var role_permissions_field = $('#role_permission_modal');
-    
-   
+    var roleName = $('#role_name_modal');
+    var displayName = $('#role_display_name_modal');
+    var description = $('#role_description_modal');
+    $('form#update-role-frm :input').val('');
     // Get role Information
     var id = $(this).data('id');
-    $.get(url_roles+'/'+id+'/edit', function (role) {
-        console.log(role);return;
-        // get field values
-        role_name_field.val(role.name)
+    var url = url_roles+'/'+id;
+    $.ajax({
+        type:"GET",
+        url:url,
+        success: function(role){
+            roleName.val(role.name);
+            displayName.val(role.display_name);
+            description.val(role.description);
+            $('.updateModalRole').modal('toggle');
+        },
+        error: function(error){
+            errorMessages(error);
+        }
     });
-return;
     // Show Modal
-    $('.updateModalrole').modal('toggle');
     $('.update-data').unbind('click').click(function(e){
-        event.stopPropagation();
-        //Validation
-        var validation = [
-            {'field': role_name_field, 'type': 'text'},
-            {'field': role_price_role, 'type': 'numeric'},
-        ];
-        if(!inputsValidation(validation)) return;
-        console.log(url_roles+'/'+id);
             // Send Updated Data
             $.ajax({
                 type:'PUT',
                 data: {
-                    name: role_name_field.val(),
-                    marque: role_marque_field.val(),
-                    price_ttc: role_price_role.val()
+                    name: roleName.val(),
+                    display_name: displayName.val(),
+                    description: description.val()
                 },
-                url: url_roles+'/'+id,
+                url: url,
                 dataType: 'json',
                 success: function (data) {
                     swalSuccess('','role Updated successfully')
                     getroles();
                 },
                 error: function (data) {
+                    console.log(data)
                     errorMessages(data);
                 }
             });
-            
     });
 });
 
 /**
  ************************************* 
- * Update Appareil
+ * Update User
  ************************************* 
 */
-$('body').on('click','.update-appareil',function(){
-    var imei_field = $('#imei_modal');
-    var appareil_model_field = $('#appareil_model_modal');
-    
-    // Get appareil Information
+$('body').on('click','.update-user',function(){
+    // Get user Information
     var id = $(this).data('id');
-      $.get(url_smartphones+'/'+id+'/edit', function (data) {
-        // get field values
-        imei_field.val(data.imei);
-        appareil_model_field.val(data.brand_model_id);
+    var url = url_users+'/'+id; 
+    $.get(url, function (data) {
+      //  console.log(data);
+        $('#name_modal').val(data.user.name);
+        $('#username_modal').val(data.user.username);
+        $('#email_modal').val(data.user.email);
+        $('#role_modal').val(data.role);
+        $('#agence_modal').val(data.user.agence_id);
     });
-     
     // Show Modal
-    $('.updateModalAppareil').modal('toggle');
-    $('.update-data').unbind('click').click(function(){
+    $('.updateModalUser').modal('toggle');
+    $('.update-data').unbind('click').click(function(e){
+        e.preventDefault();
+
+        formData = $('form#update-user-frm').serialize();
         // Send Updated Data
         $.ajax({
             type:'PUT',
-            data: {
-                imei: imei_field.val(),
-                brand_model_id: appareil_model_field.val()
-            },
-            url: url_smartphones+'/'+id,
+            data: formData,
+            url: url,
             dataType: 'json',
             success: function (data) {
-                swalSuccess('','Smartphone Updated successfully')
-                getSmartphones();
+                swalSuccess('','User Updated successfully')
+                getUsers();
             },
             error: function (data) {
-                errorMessages(data);
+                console.log(data);
+               // errorMessages(data);
             }
         });
     });
@@ -485,7 +441,7 @@ $('body').on('click','.delete-permission',function(){
 
     var id = $(this).data('id');
     var url = url_permissions+'/'+id;
-    var msg = "Once deleted, you will remove all Phones are related to this Permission!";
+    var msg = "";
     deleteOperation(url,'',"Permission is deleted successfully");
     getPermissions();
     
@@ -497,12 +453,12 @@ $('body').on('click','.delete-permission',function(){
  ************************************* 
 */
 
-$('body').on('click','.delete-model',function(){
+$('body').on('click','.delete-role',function(){
     var id = $(this).data('id');
-    var url = url_models+'/'+id;
-    var msg = "Once deleted, you will remove all Phones are related to this brand!";
-    deleteOperation(url,'',"Model is deleted successfully");
-    getModels();
+    var url = url_roles+'/'+id;
+    var msg = "";
+    deleteOperation(url,'',"Role is deleted successfully");
+    getRoles();
     
 });
 
@@ -512,13 +468,51 @@ $('body').on('click','.delete-model',function(){
  ************************************* 
 */
 
-$('body').on('click','.delete-appareil',function(){
+$('body').on('click','.delete-user',function(){
     var id = $(this).data('id');
-    var url = url_smartphones+'/'+id;
-    var msg = "Once deleted, you will not be able to recover it!";
-    deleteOperation(url,'',"Smartphone is deleted successfully");
-    getSmartphones();
-    
+    var url = url_users+'/'+id;
+    var msg = "";
+    deleteOperation(url,'',"User is deleted successfully");
+    getUsers();
 });
 
 //#endregion
+
+});
+
+
+// View Role Infos
+$('body').on('click','.info-role',function(){
+    var id = $(this).data('id');
+    var url = url_roles+'/'+id;
+    $.ajax({
+        type:'GET',
+        dataType:'json',
+        url:url,
+        success:function(role){
+            var row ='<tr>\
+                    <td>Name</td>\
+                    <td>'+role.name+'</td>\
+                </tr>\
+                <tr>\
+                    <td>Display Name</td>\
+                    <td>'+role.display_name+'</td>\
+                </tr>\
+                <tr>\
+                    <td>Description</td>\
+                    <td>'+role.description+'</td>\
+                </tr>\
+                <tr>\
+                    <td>Permissions</td>\
+                    <td><span class="badge badge-pill badge-success">All</span></td>\
+                </tr>';
+            
+            $('#info-role-table tbody').html(row);
+            $('.updateModalRoleInfo').modal('toggle');
+
+        },
+        error: function(errors){
+            errorMessages(errors);
+        }
+    });    
+})

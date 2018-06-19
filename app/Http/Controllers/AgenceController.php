@@ -50,21 +50,11 @@ class AgenceController extends Controller
     public function show($id)
     {
         if(request()->ajax()){
-            return response()->json(Agence::findOrFail($id));
+            return response()->json(Agence::with('city')->where('id',$id)->first());
         }
-        return view('agency.index',['agences' => Agence::findOrFail($id)]);
+        return view('agency.index',['agence' => Agence::with('city')->where('id',$id)->first()]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Integer  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -73,9 +63,22 @@ class AgenceController extends Controller
      * @param  App\Agence  $agence
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Agence $agence)
+    public function update(Request $request, $id)
     {
-        //
+        $agence = Agence::find($id);
+
+        if($agence){
+            $agence->name = $request->agence_name_modal;
+            $agence->full_name = $request->agence_fullname_modal;
+            $agence->reference = $request->agence_reference_modal;
+            $agence->address = $request->agence_address_modal;
+            $agence->email = $request->agence_email_modal;
+            $agence->phone = $request->agence_tel_modal;
+            $agence->city_id = $request->agence_city_modal;
+            
+            return response()->json($agence->saveOrFail());
+        }
+        return response()->json(['error'=> 'Agency not Found']);
     }
 
     /**
@@ -84,8 +87,8 @@ class AgenceController extends Controller
      * @param  App\Agence  $agence
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Agence $agence)
+    public function destroy($id)
     {
-        //
+        return response()->json(Agence::destroy($id));
     }
 }

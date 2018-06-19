@@ -368,7 +368,6 @@ $('body').on('click','.update-model',function(){
             {'field': model_price_model, 'type': 'numeric'},
         ];
         if(!inputsValidation(validation)) return;
-        console.log(url_models+'/'+id);
             // Send Updated Data
             $.ajax({
                 type:'PUT',

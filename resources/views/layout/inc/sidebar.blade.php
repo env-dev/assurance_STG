@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="header-mobile-inner">
                 <a class="logo" href="index.html">
-                    <img src="images/icon/logo.png" alt="CoolAdmin" />
+                    <img src="{{asset('images/logo.png')}}" alt="CoolAdmin" />
                 </a>
                 <button class="hamburger hamburger--slider" type="button">
                     <span class="hamburger-box">
@@ -119,15 +119,20 @@
 <aside class="menu-sidebar d-none d-lg-block">
     <div class="logo">
         <a href="#">
-            <img src="images/icon/logo.png" alt="Cool Admin" />
+            <img src="{{asset('images/logo.png')}}" class="img-fluid" style="width:170px; height:70px;"/>
         </a>
     </div>
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
             <li>
+                <a href="{{ url('/') }}"><i class="fas fa-chart-bar"></i>Dashboard</a>
+            </li>
+            @role(['admin','agence'])
+            <li>
                 <a href="{{ url('registration') }}"><i class="fas fa-chart-bar"></i>Inscription</a>
             </li>
+<<<<<<< HEAD
             <li>
                 <a href="{{ url('listing-registrations') }}"><i class="fas fa-chart-bar"></i>Liste des souscriptions</a>
             </li>
@@ -223,6 +228,14 @@
                         </li>
                     </ul>
                 </li>
+=======
+            @endrole
+            @role('admin')
+            <li class="active">
+                <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Users&Roles</a>
+            </li>
+            @endrole
+>>>>>>> a670bb577c88e94972a2493407dc0113b2aa2d65
             </ul>
         </nav>
     </div>

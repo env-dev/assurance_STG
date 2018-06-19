@@ -3,13 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
 use App\City;
 use App\User;
 class Agence extends Model
 {
+    use SoftDeletes, CascadeSoftDeletes;
+    
     protected $guarded=[];
 
-    public function City(){
+    public function city(){
         return $this->belongsTo(City::class);
     }
 

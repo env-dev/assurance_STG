@@ -38,7 +38,7 @@ class BrandController extends Controller
         $brand = new Brand();
         $brand->name = $request->name;
         $request->validate([
-            'name' => 'required|unique:brands'
+            'name' => 'required|unique:brands,name'
         ]);
 
         return response()->json($brand->saveOrFail());
@@ -69,7 +69,7 @@ class BrandController extends Controller
         $brand = Brand::findOrFail($id);
         if($brand){
             $request->validate([
-                'name' => 'required|unique:brands'
+                'name' => 'required|unique:brands,name,'.$brand->id
             ]);
             $brand->name = $request->name;
             return response()->json($brand->saveOrFail());
