@@ -14,7 +14,7 @@ class Registration extends Model
 
     public function smartphone()
     {
-        return $this->hasOne(Smartphone::class);
+        return $this->belongsTo(Smartphone::class);
     }
 
     public function client()

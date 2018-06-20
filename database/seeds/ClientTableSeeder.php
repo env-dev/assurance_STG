@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-// use Faker\Generator as Faker;
 
 class ClientTableSeeder extends Seeder
 {
@@ -13,7 +12,7 @@ class ClientTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        for($i = 1; $i < 3; $i++){
+        for($i = 1; $i <= 3; $i++){
             App\Client::create([
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,

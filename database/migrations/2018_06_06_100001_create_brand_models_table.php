@@ -16,7 +16,7 @@ class CreateBrandModelsTable extends Migration
         Schema::create('brand_models', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->decimal('price_ttc', 4, 2);
+            $table->decimal('price_ttc', 6, 2);
             $table->integer('brand_id')->unsigned();
             $table->timestamps();
 

@@ -30,7 +30,7 @@
                 @endrole
                 @role('admin')
                 <li class="active">
-                    <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Users&Roles</a>
+                    <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Permissions</a>
                 </li>
                     @endrole
             </ul>
@@ -62,7 +62,7 @@
                 @endrole
                 @role('admin')
                 <li class="active">
-                    <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Users&Roles</a>
+                    <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Permissions</a>
                 </li>
                 @endrole
             </ul>
