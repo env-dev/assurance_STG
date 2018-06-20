@@ -132,7 +132,6 @@
             <li>
                 <a href="{{ url('registration') }}"><i class="fas fa-chart-bar"></i>Inscription</a>
             </li>
-<<<<<<< HEAD
             <li>
                 <a href="{{ url('listing-registrations') }}"><i class="fas fa-chart-bar"></i>Liste des souscriptions</a>
             </li>
@@ -228,14 +227,12 @@
                         </li>
                     </ul>
                 </li>
-=======
             @endrole
             @role('admin')
             <li class="active">
                 <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Users&Roles</a>
             </li>
             @endrole
->>>>>>> a670bb577c88e94972a2493407dc0113b2aa2d65
             </ul>
         </nav>
     </div>
