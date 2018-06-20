@@ -64,6 +64,12 @@
                 <li class="active">
                     <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Users&Roles</a>
                 </li>
+                <li class="active">
+                    <a  href="{{ url('agency') }}"><i class="fas fa-tachometer-alt"></i>Agences</a>
+                </li>
+                <li class="active">
+                    <a  href="{{ url('appareil') }}"><i class="fas fa-tachometer-alt"></i>Appareil</a>
+                </li>
                 @endrole
             </ul>
         </nav>

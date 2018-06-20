@@ -7,6 +7,10 @@ use App\Smartphone;
 use Yajra\Datatables\Datatables;
 class SmartphoneController extends Controller
 {
+
+    public function __construct(){
+       
+    }
      /**
      * Display a listing of the resource.
      *
