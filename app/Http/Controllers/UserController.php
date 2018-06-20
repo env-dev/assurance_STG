@@ -20,6 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        //return User::with('agence')->get();
         if(request()->ajax()){
             return response()->json(User::all());
         }
@@ -39,6 +40,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'email' => 'string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|numeric',
         ]);
 
         $user =  User::create([
@@ -46,7 +48,7 @@ class UserController extends Controller
             'username' => $request['username'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            'agence_id' => $request['agence'] ?? null
+            'agence_id' => $request->agence ?? null
         ]);
 
         $user->attachRole($request['role']);
@@ -62,6 +64,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $user = User::find($id);
+    
+        // $user->agence_id = 2;
+        // return response()->json($user);
+        
         $user = User::find($id);
         $userRoles = $user->roles->pluck('id')->first();
 
@@ -83,11 +90,13 @@ class UserController extends Controller
                 'name' => 'required|string|max:255',
                 'username' => 'required|string|max:255|unique:users,name,'.$user->id,
                 'email' => 'string|email|max:255|unique:users,email,'.$user->id,
+                'role' => 'required|numeric',
             ]);
             $user->name = $request->name;
             $user->username = $request->username;
             $user->email = $request->email;
             $user->agence_id = $request->agence;
+            $user->saveOrFail();
             
             // Remove All Roles 
             $user->detachRoles();
