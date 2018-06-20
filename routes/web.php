@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::get('/get_imei', 'RegistrationController@get_imei');
 Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
+Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
 
 
 Route::resource('registration', 'RegistrationController');

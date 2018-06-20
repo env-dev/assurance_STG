@@ -23,6 +23,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!-- Main JS-->
+        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="{{ asset('js/main.js') }}"></script>
         <!--<script src="{{ asset('js/inscription.js') }}"></script>-->
         <script src="{{ asset('js/mask.min.js') }}"></script>

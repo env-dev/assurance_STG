@@ -83,28 +83,27 @@ $(function(){
     });
 });
 $(function(){
-    $("#new_memberships").on("click", function(e){
-        $(this).hide();
-        e.preventDefault();
-        $.ajax({
-            method: "POST",
-            url: "/listing-new-registrations",
-          })
-            .done(function( data ) {
-                var tbody = '';
-                data.forEach(function(registration) {
-                    var tr = '<tr>'
-                    tr = tr.concat('<td>'+registration.mandat_num+'</td>');
-                    tr = tr.concat('<td>'+registration.data_flow+'</td>');
-                    tr = tr.concat('<td>'+registration.created_at+'</td>');
-                    tr = tr.concat('<td></td>');
-                    tr = tr.concat('<td><a class="item" data-toggle="tooltip" href="registration/'+registration.id+'/edit" data-placement="top" title="" data-original-title="Edit"><i class="zmdi zmdi-edit"></i></a></td>');
-                    tr = tr.concat('</tr>');
-                    tbody = tbody.concat(tr);
-                  });
-                  $("#registration-list").html('');
-                $("#registration-list").html(tbody);
-            });
-    });
+    // $("#new_memberships").on("click", function(e){
+    //     $(this).hide();
+    //     e.preventDefault();
+    //     $.ajax({
+    //         method: "POST",
+    //         url: "/listing-new-registrations",
+    //       })
+    //         .done(function( data ) {
+    //             var tbody = '';
+    //             data.forEach(function(registration) {
+    //                 var tr = '<tr>'
+    //                 tr = tr.concat('<td>'+registration.mandat_num+'</td>');
+    //                 tr = tr.concat('<td>'+registration.data_flow+'</td>');
+    //                 tr = tr.concat('<td>'+registration.created_at+'</td>');
+    //                 tr = tr.concat('<td></td>');
+    //                 tr = tr.concat('<td><a class="item" data-toggle="tooltip" href="registration/'+registration.id+'/edit" data-placement="top" title="" data-original-title="Edit"><i class="zmdi zmdi-edit"></i></a></td>');
+    //                 tr = tr.concat('</tr>');
+    //                 tbody = tbody.concat(tr);
+    //               });
+    //               $("#registration-list").html('');
+    //             $("#registration-list").html(tbody);
+    //         });
+    // });
 });
-

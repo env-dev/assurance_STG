@@ -1,7 +1,6 @@
 @extends('layout.main')
 @section('title','Appareil Information')
 @section('css')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
 <div class="section__content section__content--p30">
@@ -47,6 +46,5 @@
 @include('appareil.update_modal')
 @endsection
 @section('js')
-<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('js/appareil.js') }}"></script>
 @endsection

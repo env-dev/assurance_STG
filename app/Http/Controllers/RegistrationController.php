@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 use App\Helpers\PDFClass;
 use App\Helpers\RegistrationStatus;
+use Yajra\Datatables\Datatables;
 use App\Registration;
 use App\Smartphone;
 use App\Client;
+use Auth;
 
 class RegistrationController extends Controller
 {
@@ -94,7 +96,16 @@ class RegistrationController extends Controller
      */
     public function show($id)
     {
-        //
+        $registration = Registration::with('smartphone.model.brand')
+        ->where('id', $id)
+        ->where('new', 1)
+        ->first();
+        if(Auth::User()->hasRole('aon'))
+        {
+            $registration->new = 0;
+            $registration->save();
+        }
+        return view('inscription.edit-registration')->with(['registration' => $registration]);
     }
 
     /**
@@ -105,11 +116,7 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        $registration = Registration::with('smartphone.model.brand')
-        ->where('id', $id)
-        ->where('new', 1)
-        ->first();
-        return view('inscription.edit-registration')->with(['registration' => $registration]);
+        // 
     }
 
     /**
@@ -135,7 +142,7 @@ class RegistrationController extends Controller
         //
     }
 
-    public function listingRegistrations()
+    public function listingRegistrations(Request $request)
     {
         // $new_memberships = Registration::with('smartphone.model.brand')->where('new', 1)->get();
         // $new_memberships = Registration::status(new RegistrationStatus('newAdded'))->get();
@@ -144,6 +151,22 @@ class RegistrationController extends Controller
         // });
         $registrations = Registration::orderBy('data_flow', 'desc')->get();
         $new_registrations = Registration::status(new RegistrationStatus('newAdded'))->count();
+        // dd(Datatables::of($registrations)->make(true));
+        if($request->ajax()) {
+            return Datatables::of($registrations)
+            ->addIndexColumn()
+            ->addColumn('edit', function ($registrations) {
+                return '
+                <a class="item btn btn-info" href="/registration/'.$registrations->id.'" title="Edit">
+                    <i class="zmdi zmdi-eye"></i>
+                </a>';
+            })
+            ->rawColumns(['edit'])
+            ->editColumn('new', function($registrations){
+                return ($registrations->new ? 'Nouveau' : 'Vu');
+            })
+            ->make(true);
+        }
         return view('inscription.listing-registrations', compact('registrations', 'new_registrations'));
     }
 

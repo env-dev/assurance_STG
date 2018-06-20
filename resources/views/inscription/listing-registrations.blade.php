@@ -8,13 +8,13 @@
 @section('content')
 <div class="col-md-12">
     @if ($new_registrations)
-        <a class="btn btn-primary m-l-10 m-b-10" href="#" id="new_memberships" >Nouvelles souscriptions
-            <span class="badge badge-light">{{ $new_registrations }}</span>
+        <a class="btn btn-primary m-l-10 m-b-10" href="javascript:void(0)" id="new_memberships" >
+            <span class="badge badge-light">{{ $new_registrations }}</span>&nbsp;Nouvelles souscriptions
         </a>
     @endif
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">
-        <table class="table table-borderless table-data3">
+        <table class="table table-borderless table-data3" id="registration-list">
             <thead>
                 <tr>
                     <th>Réf mandat</th>
@@ -24,7 +24,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody id="registration-list">
+            <!-- <tbody>
                 @foreach ($registrations as $registration)
                 <tr>
                     <td>{{ $registration->mandat_num }}</td>
@@ -40,7 +40,7 @@
                     </td>
                 </tr>
                 @endforeach
-            </tbody>
+            </tbody> -->
         </table>
     </div>
     <!-- END DATA TABLE-->
@@ -48,4 +48,23 @@
 @endsection
 
 @section('js')
+<script>
+    $(document).ready(function() {
+        $("#registration-list").DataTable({
+            processing: true,
+            serverSide: true,
+            language: {
+                url: "{{ asset('/js/lang/dataTables.french.json') }}"
+            },
+            ajax: "/getRegistrations",
+            columns: [
+                { data: "mandat_num", name: "mandat_num", orderable: false, searchable: true },
+                { data: "data_flow",name: "data_flow" },
+                { data: "created_at", name: "created_at" },
+                { data: "new", name: "new" },
+                { data: "edit", name: "edit", orderable: false, searchable: true },
+            ]
+        });    
+    } );
+</script>
 @endsection

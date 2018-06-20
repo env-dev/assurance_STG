@@ -18,7 +18,8 @@ class CreateRegistrationsTable extends Migration
             $table->string('mandat_num');
             $table->string('guarantee');
             $table->date('data_flow');
-            $table->decimal('total_ttc', 4, 2);
+            $table->decimal('total_ttc', 6, 2);
+            $table->boolean('new')->default(1);
             $table->integer('smartphone_id')->unsigned();
             $table->integer('client_id')->unsigned();
             $table->timestamps();
