@@ -24,7 +24,7 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!-- Main JS-->
         <script src="{{ asset('js/main.js') }}"></script>
-        <script src="{{ asset('js/inscription.js') }}"></script>
+        <!--<script src="{{ asset('js/inscription.js') }}"></script>-->
         <script src="{{ asset('js/mask.min.js') }}"></script>
         <script type="text/javascript">
             $(function () {

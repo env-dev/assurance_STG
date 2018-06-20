@@ -10,6 +10,8 @@ var roles_table;
 var users_table;
 
 function initialize(){
+
+    
     //getPermissions()
     //getRoles();
     //$('#role_permission_add').select2();
@@ -42,6 +44,46 @@ function errorMessages(data){
         swalError(data.responseJSON);
     }
 }
+
+function inputValidate(input,type)
+{
+    if(type == "numeric"){
+        return emptyInput(input) && checkIsNumber(input);
+    }
+    if(type == "text"){
+        return emptyInput(input)
+    }
+}
+function checkIsNumber(input){
+    if(isNaN(input.val())){
+        input.addClass('is-invalid');
+        input.focus();
+        return false;
+    }
+    input.removeClass('is-invalid');
+    return true;
+}
+function emptyInput(input){
+    if(input.val() == ''){
+        input.addClass('is-invalid');
+        input.focus();
+        return false;
+    }
+    input.removeClass('is-invalid');
+    return true;
+}
+
+function inputsValidation(inputs){
+    var valid = true;
+    $.each(inputs,function(i,input){
+        if(!inputValidate(input.field,input.type)){
+            valid = false;
+            return;
+        }
+    });
+    return valid;
+}
+
 function deleteOperation(url,confirmMsg='',successMsg=''){
     swal({
         title: "Are you sure?",
@@ -253,6 +295,7 @@ $('form#insert-user-frm').submit(function(e){
     e.preventDefault();
 
     var formData = $(this).serialize();
+   // console.log(formData);return;//
     $.ajax({
         type:'POST',
         url:url_users,
