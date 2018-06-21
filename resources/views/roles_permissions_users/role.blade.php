@@ -50,7 +50,7 @@
                         <td>{{$role->display_name}}</td>
                         <td>
                             <button type="button" class="btn btn-danger delete-role" data-id="{{ $role->id }}" title="Supprimer"><i class="fa fa-times"></i></button>
-                            <button type="button" class="btn btn-info update-role" data-id="{{ $role->id }}" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
+                            <button type="button" class="btn btn-info update-role" data-id="{{ $role->id }}" title="Modifier"><i class="far fa-edit"></i></button>
                             <button type="button" class="btn btn-warning info-role" data-id="{{ $role->id }}" title="info">&nbsp;<i class="fa fa-info"></i>&nbsp;</i></button>
                         </td>
                     </tr>

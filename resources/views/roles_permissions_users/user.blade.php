@@ -86,7 +86,7 @@
                         <td>{{ $user->username }}</td>
                         <td>
                             <button type="button" class="btn btn-danger delete-user" data-id="{{ $user->id }}" title="Supprimer"><i class="fa fa-times"></i></button>
-                            <button type="button" class="btn btn-info update-user" data-id="{{ $user->id }}" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>
+                            <button type="button" class="btn btn-info update-user" data-id="{{ $user->id }}" title="Modifier"><i class="far fa-edit"></i></button>
                         </td>
                     </tr>
                     @endforeach
