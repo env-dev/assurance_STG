@@ -11,13 +11,29 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = App\User::create([
-            'name' => 'stg',
-            'username' => 'Abdel',
-            'email' => 'abdel@stg.org',
+        $admin = App\User::create([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'email' => 'walid@stg.org',
             'password' => bcrypt('123456'),
         ]);
 
-        $user->attachRole(1);
+        $agence = App\User::create([
+            'name' => 'Agence',
+            'username' => 'agence',
+            'email' => 'agence@stg.org',
+            'password' => bcrypt('123456'),
+        ]);
+
+        $aon = App\User::create([
+            'name' => 'AON',
+            'username' => 'aon',
+            'email' => 'aon@stg.org',
+            'password' => bcrypt('123456'),
+        ]);
+
+        $admin->attachRole(1);
+        $agence->attachRole(2);
+        $aon->attachRole(3);
     }
 }

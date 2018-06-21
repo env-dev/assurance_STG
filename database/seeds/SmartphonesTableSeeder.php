@@ -12,7 +12,7 @@ class SmartphonesTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        for($i = 1; $i <= 3; $i++){
+        for($i = 1; $i <= 5; $i++){
             App\Smartphone::create([
                 'imei' => $faker->randomNumber(8),
                 'brand_model_id' => $i,
