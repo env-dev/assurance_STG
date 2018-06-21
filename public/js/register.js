@@ -86,7 +86,7 @@ function inputsValidation(inputs){
 
 function deleteOperation(url,confirmMsg='',successMsg=''){
     swal({
-        title: "Are you sure?",
+        title: "Êtes-vous sûr?",
         text: confirmMsg,
         icon: "warning",
         buttons:  ["Annuler", true],
@@ -237,7 +237,7 @@ $('#insert-permission').click(function(e){
         url: url_permissions,
         dataType: 'json',
         success: function () {
-            swalSuccess('','Inserted Successfully');
+            swalSuccess('','Inséré avec succès');
             $('form :input').val('');
             getPermissions();
         },
@@ -274,7 +274,7 @@ $('#insert-role').click(function(e){
             url: url_roles,
             dataType: 'json',
             success: function (data) {
-               swalSuccess('','Role is inserted Successfully');
+               swalSuccess('','Inséré avec succès');
                getRoles();
                $('form input').val('');
             },
@@ -302,7 +302,7 @@ $('form#insert-user-frm').submit(function(e){
         dataType: 'json',
         data: formData,
         success: function (data) {
-            swalSuccess('','User Inserted successfully');
+            swalSuccess('','Inséré avec succès');
             $('form :input').val('');
             getUsers();
         },
@@ -358,7 +358,7 @@ $('body').on('click','.update-permission',function(){
             url: url_permissions+'/'+id,
             dataType: 'json',
             success: function (data) {
-                swalSuccess('','Updated Successfully');
+                swalSuccess('','Mis à jour avec succés');
                 getPermissions();
             },
             error: function (errors) {
@@ -408,7 +408,7 @@ $('body').on('click','.update-role',function(){
                 url: url,
                 dataType: 'json',
                 success: function (data) {
-                    swalSuccess('','role Updated successfully')
+                    swalSuccess('','Mis à jour avec succés')
                     getroles();
                 },
                 error: function (data) {
@@ -449,12 +449,11 @@ $('body').on('click','.update-user',function(){
             url: url,
             dataType: 'json',
             success: function (data) {
-                swalSuccess('','User Updated successfully')
+                swalSuccess('','Mis à jour avec succés')
                 getUsers();
             },
             error: function (data) {
-                console.log(data);
-               // errorMessages(data);
+                errorMessages(data);
             }
         });
     });
@@ -485,7 +484,7 @@ $('body').on('click','.delete-permission',function(){
     var id = $(this).data('id');
     var url = url_permissions+'/'+id;
     var msg = "";
-    deleteOperation(url,'',"Permission is deleted successfully");
+    deleteOperation(url,'',"Supprimé avec succès");
     getPermissions();
     
 });
@@ -500,7 +499,7 @@ $('body').on('click','.delete-role',function(){
     var id = $(this).data('id');
     var url = url_roles+'/'+id;
     var msg = "";
-    deleteOperation(url,'',"Role is deleted successfully");
+    deleteOperation(url,'',"Supprimé avec succès");
     getRoles();
     
 });
@@ -515,7 +514,7 @@ $('body').on('click','.delete-user',function(){
     var id = $(this).data('id');
     var url = url_users+'/'+id;
     var msg = "";
-    deleteOperation(url,'',"User is deleted successfully");
+    deleteOperation(url,'',"Supprimé avec succès");
     getUsers();
 });
 
@@ -534,11 +533,11 @@ $('body').on('click','.info-role',function(){
         url:url,
         success:function(role){
             var row ='<tr>\
-                    <td>Name</td>\
+                    <td>Nom</td>\
                     <td>'+role.name+'</td>\
                 </tr>\
                 <tr>\
-                    <td>Display Name</td>\
+                    <td>Nom d\'affichage</td>\
                     <td>'+role.display_name+'</td>\
                 </tr>\
                 <tr>\
@@ -547,7 +546,7 @@ $('body').on('click','.info-role',function(){
                 </tr>\
                 <tr>\
                     <td>Permissions</td>\
-                    <td><span class="badge badge-pill badge-success">All</span></td>\
+                    <td><span class="badge badge-pill badge-success">###</span></td>\
                 </tr>';
             
             $('#info-role-table tbody').html(row);

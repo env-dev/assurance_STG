@@ -36,7 +36,7 @@ function getAgency(){
 
 function deleteOperation(url,confirmMsg='',successMsg=''){
     swal({
-        title: "Are you sure?",
+        title: "Êtes-vous sûr?",
         text: confirmMsg,
         icon: "warning",
         buttons:  ["Annuler", true],
@@ -150,7 +150,7 @@ $(function(){
             dataType: 'json',
             data: formData,
             success: function (data) {
-                swalSuccess('','Agency Inserted successfully');
+                swalSuccess('','Inséré avec succès');
                 $('form :input').val('');
                 getAgency();
             },
@@ -187,7 +187,7 @@ $(function(){
                         dataType: 'json',
                         data: formData,
                         success: function (data) {
-                            swalSuccess('','Agency Updated successfully');
+                            swalSuccess('','Mis à jour avec succés');
                             getAgency();
                         },
                         error: function(errors){
@@ -208,7 +208,7 @@ $(function(){
         var id = $(this).data('id');
         var url = url_agency+'/'+id;
         var msg = "Once deleted, you will not be able to recover it!";
-        deleteOperation(url,'',"Agency is deleted successfully");
+        deleteOperation(url,'',"Supprimé avec succès");
         getAgency();
     });
 

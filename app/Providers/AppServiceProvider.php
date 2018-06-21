@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Brand;
 use App\BrandModel;
 use App\Role;
+use App\Helpers;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('components.modal', 'modal');
         Blade::component('components.tabs', 'tab');
         Blade::component('components.alert', 'alert');
+
 
         view()->composer('appareil.*', function ($view) {
             $view->withBrands(Brand::all());

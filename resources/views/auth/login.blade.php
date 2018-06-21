@@ -15,11 +15,6 @@
                             <div class="form-group">
                                 <label>Username</label>
                                 <input class="au-input au-input--full" type="text" name="username" placeholder="Username" value="{{ old('username') }}" required>
-                                @if ($errors->has('username'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
                             </div>
                             <div class="form-group">
                                 <label>Password</label>

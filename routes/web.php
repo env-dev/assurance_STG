@@ -17,9 +17,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::group(['middleware' => ['role:admin']], function() {
         
-        Route::get('/appareil', function () {
-            return view('appareil.main');
-        });
+        Route::get('/appareil', 'HomeController@index');
         Route::resource('agency', 'AgenceController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
@@ -43,9 +41,3 @@ Route::get('listing-registrations', 'RegistrationController@listingRegistrations
 Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 
 Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-
-
-

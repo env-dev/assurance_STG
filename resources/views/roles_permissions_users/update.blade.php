@@ -14,7 +14,7 @@
             <input id="role_name_modal" name="role_name_modal" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
         </div>
         <div class="form-group">
-            <label for="role_display_name_modal" class="control-label mb-1">Display Name</label>
+            <label for="role_display_name_modal" class="control-label mb-1">Nom d'affichage</label>
             <input id="role_display_name_modal" name="role_display_name_modal" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
         </div>
         <div class="form-group">
@@ -36,7 +36,7 @@
 @modal(['section' => 'User','title' => 'Modifier Utilisateur'])
 <form action="" method="post" id="update-user-frm">
         <div class="form-group row">
-            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nom') }}</label>
             <div class="col-md-6">
                 <input id="name_modal" type="text" class="form-control" name="name" value="" required autofocus>
             </div>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="form-group row">
-            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse e-mail') }}</label>
             <div class="col-md-6">
                 <input id="email_modal" type="email" class="form-control" name="email" value="" required>
             </div>
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="agence" class="col-md-4 col-form-label text-md-right">{{ __('Agency') }}</label>
+            <label for="agence" class="col-md-4 col-form-label text-md-right">{{ __('Agence') }}</label>
             <div class="col-md-6">
                 <select id="agence_modal" class="form-control" name="agence">
                     <option value="" ></option>

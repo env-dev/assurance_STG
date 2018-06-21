@@ -4,14 +4,14 @@
             <div class="container-fluid">
                 <div class="header-wrap">
                     <form class="form-header" action="" method="POST">
-                        <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                        {{-- <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
                         <button class="au-btn--submit" type="submit">
                             <i class="zmdi zmdi-search"></i>
-                        </button>
+                        </button> --}}
                     </form>
                     <div class="header-button">
                         <div class="noti-wrap">
-                            <div class="noti__item js-item-menu">
+                            {{-- <div class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-comment-more"></i>
                                 <span class="quantity">1</span>
                                 <div class="mess-dropdown js-dropdown">
@@ -81,21 +81,21 @@
                                         <a href="#">See all emails</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-notifications"></i>
                                 <span class="quantity">3</span>
                                 <div class="notifi-dropdown js-dropdown">
                                     <div class="notifi__title">
-                                        <p>You have 3 Notifications</p>
+                                        <p>Vous avez 3 notifications</p>
                                     </div>
                                     <div class="notifi__item">
                                         <div class="bg-c1 img-cir img-40">
                                             <i class="zmdi zmdi-email-open"></i>
                                         </div>
                                         <div class="content">
-                                            <p>You got a email notification</p>
-                                            <span class="date">April 12, 2018 06:50</span>
+                                            <p>Un nouveau inscription</p>
+                                            <span class="date">{{ Date('Y/MM/DM') }}</span>
                                         </div>
                                     </div>
                                     <div class="notifi__item">
@@ -103,8 +103,8 @@
                                             <i class="zmdi zmdi-account-box"></i>
                                         </div>
                                         <div class="content">
-                                            <p>Your account has been blocked</p>
-                                            <span class="date">April 12, 2018 06:50</span>
+                                            <p>Une demande de réparation</p>
+                                            <span class="date">Juillet 12, 2018 06:50</span>
                                         </div>
                                     </div>
                                     <div class="notifi__item">
@@ -112,12 +112,12 @@
                                             <i class="zmdi zmdi-file-text"></i>
                                         </div>
                                         <div class="content">
-                                            <p>You got a new file</p>
-                                            <span class="date">April 12, 2018 06:50</span>
+                                            <p>demdande de consultation</p>
+                                            <span class="date">Juillet 12, 2018 06:50</span>
                                         </div>
                                     </div>
                                     <div class="notifi__footer">
-                                        <a href="#">All notifications</a>
+                                        <a href="#">Tous les notifications</a>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +149,7 @@
                                         onclick="event.preventDefault();
                                                       document.getElementById('logout-form').submit();">
                                         
-                                            <i class="zmdi zmdi-power"></i>{{__('Logout')}}</a>
+                                            <i class="zmdi zmdi-power"></i>{{__('Deconnecté')}}</a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                                 @csrf
                                             </form>

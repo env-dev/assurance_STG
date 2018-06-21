@@ -9,7 +9,7 @@
                         <input id="role_name_add" name="role_name_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
                     </div>
                     <div class="form-group">
-                        <label for="role_display_name_add" class="control-label mb-1">Display Name</label>
+                        <label for="role_display_name_add" class="control-label mb-1">Nom d'affichage</label>
                         <input id="role_display_name_add" name="role_display_name_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
                     </div>
                     <div class="form-group">
@@ -38,9 +38,9 @@
             <table class="table table-borderless table-striped table-earning text-center" id="roles-table" style="width:100%;">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Display Name</th>
-                        <th>actions</th>
+                        <th>Nom</th>
+                        <th>Nom d'affichage</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
