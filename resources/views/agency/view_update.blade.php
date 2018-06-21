@@ -39,7 +39,7 @@
 <!-- End Agency Modal -->
 
 <!-- Agency Info Modal -->
-@modal(['section' => 'AgencyInfo','title' => 'Agence Detail', 'update'=>false])
+@modal(['section' => 'AgencyInfo','title' => 'Detail d\'agence', 'update'=>false])
 <div class="table-responsive table--no-card m-b-30">
     <table style="width:100%" class="table table-borderless table-striped  text-center" id="agency-info-modal">
         <tbody></tbody>

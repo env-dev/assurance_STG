@@ -1,7 +1,5 @@
 @extends('layout.main')
 @section('title','Appareil Information')
-@section('css')
-@endsection
 @section('content')
 <div class="section__content section__content--p30">
     <div class="container-fluid">
@@ -42,7 +40,6 @@
 
     </div>
 </div>
-
 @include('appareil.update_modal')
 @endsection
 @section('js')
