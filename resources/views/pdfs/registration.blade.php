@@ -117,8 +117,8 @@
                                 <th>Numero de mandat</th>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td>{{ $agency->full_name }}</td>
+                                <td>{{ $agency->reference }}</td>
                                 <td>{{ $registration->mandat_num }}</td>
                             </tr>
                         </table>

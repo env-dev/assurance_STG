@@ -11,6 +11,7 @@ use Yajra\Datatables\Datatables;
 use App\Registration;
 use App\Smartphone;
 use App\Client;
+use App\Agence;
 use Auth;
 
 class RegistrationController extends Controller
@@ -48,6 +49,7 @@ class RegistrationController extends Controller
             'first_name'  => 'required|min:3',
             'birth_date'  => 'required',
             'city' => 'required',
+            'agency' => 'required',
             'nature' => 'required',
             'num_id' => 'required',
             'imei' => 'required',
@@ -69,7 +71,7 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        $client->save();
+        // $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $smartphone->model->brand;
@@ -83,9 +85,11 @@ class RegistrationController extends Controller
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
 
-        $registration->save();
+        // $registration->save();
+        $agency = Agence::where('full_name', request('agency'))->first();
+
         $pdf = new PDFClass;
-        return $pdf->downloadPDF($client, $registration, $smartphone);
+        return $pdf->downloadPDF($client, $registration, $smartphone, $agency);
     }
 
     /**
@@ -98,14 +102,21 @@ class RegistrationController extends Controller
     {
         $registration = Registration::with('smartphone.model.brand')
         ->where('id', $id)
-        ->where('new', 1)
         ->first();
-        if(Auth::User()->hasRole('aon'))
+        if($registration->new == 1 && Auth::User()->hasRole('aon'))
         {
             $registration->new = 0;
             $registration->save();
         }
         return view('inscription.edit-registration')->with(['registration' => $registration]);
+    }
+
+    public function getRegistration($id)
+    {
+        $registration = Registration::with('smartphone.model.brand')
+        ->where('id', $id)
+        ->first();
+        return response()->json($registration);
     }
 
     /**
@@ -149,19 +160,41 @@ class RegistrationController extends Controller
         // $new_memberships = $new_memberships->map(function ($item, $key) {
         //    return $item->smartphone;
         // });
-        $registrations = Registration::orderBy('data_flow', 'desc')->get();
+        $registrations = Registration::with('smartphone.model.brand')
+        ->orderBy('data_flow', 'desc')
+        ->get();
         $new_registrations = Registration::status(new RegistrationStatus('newAdded'))->count();
         // dd(Datatables::of($registrations)->make(true));
         if($request->ajax()) {
             return Datatables::of($registrations)
             ->addIndexColumn()
             ->addColumn('edit', function ($registrations) {
-                return '
-                <a class="item btn btn-info" href="/registration/'.$registrations->id.'" title="Edit">
+                $link = '
+                <a class="item btn btn-info" href="/registration/'.$registrations->id.'" title="Consulter">
                     <i class="zmdi zmdi-eye"></i>
                 </a>';
+                if ($registrations->isValidRegistration() && $registrations->guarantee < 111) {
+                    $link .= 
+                    '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
+                        <i class="zmdi zmdi-plus-circle"></i>
+                    </button>';
+                }
+                return $link;
             })
-            ->rawColumns(['edit'])
+            ->addColumn('validity', function ($registrations) {
+                if($registrations->isValidRegistration())
+                {
+                    return '
+                    <span class="item btn btn-success">
+                        <i class="zmdi zmdi-check-all"></i>
+                    </span>';
+                }
+                return '
+                    <span class="item btn btn-danger">
+                        <i class="zmdi zmdi-close-circle-o"></i>
+                    </span>';
+            })
+            ->rawColumns(['edit', 'validity'])
             ->editColumn('new', function($registrations){
                 return ($registrations->new ? 'Nouveau' : 'Vu');
             })
