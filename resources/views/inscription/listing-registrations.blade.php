@@ -14,7 +14,7 @@
     @endif
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">
-        <table class="table table-borderless table-data3" id="registration-list">
+        <table class="table table-borderless table-data3 text-center" id="registration-list">
             <thead>
                 <tr>
                     <th>Réf mandat</th>

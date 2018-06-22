@@ -185,18 +185,18 @@ class RegistrationController extends Controller
                 if($registrations->isValidRegistration())
                 {
                     return '
-                    <span class="item btn btn-success">
+                    <span class="item btn btn-success" title="Valide">
                         <i class="zmdi zmdi-check-all"></i>
                     </span>';
                 }
                 return '
-                    <span class="item btn btn-danger">
+                    <span class="item btn btn-danger" title="Invalide">
                         <i class="zmdi zmdi-close-circle-o"></i>
                     </span>';
             })
-            ->rawColumns(['edit', 'validity'])
+            ->rawColumns(['edit', 'validity', 'new'])
             ->editColumn('new', function($registrations){
-                return ($registrations->new ? 'Nouveau' : 'Vu');
+                return ($registrations->new ? '<h4><span class="badge badge-success">Nouveau</span></h4>' : '<h4><span class="badge badge-secondary">Vu</span></h4>');
             })
             ->make(true);
         }
