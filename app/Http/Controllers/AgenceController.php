@@ -91,4 +91,10 @@ class AgenceController extends Controller
     {
         return response()->json(Agence::destroy($id));
     }
+
+    public function getAgencies()
+    {
+        $agencies = Agence::all();
+        return response()->json($agencies);
+    }
 }

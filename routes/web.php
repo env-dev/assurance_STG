@@ -56,6 +56,7 @@ Route::resource('agency', 'AgenceController');
 Route::get('/appareil', function () {
     return view('appareil.main');
 });
+Route::resource('avenants','AvenantController');
 Route::resource('users', 'UserController');
 Route::resource('roles', 'RoleController');
 Route::resource('permissions','PermissionController');
@@ -72,8 +73,10 @@ Route::group(['middleware' => ['role:admin']], function() {
 
 
 Route::get('/get_imei', 'RegistrationController@get_imei');
+Route::get('/getAgencies', 'AgenceController@getAgencies');
 Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
 Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
+Route::get('/getRegistration/{id}', 'RegistrationController@getRegistration');
 
 
 Route::resource('registration', 'RegistrationController');

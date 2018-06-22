@@ -16,18 +16,21 @@ class CreateRegistrationsTable extends Migration
         Schema::create('registrations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('mandat_num');
-            $table->string('guarantee');
+            $table->integer('guarantee');
             $table->date('data_flow');
             $table->decimal('total_ttc', 6, 2);
             $table->boolean('new')->default(1);
             $table->integer('smartphone_id')->unsigned();
             $table->integer('client_id')->unsigned();
+            $table->integer('agency_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('smartphone_id')
                     ->references('id')->on('smartphones');
             $table->foreign('client_id')
                     ->references('id')->on('clients');
+            $table->foreign('agency_id')
+                    ->references('id')->on('agences');
             
             $table->softDeletes();
             

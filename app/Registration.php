@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use \Makeable\EloquentStatus\HasStatus;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use \Carbon\Carbon;
 class Registration extends Model
 {
     use SoftDeletes, HasStatus;
@@ -20,5 +21,19 @@ class Registration extends Model
     public function client()
     {
         return $this->hasOne(Client::class, 'client_id');
+    }
+
+    public function isValidRegistration()
+    {
+        if($this->data_flow->diffInYears(Carbon::now()) < 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function avenant()
+    {
+        return $this->hasMany(Avenant::class);
     }
 }
