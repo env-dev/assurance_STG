@@ -12,10 +12,10 @@
 */
 
 Route::group(['middleware' => ['auth']], function() {
-    Route::get('/', 'DashboardController');
     
 
     Route::group(['middleware' => ['role:admin']], function() {
+        Route::get('/', 'DashboardController');
         
         Route::get('/appareil', 'HomeController@index');
         Route::resource('agency', 'AgenceController');
@@ -28,16 +28,17 @@ Route::group(['middleware' => ['auth']], function() {
         Route::resource('agences','AgenceController');
         Route::resource('cities','CityController');
     });
+
+    Route::get('/get_imei', 'RegistrationController@get_imei');
+    Route::get('/getAgencies', 'AgenceController@getAgencies');
+    Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
+    Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
+    Route::get('/getRegistration/{id}', 'RegistrationController@getRegistration');
+
+
+    Route::resource('registration', 'RegistrationController');
+    Route::get('listing-registrations', 'RegistrationController@listingRegistrations');
+    Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 });
-
-
-Route::get('/get_imei', 'RegistrationController@get_imei');
-Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
-Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
-
-
-Route::resource('registration', 'RegistrationController');
-Route::get('listing-registrations', 'RegistrationController@listingRegistrations');
-Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 
 Auth::routes();
