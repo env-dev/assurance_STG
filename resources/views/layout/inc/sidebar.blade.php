@@ -18,21 +18,29 @@
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
                 <li>
-                    <a href="{{ url('/') }}"><i class="fas fa-chart-bar"></i>Dashboard</a>
+                    <a href="{{ url('/') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
                 @role(['admin','agence'])
                 <li>
-                    <a href="{{ url('registration') }}"><i class="fas fa-chart-bar"></i>Inscription</a>
+                    <a href="{{ url('registration') }}"><i class="fas fa-address-book"></i>Inscription</a>
                 </li>
+                @endrole
+                @role(['admin','aon'])
                 <li>
-                    <a href="{{ url('listing-registrations') }}"><i class="fas fa-chart-bar"></i>Liste des souscriptions</a>
+                    <a href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste des souscriptions</a>
                 </li>
                 @endrole
                 @role('admin')
                 <li class="active">
-                    <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Permissions</a>
+                    <a  href="{{ url('appareil') }}"><i class="fas fa-mobile-alt"></i>Gestion des Appareils</a>
                 </li>
-                    @endrole
+                <li class="active">
+                    <a  href="{{ url('users') }}"><i class="fas fa-users"></i>Gestion Utilisateur</a>
+                </li>
+                <li class="active">
+                    <a  href="{{ url('agency') }}"><i class="fas fa-store-alt"></i>Agences</a>
+                </li>
+                @endrole
             </ul>
         </div>
     </nav>
@@ -49,20 +57,28 @@
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
-                <li>
-                    <a href="{{ url('/') }}"><i class="fas fa-chart-bar"></i>Dashboard</a>
+                <li class="{{ Request::is('/') ? 'active' : '' }}">
+                    <a href="{{ url('/') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
                 @role(['admin','agence'])
-                <li>
-                    <a href="{{ url('registration') }}"><i class="fas fa-chart-bar"></i>Inscription</a>
+                <li class="{{ Request::is('registration*') ? 'active' : '' }}">
+                    <a href="{{ url('registration') }}"><i class="fas fa-address-book"></i>Inscription</a>
                 </li>
-                <li>
-                    <a href="{{ url('listing-registrations') }}"><i class="fas fa-chart-bar"></i>Liste des souscriptions</a>
+                @endrole
+                @role(['admin','aon'])
+                <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
+                    <a  href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste des souscriptions</a>
                 </li>
                 @endrole
                 @role('admin')
-                <li class="active">
-                    <a  href="{{ url('users') }}"><i class="fas fa-tachometer-alt"></i>Permissions</a>
+                <li class="{{ Request::is('appareil*') ? 'active' : '' }}">
+                    <a  href="{{ url('appareil') }}"><i class="fas fa-mobile-alt"></i>Gestion des Appareils</a>
+                </li>
+                <li class="{{ Request::is('users*') ? 'active' : '' }}">
+                    <a  href="{{ url('users') }}"><i class="fas fa-users"></i>Gestion Utilisateur</a>
+                </li>
+                <li class="{{ Request::is('agency*') ? 'active' : '' }}">
+                    <a  href="{{ url('agency') }}"><i class="fas fa-store-alt"></i>Agences</a>
                 </li>
                 @endrole
             </ul>

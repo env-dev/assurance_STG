@@ -11,19 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-    // $owner = new App\Role();
-    // $owner->name         = 'owner';
-    // $owner->display_name = 'Project Owner'; // optional
-    // $owner->description  = 'User is the owner of a given project'; // optional
-    // $owner->save();
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/', 'DashboardController');
     
-    // $admin = new App\Role();
-    // $admin->name         = 'admin';
-    // $admin->display_name = 'User Administrator'; // optional
-    // $admin->description  = 'User is allowed to manage and edit other users'; // optional
-    // $admin->save();
 
     // $user = App\User::where('username', '=', 'adam')->first();
     // $user->attachRole($admin);
@@ -68,8 +58,20 @@ Route::resource('cities','CityController');
 Route::group(['middleware' => ['role:admin']], function() {
     
     
+    Route::group(['middleware' => ['role:admin']], function() {
+        
+        Route::get('/appareil', 'HomeController@index');
+        Route::resource('agency', 'AgenceController');
+        Route::resource('users', 'UserController');
+        Route::resource('roles', 'RoleController');
+        Route::resource('permissions','PermissionController');
+        Route::resource('brands','BrandController');
+        Route::resource('models','ModelController');
+        Route::resource('smartphones','SmartphoneController');
+        Route::resource('agences','AgenceController');
+        Route::resource('cities','CityController');
+    });
 });
-
 
 
 Route::get('/get_imei', 'RegistrationController@get_imei');
@@ -84,9 +86,3 @@ Route::get('listing-registrations', 'RegistrationController@listingRegistrations
 Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 
 Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-
-
-

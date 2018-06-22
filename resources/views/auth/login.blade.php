@@ -21,10 +21,10 @@
                                 <input class="au-input au-input--full" type="password" name="password" placeholder="*********" required>
                             </div>
                             <div class="login-checkbox">
-                                <label>
+                                <!--<label>
                                     <input type="checkbox" name="remember">Remember Me
                                 </label>
-                                <!--<label>
+                                <label>
                                     <a href="#">Forgotten Password?</a>
                                 </label>-->
                             </div>

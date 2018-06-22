@@ -1,8 +1,5 @@
 @extends('layout.main')
-@section('title','Appareil Information')
-@section('css')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-@endsection
+@section('title','Agence')
 @section('content')
 <div class="section__content section__content--p30">
     <div class="container-fluid">
@@ -91,6 +88,5 @@
 @include('agency.view_update')
 @endsection
 @section('js')
-<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('js/agency.js') }}"></script>
 @endsection

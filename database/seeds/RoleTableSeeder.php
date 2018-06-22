@@ -16,5 +16,17 @@ class RoleTableSeeder extends Seeder
             'display_name' => 'Admin',
             'description' => 'Administrateur'
         ]);
+
+        App\Role::create([
+            'name' => 'agence',
+            'display_name' => 'Agence',
+            'description' => 'Agence'
+        ]);
+
+        App\Role::create([
+            'name' => 'aon',
+            'display_name' => 'AON',
+            'description' => 'Aon'
+        ]);
     }
 }

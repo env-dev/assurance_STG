@@ -73,7 +73,7 @@ function getBrands(){
 
 function deleteOperation(url,confirmMsg='',successMsg=''){
     swal({
-        title: "Are you sure?",
+        title: "Êtes-vous sûr?",
         text: confirmMsg,
         icon: "warning",
         buttons:  ["Annuler", true],
@@ -118,7 +118,7 @@ function errorMessages(data){
     $.each(data.responseJSON.errors, function(i,error){
         errors+= i + ": " + error[0] + "\n";
     });
-    swalError("Invalid Data",errors + "\n ------- \n" + data.responseJSON.message);
+    swalError("Données invalides",errors + "\n ------- \n" + data.responseJSON.message);
 }
 
 function inputValidate(input,type)
@@ -198,7 +198,7 @@ $('#insert-marque').click(function(e){
         url: url_brands,
         dataType: 'json',
         success: function (data) {
-            swalSuccess('','Inserted Successfully');
+            swalSuccess('','Inséré avec succès');
             $('form :input').val('');
             getBrands();
         },
@@ -235,7 +235,7 @@ $('#insert-model').click(function(e){
             url: url_models,
             dataType: 'json',
             success: function (data) {
-               swalSuccess('','Model is inserted Successfully');
+               swalSuccess('','Model est Inséré avec succès');
                getModels();
                $('form :input').val('');
             },
@@ -271,7 +271,7 @@ $('#insert-appareil').click(function(e){
         url: url_smartphones,
         dataType: 'json',
         success: function (data) {
-            swalSuccess('','Smartphone is inserted Successfully');
+            swalSuccess('','Smartphone Inséré avec succès');
                getSmartphones();
                $('input').val('');
         },
@@ -327,7 +327,7 @@ $('body').on('click','.update-marque',function(){
             url: url_brands+'/'+id,
             dataType: 'json',
             success: function (data) {
-                swalSuccess('','Updated Successfully');
+                swalSuccess('','Mis à jour avec succés');
                 getBrands();
             },
             error: function (data) {
@@ -379,7 +379,7 @@ $('body').on('click','.update-model',function(){
                 url: url_models+'/'+id,
                 dataType: 'json',
                 success: function (data) {
-                    swalSuccess('','Model Updated successfully')
+                    swalSuccess('','Mis à jour avec succés')
                     getModels();
                 },
                 error: function (data) {
@@ -420,7 +420,7 @@ $('body').on('click','.update-appareil',function(){
             url: url_smartphones+'/'+id,
             dataType: 'json',
             success: function (data) {
-                swalSuccess('','Smartphone Updated successfully')
+                swalSuccess('','Mis à jour avec succés')
                 getSmartphones();
             },
             error: function (data) {
@@ -455,7 +455,7 @@ $('body').on('click','.delete-marque',function(){
     var id = $(this).data('id');
     var url = url_brands+'/'+id;
     var msg = "Once deleted, you will remove all Phones are related to this brand!";
-    deleteOperation(url,'',"Brand is deleted successfully");
+    deleteOperation(url,'',"Brand est Supprimé avec succès");
     getBrands();
     
 });
@@ -470,7 +470,7 @@ $('body').on('click','.delete-model',function(){
     var id = $(this).data('id');
     var url = url_models+'/'+id;
     var msg = "Once deleted, you will remove all Phones are related to this brand!";
-    deleteOperation(url,'',"Model is deleted successfully");
+    deleteOperation(url,'',"Model est Supprimé avec succès");
     getModels();
     
 });
@@ -485,7 +485,7 @@ $('body').on('click','.delete-appareil',function(){
     var id = $(this).data('id');
     var url = url_smartphones+'/'+id;
     var msg = "Once deleted, you will not be able to recover it!";
-    deleteOperation(url,'',"Smartphone is deleted successfully");
+    deleteOperation(url,'',"Smartphone est Supprimé avec succès");
     getSmartphones();
     
 });
