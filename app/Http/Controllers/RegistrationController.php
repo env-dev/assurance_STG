@@ -71,7 +71,7 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        // $client->save();
+        $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $smartphone->model->brand;
@@ -85,7 +85,7 @@ class RegistrationController extends Controller
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
 
-        // $registration->save();
+        $registration->save();
         $agency = Agence::where('full_name', request('agency'))->first();
 
         $pdf = new PDFClass;
