@@ -84,10 +84,10 @@
                             </div> --}}
                             <div class="noti__item js-item-menu">
                                 <i class="zmdi zmdi-notifications"></i>
-                                <span class="quantity">3</span>
+                                <span class="quantity">{{ Auth::user()->getNotifications() }}</span>
                                 <div class="notifi-dropdown js-dropdown">
                                     <div class="notifi__title">
-                                        <p>Vous avez 3 notifications</p>
+                                        <p>Vous avez {{ Auth::user()->getNotifications() }} notifications</p>
                                     </div>
                                     <div class="notifi__item">
                                         <div class="bg-c1 img-cir img-40">
@@ -117,7 +117,7 @@
                                         </div>
                                     </div>
                                     <div class="notifi__footer">
-                                        <a href="#">Tous les notifications</a>
+                                        <a href="{{ url('listing-registrations')}}">Tous les notifications</a>
                                     </div>
                                 </div>
                             </div>

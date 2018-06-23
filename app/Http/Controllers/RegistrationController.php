@@ -71,11 +71,12 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        $client->save();
+        // $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $smartphone->model->brand;
         
+        $agency = Agence::where('full_name', request('agency'))->first();
         $registration = new Registration;
 
         $registration->mandat_num = str_random(10);
@@ -84,9 +85,9 @@ class RegistrationController extends Controller
         $registration->total_ttc = intval(request('total_ttc'));
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
+        $registration->agency_id = $agency->id;
 
-        $registration->save();
-        $agency = Agence::where('full_name', request('agency'))->first();
+        // $registration->save();
 
         $pdf = new PDFClass;
         return $pdf->downloadPDF($client, $registration, $smartphone, $agency);
@@ -113,7 +114,7 @@ class RegistrationController extends Controller
 
     public function getRegistration($id)
     {
-        $registration = Registration::with('smartphone.model.brand')
+        $registration = Registration::with(['smartphone.model.brand', 'client'])
         ->where('id', $id)
         ->first();
         return response()->json($registration);
@@ -169,10 +170,14 @@ class RegistrationController extends Controller
             return Datatables::of($registrations)
             ->addIndexColumn()
             ->addColumn('edit', function ($registrations) {
+                // $link = '
+                // <a class="item btn btn-info" href="/registration/'.$registrations->id.'" title="Consulter">
+                //     <i class="zmdi zmdi-eye"></i>
+                // </a>';
                 $link = '
-                <a class="item btn btn-info" href="/registration/'.$registrations->id.'" title="Consulter">
+                <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg">
                     <i class="zmdi zmdi-eye"></i>
-                </a>';
+                </button>';
                 if ($registrations->isValidRegistration() && $registrations->guarantee < 111) {
                     $link .= 
                     '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">

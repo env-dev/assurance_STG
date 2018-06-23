@@ -11,6 +11,9 @@
 @section('title','Inscription')
 
 @section('content')
+<div class="col-4 offset-md-4 mb-3">
+    <h2>Ajouter une souscription</h2>
+</div>
 <div class="row">
     <div class="col-10 offset-md-1">
         <div class="card">

@@ -60,14 +60,14 @@
                 <li class="{{ Request::is('/') ? 'active' : '' }}">
                     <a href="{{ url('/') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
-                @role(['admin','agence'])
+                <!-- @role(['admin','agence'])
                 <li class="{{ Request::is('registration*') ? 'active' : '' }}">
                     <a href="{{ url('registration') }}"><i class="fas fa-address-book"></i>Inscription</a>
                 </li>
-                @endrole
+                @endrole -->
                 @role(['admin','aon'])
                 <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
-                    <a  href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste des souscriptions</a>
+                    <a  href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Les souscriptions</a>
                 </li>
                 @endrole
                 @role('admin')

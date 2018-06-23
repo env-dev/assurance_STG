@@ -20,12 +20,12 @@ class Registration extends Model
 
     public function client()
     {
-        return $this->hasOne(Client::class, 'client_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function isValidRegistration()
     {
-        if($this->data_flow->diffInYears(Carbon::now()) < 1)
+        if($this->data_flow->diffInDays(Carbon::now()) <= 5)
         {
             return true;
         }

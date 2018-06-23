@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use App\Helpers\RegistrationStatus;
+use App\Registration;
 use App\Agence;
 class User extends Authenticatable
 {
@@ -32,6 +34,10 @@ class User extends Authenticatable
 
     public function agence(){
         return $this->belongsTo(Agence::class);
+    }
+    public function getNotifications()
+    {
+        return Registration::status(new RegistrationStatus('newAdded'))->count();
     }
 
 }
