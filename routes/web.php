@@ -33,8 +33,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
     Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
     Route::get('/getRegistration/{id}', 'RegistrationController@getRegistration');
+    Route::get('/check-status/{id}', 'RegistrationController@checkStatus');
 
     Route::resource('registration', 'RegistrationController');
+    Route::resource('avenants', 'AvenantController');
     Route::get('listing-registrations', 'RegistrationController@listingRegistrations');
     Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 });

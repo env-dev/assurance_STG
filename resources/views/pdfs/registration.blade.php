@@ -176,7 +176,7 @@
                             </tr>
                             <tr>
                                 <td><strong>{{ $registration->data_flow->format('d/m/Y') }}</strong></td>
-                                <td><strong>{{ $registration->data_flow->addYear()->format('d/m/Y') }}</strong></td>
+                                <td><strong>{{ $registration->data_flow->addDays(5)->format('d/m/Y') }}</strong></td>
                                 <td><strong> {{ $registration->total_ttc }} </strong></td>
                             </tr>
                         </table>

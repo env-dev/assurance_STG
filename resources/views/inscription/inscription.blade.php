@@ -45,7 +45,7 @@
                         <label for="text-input" class=" form-control-label">Agence</label>
                     </div>
                     <div class="col-12 col-md-9">
-                    <input type="text" name="agency" id="agency" class="form-control" required>
+                    <input type="text" name="agency" id="" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
                     </div>
                 </div>
                 <div class="row form-group">

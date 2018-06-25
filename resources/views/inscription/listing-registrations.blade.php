@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="confirmRegistration" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-primary" id="consulted_reg" data-id="0" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -159,6 +159,35 @@
 @section('js')
 <script>
     $(document).ready(function() {
+        var registrations_list = null;
+
+        function initDataTable() {
+            registrations_list = $("#registration-list").DataTable({
+                processing: true,
+                serverSide: true,
+                initComplete: function( settings, json ) {
+                    getAvenant();
+                    getRegistration();
+                },
+                language: {
+                    url: "{{ asset('/js/lang/dataTables.french.json') }}"
+                },
+                ajax: "/getRegistrations",
+                columns: [
+                    { data: "mandat_num", name: "mandat_num", orderable: false, searchable: true },
+                    { data: "data_flow",name: "data_flow" },
+                    { data: "created_at", name: "created_at" },
+                    { data: "validity", name: "validity", orderable: true, searchable: false },
+                    { data: "new", name: "new" },
+                    { data: "edit", name: "edit", orderable: false, searchable: true },
+                ]
+            });
+        }
+
+        function refreshDataTable() {
+            registrations_list.destroy();
+            initDataTable();
+        }
 
         function getAvenant() 
         {
@@ -175,8 +204,14 @@
                             $("#extensions").html();
                             var extensions = '<option value="0">----</option>';
                             if (registration.guarantee == 100){
-                                extensions += '<option value="110">F2</option>';
-                                extensions += '<option value="111">F3</option>';
+                                if(registration.avenant.length && registration.avenant[0].extension_added == 110) {
+                                    extensions += '<option value="111">F3</option>';
+                                }else if(registration.avenant.length && registration.avenant[0].extension_added == 111) {
+                                    extensions += 'Pas de guarantie';
+                                }else {
+                                    extensions += '<option value="110">F2</option>';
+                                    extensions += '<option value="111">F3</option>';
+                                }
                             }else if (registration.guarantee == 110){
                                 extensions += '<option value="111">F3</option>';
                             }              
@@ -221,31 +256,13 @@
                         $("#data_flow_date").text(data_flow[0]);
                         // $("#agency_reg").text(agency);
                         $("#total_price_reg").text(data.total_ttc);
+                        $("#consulted_reg").attr('data-id', ID);
                     }
                 });
             });
         }
 
-        $("#registration-list").DataTable({
-            processing: true,
-            serverSide: true,
-            initComplete: function( settings, json ) {
-                getAvenant();
-                getRegistration();
-            },
-            language: {
-                url: "{{ asset('/js/lang/dataTables.french.json') }}"
-            },
-            ajax: "/getRegistrations",
-            columns: [
-                { data: "mandat_num", name: "mandat_num", orderable: false, searchable: true },
-                { data: "data_flow",name: "data_flow" },
-                { data: "created_at", name: "created_at" },
-                { data: "validity", name: "validity", orderable: true, searchable: false },
-                { data: "new", name: "new" },
-                { data: "edit", name: "edit", orderable: false, searchable: true },
-            ]
-        });
+        initDataTable();
 
         $('#extensions').on('change', function(){
             var extension = $(this).val();
@@ -274,6 +291,7 @@
                             text: response.message,
                             icon: "success",
                         })
+                        refreshDataTable();
                     }else{
                         swal({
                             title: "Echec d'update",
@@ -281,6 +299,17 @@
                             icon: "error",
                         })
                     }
+                }
+            });
+        });
+
+        $("#consulted_reg").on("click", function(e) {
+            var ID = $(this).attr('data-id');
+            $.ajax({
+                type: 'GET',
+                url: '/check-status/'+ID,
+                success: function() {
+                    refreshDataTable();
                 }
             });
         });
