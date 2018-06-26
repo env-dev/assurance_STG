@@ -9,6 +9,8 @@ use App\Brand;
 use App\BrandModel;
 use App\Role;
 use App\Helpers;
+use App\Registration;
+use Auth;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         });
         view()->composer('*', function ($view) {
             $view->withRoles(Role::all());
+            $view->with('countNotifications',Auth::check() ? Auth::user()->unreadNotifications->count(): 0);
+            $view->with('countRegistrations',Auth::check() ? Auth::user()->unreadNotifications->where('data.type','registration')->count()  : 0);
+            $view->with('countSinisters',Auth::check() ? Auth::user()->unreadNotifications->where('data.type','sinister')->count()  : 0);
+
         });
     }
 
