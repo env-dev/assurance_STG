@@ -21,6 +21,7 @@ class CreateAvenantTable extends Migration
             $table->decimal('add_premium', 6, 2);
             $table->integer('registration_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('registration_id')
                     ->references('id')->on('registrations');
         });

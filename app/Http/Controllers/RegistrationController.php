@@ -12,6 +12,7 @@ use App\Registration;
 use App\Smartphone;
 use App\Client;
 use App\Agence;
+use App\Avenant;
 use Auth;
 
 class RegistrationController extends Controller
@@ -71,9 +72,10 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        // $client->save();
+        $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
+        $price_smartphone = $smartphone->model->price_ttc;
         $smartphone->model->brand;
         
         $agency = Agence::where('full_name', request('agency'))->first();
@@ -82,12 +84,18 @@ class RegistrationController extends Controller
         $registration->mandat_num = str_random(10);
         $registration->data_flow = request('date_flow_data');
         $registration->guarantee = request('guarantee');
-        $registration->total_ttc = intval(request('total_ttc'));
+        $total_ttc = null;
+        if(request('guarantee') == '110'){
+            $total_ttc = $price_smartphone + ($price_smartphone * 10)/100;
+        }else if(request('guarantee') == '111'){
+            $total_ttc = $price_smartphone + ($price_smartphone * 20)/100;
+        }
+        $registration->total_ttc = $total_ttc;
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
-        $registration->agency_id = $agency->id;
+        $registration->agency_id = Auth::user()->agence->id;
 
-        // $registration->save();
+        $registration->save();
 
         $pdf = new PDFClass;
         return $pdf->downloadPDF($client, $registration, $smartphone, $agency);
@@ -115,6 +123,9 @@ class RegistrationController extends Controller
     public function getRegistration($id)
     {
         $registration = Registration::with(['smartphone.model.brand', 'client'])
+        ->with(['avenant' => function($query) use($id) {
+            $query->where('registration_id', $id)->latest('created_at')->first();
+        }])
         ->where('id', $id)
         ->first();
         return response()->json($registration);
@@ -170,19 +181,25 @@ class RegistrationController extends Controller
             return Datatables::of($registrations)
             ->addIndexColumn()
             ->addColumn('edit', function ($registrations) {
-                // $link = '
-                // <a class="item btn btn-info" href="/registration/'.$registrations->id.'" title="Consulter">
-                //     <i class="zmdi zmdi-eye"></i>
-                // </a>';
+                $avenant = Avenant::where('registration_id', $registrations->id)->latest('created_at')->first();
                 $link = '
                 <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg">
                     <i class="zmdi zmdi-eye"></i>
                 </button>';
-                if ($registrations->isValidRegistration() && $registrations->guarantee < 111) {
-                    $link .= 
-                    '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
-                        <i class="zmdi zmdi-plus-circle"></i>
-                    </button>';
+                if ($registrations->isValidRegistration() && ($registrations->guarantee < 111)) {
+                    if ($avenant) {
+                        if ($avenant->extension_added < 111) {
+                            $link .= 
+                            '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
+                                <i class="zmdi zmdi-plus-circle"></i>
+                            </button>';
+                        }
+                    }else {
+                        $link .= 
+                            '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
+                                <i class="zmdi zmdi-plus-circle"></i>
+                            </button>';
+                    }
                 }
                 return $link;
             })
@@ -226,5 +243,16 @@ class RegistrationController extends Controller
         $smartphone = Smartphone::where('imei', $imei)->first();
         $smartphone->model->brand;
         return response()->json($smartphone);
+    }
+
+    public function checkStatus($id) 
+    {
+        $registration = Registration::where('id', $id)->first();
+        if($registration && Auth::User()->hasRole('admin'))
+        {
+            $registration->new = 0;
+            $registration->save();
+            // return response()->json(['msg' => 'Cette souscription est consédérer comme vu.']);
+        }
     }
 }
