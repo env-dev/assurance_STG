@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Smartphone;
 use Yajra\Datatables\Datatables;
-use Excel;
-use File;
-use DB;
-use App\Helpers\SimpleXLSX;
+use App\Smartphone;
 use App\BrandModel;
+use App\Helpers\SimpleXLSX;
+use File;
 class SmartphoneController extends Controller
 {
 
@@ -108,58 +106,56 @@ class SmartphoneController extends Controller
     }
 
     public function import(Request $request){
-        //validate the xls file
-        $this->validate($request, array(
-            'smart_file'      => 'required'
-        ));
-        
-        if($request->hasFile('smart_file')){
-            $file = $request->file('smart_file');
-            $extension = File::extension($file->getClientOriginalName());
-            if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
- 
-                $path = $file->getRealPath();
-                $xlsx = new SimpleXLSX($path);
-
-                if ($xlsx->success()) {
-                    foreach ( array_slice($xlsx->rows(),1) as $ex_model) {
-                        $modelName  = $ex_model[0]; // Model's Name
-                        $modelImei1 = $ex_model[2]; // Model's IMEI
-                        $modelImei2 = $ex_model[3]; // Model's IMEI2
-                        $modelSN    = $ex_model[4]; // Model's SN
-                        $modelWifi  = $ex_model[5]; // Model's Wifi
-
-                        $model = BrandModel::where('name',$modelName)->first();
-                        if($model){
-                            $insert[] = [
-                            'brand_model_id' => $model->id,
-                            'imei' => $modelImei1,
-                            'imei2' => $modelImei2,
-                            'sn' => $modelSN,
-                            'wifi' => $modelWifi,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                            ];
+        if($request->ajax()){
+            if($request->hasFile('smart_file')){
+                $file = $request->file('smart_file');
+                $extension = File::extension($file->getClientOriginalName());
+                if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
+     
+                    $path = $file->getRealPath();
+                    $xlsx = new SimpleXLSX($path);
+    
+                    if ($xlsx->success()) {
+                        foreach ( array_slice($xlsx->rows(),1) as $ex_model) {
+                            $modelName  = $ex_model[0]; // Model's Name
+                            $modelImei1 = $ex_model[2]; // Model's IMEI
+                            $modelImei2 = $ex_model[3]; // Model's IMEI2
+                            $modelSN    = $ex_model[4]; // Model's SN
+                            $modelWifi  = $ex_model[5]; // Model's Wifi
+    
+                            $model = BrandModel::where('name',$modelName)->first();
+                            if($model){
+                                $insert[] = [
+                                'brand_model_id' => $model->id,
+                                'imei' => $modelImei1,
+                                'imei2' => $modelImei2,
+                                'sn' => $modelSN,
+                                'wifi' => $modelWifi,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                                ];
+                            }
                         }
+                        if(!empty($insert)){
+                            $insertData = Smartphone::insert($insert);
+                            if($insertData)
+                                // return redirect()->back()->with('feedback', "The data is inserted successfully");  
+                                return response()->json("The data is inserted successfully");  
+                            else
+                                // return redirect()->back()->with('feedback', "An error occured while inserting the data");  
+                                return response()->json("An error occured while inserting the data");  
+                        }
+                    } else {
+                        // return redirect()->back()->with('feedback', $xlsx->error());
+                        return response()->json($xlsx->error());
                     }
-                    if(!empty($insert)){
-                        $insertData = Smartphone::insert($insert);
-                        if($insertData)
-                            // return redirect()->back()->with('feedback', "The data is inserted successfully");  
-                            return response()->json("The data is inserted successfully");  
-                        else
-                            // return redirect()->back()->with('feedback', "An error occured while inserting the data");  
-                            return response()->json("An error occured while inserting the data");  
-                    }
-                } else {
-                    // return redirect()->back()->with('feedback', $xlsx->error());
-                    return response()->json($xlsx->error());
                 }
+                // return redirect()->back()->with('feedback', "File is a {$extension} file.!! Please upload a valid xls/csv file..!!");
+                return response()->json("File is a {$extension} file.!! Please upload a valid xls/csv file..!!");
             }
-            // return redirect()->back()->with('feedback', "File is a {$extension} file.!! Please upload a valid xls/csv file..!!");
-            return response()->json("File is a {$extension} file.!! Please upload a valid xls/csv file..!!");
+            // return redirect()->back()->with('feedback', "No File is uploaded");
+            return response()->json("No File is uploaded");
         }
-        // return redirect()->back()->with('feedback', "No File is uploaded");
-        return response()->json("No File is uploaded");
+        
     }
 }
