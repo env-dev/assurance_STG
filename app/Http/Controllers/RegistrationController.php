@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 use App\Helpers\PDFClass;
+use App\Helpers\ExcelDoc;
 use App\Helpers\RegistrationStatus;
 use Yajra\Datatables\Datatables;
 use App\Registration;
@@ -13,7 +14,9 @@ use App\Smartphone;
 use App\Client;
 use App\Agence;
 use App\Avenant;
+use Carbon\Carbon;
 use Auth;
+use Excel;
 
 class RegistrationController extends Controller
 {
@@ -84,7 +87,7 @@ class RegistrationController extends Controller
         $registration->mandat_num = str_random(10);
         $registration->data_flow = request('date_flow_data');
         $registration->guarantee = request('guarantee');
-        $total_ttc = null;
+        $total_ttc = $price_smartphone;
         if(request('guarantee') == '110'){
             $total_ttc = $price_smartphone + ($price_smartphone * 10)/100;
         }else if(request('guarantee') == '111'){
@@ -95,10 +98,13 @@ class RegistrationController extends Controller
         $registration->client_id = $client->id;
         $registration->agency_id = Auth::user()->agence->id;
 
-        $registration->save();
+        // $registration->save();
 
         $pdf = new PDFClass;
-        return $pdf->downloadPDF($client, $registration, $smartphone, $agency);
+        if (request('guarantee') == '110' || request('guarantee') == '111') {
+            return $pdf->downloadPDF('pdfs.registration', $client, $registration, $smartphone, $agency);
+        }
+        return $pdf->downloadPDF('pdfs.AAM_F1', $client, $registration, $smartphone, $agency);
     }
 
     /**
@@ -139,7 +145,28 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        // 
+        $registration = Registration::with(['smartphone.model.brand', 'client'])
+        ->where('id', $id)
+        ->first();
+        $agency = Agence::find($registration->agency_id);
+        $pdf = new PDFClass;
+        if ($registration->guarantee == 100) { //If guarantee is F1
+            $avenant = Avenant::where('registration_id', $registration->id)->latest()->first(); //Get last avenant added
+            if ($avenant) {
+                $registration->guarantee = $avenant->extension_added; //Change guarantee by the avenant guarantee to be used in view
+                return $pdf->downloadPDF('pdfs.registration', $registration->client, $registration, $registration->smartphone, $agency); //Download the suited pdf
+            }
+            return $pdf->downloadPDF('pdfs.AAM_F1', $registration->client, $registration, $registration->smartphone, $agency);
+        }else if($registration->guarantee == 110) { //If guarantee is F1
+            $avenant = Avenant::where('registration_id', $registration->id)->latest()->first(); //Get last avenant added
+            if ($avenant) {
+                $registration->guarantee = $avenant->extension_added; //Change guarantee by the avenant guarantee to be used in view
+                return $pdf->downloadPDF('pdfs.registration', $registration->client, $registration, $registration->smartphone, $agency); //Download the suited pdf
+            }
+            return $pdf->downloadPDF('pdfs.registration', $registration->client, $registration, $registration->smartphone, $agency);
+        }else {
+            return $pdf->downloadPDF('pdfs.registration', $registration->client, $registration, $registration->smartphone, $agency);
+        }
     }
 
     /**
@@ -254,5 +281,19 @@ class RegistrationController extends Controller
             $registration->save();
             // return response()->json(['msg' => 'Cette souscription est consédérer comme vu.']);
         }
+    }
+
+    public function export()
+    {
+        // $registrations = Registration::whereDate('created_at', Carbon::yesterday()->toDateString())->get();
+        $registrations = Registration::whereDate('created_at', 'like', '2018-06-26%')->get();
+        
+        if (!$registrations->isEmpty()) {
+            $file_name = time().'_Liste_des_souscriptions.xlsx';
+            // $excel = Excel::store(new ExcelDoc($registrations), $file_name);
+            return Excel::download(new ExcelDoc($registrations), $file_name);
+            // return response()->json(['msg' => 'Votre export est effectué.', 'name' => $file_name, 'file' => public_path('\storage\export\\').$file_name, 'excel' => $excel]);
+        }
+        // return response()->json(['msg' => 'Aucune souscriptions est faite aujourd\'hui']);
     }
 }

@@ -13,7 +13,8 @@ class AvenantController extends Controller
      */
     public function index()
     {
-        //
+        $avenant = Avenant::all();
+        return view('inscription.avenants');
     }
 
     /**

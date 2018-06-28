@@ -67,7 +67,14 @@
                 @endrole -->
                 @role(['admin','aon'])
                 <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
-                    <a  href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Les souscriptions</a>
+                    <!-- <a href="#submenu1"><i class="fas fa-list-alt"></i>Les souscriptions</a> -->
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i class="fas fa-align-left"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-4 nav">
+                                <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('registration') }}"><i class="far fa-plus-square"></i>Ajouter souscription</a></li>
+                                <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste souscriptions</a></li>
+                        </ul>
+                    </div>
                 </li>
                 @endrole
                 @role('admin')

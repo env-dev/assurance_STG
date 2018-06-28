@@ -6,9 +6,9 @@ use PDF;
 
 class PDFClass {
 
-    public function downloadPDF($client, $registration, $smartphone, $agency)
+    public function downloadPDF($view, $client, $registration, $smartphone, $agency)
     {
-        $pdf = PDF::loadView('pdfs.registration', compact('client', 'registration', 'smartphone', 'agency'));
+        $pdf = PDF::loadView($view, compact('client', 'registration', 'smartphone', 'agency'));
         return $pdf->stream();
     }
 }

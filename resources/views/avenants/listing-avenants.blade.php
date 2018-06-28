@@ -3,14 +3,14 @@
 @section('css')
 @endsection
 
-@section('title','Nouvelles adhésions')
+@section('title','Liste des avenants')
 
 @section('content')
 <div class="col-4 offset-md-4">
-    <h2>La liste des Souscriptions</h2>
+    <h2>La liste des Avenants</h2>
 </div>
 <div class="col-md-12">
-    <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter une souscription</a>
+    <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter un avenant</a>
     <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export') }}" target="_blank" id="export">Exporter</a>
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">
@@ -107,7 +107,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="consulted_reg" data-id="0" data-dismiss="modal">OK</button>
-                    <a class="btn btn-primary" id="print_reg" data-id="0" href="">Imprimer</a>
                 </div>
             </div>
         </div>
@@ -315,47 +314,22 @@
             });
         });
 
-        $("#export").on("click", function(e){
-            e.preventDefault();
-            window.location = '/export';
-            swal({
-                title: 'Export est effectuer',
-                text: '',
-                icon: "success",
-            })
-        });
+        // $("#export").on("click", function(e){
+        //     e.preventDefault();
 
-        $("#print_reg").on("click", function(e) {
-            e.preventDefault();
-            var ID = $("#consulted_reg").attr('data-id');
-
-            var req = new XMLHttpRequest();
-            req.open("GET", "/registration/" + ID + "/edit", true);
-            req.responseType = "blob";
-            req.onreadystatechange = function () {
-                if (req.readyState === 4 && req.status === 200) {
-
-                    // test for IE
-
-                    if (typeof window.navigator.msSaveBlob === 'function') {
-                    window.navigator.msSaveBlob(req.response, new Date().getTime() + "_Liste_des_souscriptions.xlsx.pdf");
-                    } else {
-                    var blob = req.response;
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = new Date().getTime() + "_Liste_des_souscriptions.xlsx.pdf";
-
-                    // append the link to the document body
-
-                    document.body.appendChild(link);
-
-                    link.click();
-                    link.remove();
-                    }
-                }
-            };
-            req.send();
-        });
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '/export',
+        //         success: function(response) {
+        //             var a = document.createElement("a");
+        //             a.href = response.file;
+        //             a.download = response.name;
+        //             document.body.appendChild(a);
+        //             a.click();
+        //             a.remove();
+        //         }
+        //     });
+        // });
     } );
 </script>
 @endsection
