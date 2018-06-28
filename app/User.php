@@ -35,9 +35,12 @@ class User extends Authenticatable
     public function agence(){
         return $this->belongsTo(Agence::class);
     }
-    public function getNotifications()
+
+    public function countRegistration()
     {
-        return Registration::status(new RegistrationStatus('newAdded'))->count();
+        //if($this->hasRole('aon'))
+            return Registration::status(new RegistrationStatus('newAdded'))->count();
     }
+
 
 }

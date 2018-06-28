@@ -1,0 +1,14 @@
+$(function(){
+    $('#read-all').click(function(){
+        $.ajax({
+            type:'POST',
+            url:'read-all-notifications',
+            success:function(feedback){
+                console.log(feedback);
+            },
+            error:function(error){
+                console.log(error);
+            },
+        });
+    });
+});

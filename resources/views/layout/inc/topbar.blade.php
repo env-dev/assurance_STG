@@ -83,43 +83,45 @@
                                 </div>
                             </div> --}}
                             <div class="noti__item js-item-menu">
+                                @role(['admin','aon'])
                                 <i class="zmdi zmdi-notifications"></i>
-                                <span class="quantity">{{ Auth::user()->getNotifications() }}</span>
+                                <span class="quantity">{{ $countNotifications }}</span>
                                 <div class="notifi-dropdown js-dropdown">
-                                    <div class="notifi__title">
-                                        <p>Vous avez {{ Auth::user()->getNotifications() }} notifications</p>
+                                    @if($countNotifications > 0)
+                                    <div class="notifi__title text-center">
+                                        <p class="">Vous avez {{ $countNotifications  }} notifications </p>
                                     </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c1 img-cir img-40">
-                                            <i class="zmdi zmdi-email-open"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Un nouveau inscription</p>
-                                            <span class="date">{{ Date('Y/MM/DM') }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c2 img-cir img-40">
-                                            <i class="zmdi zmdi-account-box"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Une demande de réparation</p>
-                                            <span class="date">Juillet 12, 2018 06:50</span>
-                                        </div>
-                                    </div>
+                                    <!-- Registration -->
                                     <div class="notifi__item">
                                         <div class="bg-c3 img-cir img-40">
                                             <i class="zmdi zmdi-file-text"></i>
                                         </div>
                                         <div class="content">
-                                            <p>demdande de consultation</p>
-                                            <span class="date">Juillet 12, 2018 06:50</span>
+                                            <p><a href="{{url('read-registrations')}}">Les nouvelles Registrations </a><span class="badge badge-secondary float-right">{{ $countRegistrations }}</span></p>
+                                            {{-- <span class="date">{{ $notification->data['date']}}</span> --}}
+                                        </div>
+                                    </div>
+
+                                    <!-- Sinisters -->
+                                    <div class="notifi__item">
+                                        <div class="bg-c3 img-cir img-40">
+                                            <i class="zmdi zmdi-file-text"></i>
+                                        </div>
+                                        <div class="content">
+                                            <p><a href="#">Les nouvelles Sinistres </a><span class="badge badge-secondary float-right">{{ $countSinisters  }}</span></p>
+                                            {{-- <span class="date">{{ $notification->data['date']}}</span> --}}
                                         </div>
                                     </div>
                                     <div class="notifi__footer">
-                                        <a href="{{ url('listing-registrations')}}">Tous les notifications</a>
+                                        <a id="read-all" title="Lis tout" href="#">Marque tous comme lu</a>
                                     </div>
+                                    @else
+                                    <div class="notifi__title text-center">
+                                        <p class="">Vous avez aucune notifications </p>
+                                    </div>
+                                    @endif
                                 </div>
+                                @endrole
                             </div>
                         </div>
                         <div class="account-wrap">

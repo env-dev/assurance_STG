@@ -252,21 +252,52 @@ $('#insert-model').click(function(e){
  ************************************* 
 */
 
+// Import File Excel
+$('#import-form').submit(function(e){
+    e.preventDefault();
+    var btn = $('#btn-import');
+    btn.html('<i class="fas fa-spinner fa-spin"></i>');
+    btn.prop("disabled",true);
+    $.ajax({
+        type:'POST',
+        url:'import-smartphones',
+        data: new FormData($(this)[0]),
+        contentType:false,
+        processData:false,
+        success: function(response){
+            $('#response').html('<div class="alert alert-warning">'+response+'</div>');
+            btn.prop("disabled",false);
+            btn.html('Importer');
+        },
+        error: function(error){
+            $('#response').html('<div class="alert alert-danger">'+error+'</div>');
+            btn.prop("disabled",false);
+            btn.html('Importer');
+        }
+    });
+});
+
+
+
+
 $('#insert-appareil').click(function(e){
     e.preventDefault();
     var appareil_model_field = $('#appareil_model_add');
     var imei_field = $('#imei_add');
+    var imei2_field = $('#imei2_add');
     
     var validation = [
         {'field': appareil_model_field, 'type': 'text'},
         {'field': imei_field, 'type': 'numeric'},
+        {'field': imei2_field, 'type': 'numeric'},
     ]
     if(!inputsValidation(validation)) return;
     $.ajax({
         type:'POST',
         data: {
             brand_model_id: appareil_model_field.val(),
-            imei: imei_field.val()
+            imei: imei_field.val(),
+            imei2: imei_field2.val()
         },
         url: url_smartphones,
         dataType: 'json',
@@ -397,13 +428,15 @@ $('body').on('click','.update-model',function(){
 */
 $('body').on('click','.update-appareil',function(){
     var imei_field = $('#imei_modal');
+    var imei2_field = $('#imei2_modal');
     var appareil_model_field = $('#appareil_model_modal');
     
     // Get appareil Information
     var id = $(this).data('id');
-      $.get(url_smartphones+'/'+id+'/edit', function (data) {
+      $.get(url_smartphones+'/'+id, function (data) {
         // get field values
         imei_field.val(data.imei);
+        imei2_field.val(data.imei2);
         appareil_model_field.val(data.brand_model_id);
     });
      
@@ -415,6 +448,7 @@ $('body').on('click','.update-appareil',function(){
             type:'PUT',
             data: {
                 imei: imei_field.val(),
+                imei2: imei2_field.val(),
                 brand_model_id: appareil_model_field.val()
             },
             url: url_smartphones+'/'+id,

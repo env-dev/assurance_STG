@@ -49,9 +49,9 @@
 
 <!-- MENU SIDEBAR-->
 <aside class="menu-sidebar d-none d-lg-block">
-    <div class="logo">
+    <div class="logo text-center">
         <a href="#">
-            <img src="{{asset('images/logo.png')}}" class="img-fluid" style="width:170px; height:70px;"/>
+            <img src="{{asset('images/logo.png')}}" class="img-fluid" style=" height:70px;"/>
         </a>
     </div>
     <div class="menu-sidebar__content js-scrollbar1">

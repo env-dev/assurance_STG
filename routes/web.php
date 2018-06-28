@@ -40,6 +40,33 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('avenants', 'AvenantController');
     Route::get('listing-registrations', 'RegistrationController@listingRegistrations');
     Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
+
+    // Notifications
+
+    Route::get('read-registrations', 'NotificationController@readRegisterNotifcation');
+    Route::get('read-sinisters', 'NotificationController@readSinisterNotifcation');
+    Route::get('read-all', 'NotificationController@readRegisterNotifcation');
+    Route::post('import-smartphones', 'SmartphoneController@import');
+
+
 });
 
 Auth::routes();
+
+
+
+Route::get('/no', function(){
+//     dd(Auth::user()->unreadNotifications->where('data.type','sinister')->count());
+// return Auth::user()->unreadNotifications[0]['data']['type'];
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
+//      Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
+
+    // foreach(Auth::user()->unreadNotifications as $notification){
+    //     echo $notification->data['date'];
+    // }
+});
