@@ -79,6 +79,11 @@
 
                 color: rgb(196, 142, 44);
             }
+            .checkGuarantee {
+                /* display: inline-block; */
+                border: 2px solid rgb(79, 129, 189);
+                padding: 10px 25px;
+            }
             table.shown {
                 border-collapse: collapse; 
                 border-spacing: 0;
@@ -162,7 +167,7 @@
 					<td colspan="2">
                         <fieldset>
                             <legend>Garanties</legend>
-                            <p>Casse accidentelle toutes causes et oxydation</p><span class="checkGuarantee"></span>
+                            <p style="display: inline-block; margin-right: 20px;">Casse accidentelle toutes causes et oxydation</p><span class="checkGuarantee"><strong>{{ ($registration->guarantee == '110') ? 'F2' : 'F3' }}</strong></span>
                         </fieldset>
                     </td>
 				</tr>
