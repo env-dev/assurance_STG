@@ -8,14 +8,14 @@
                     <div class="input-group">
                         <div class="custom-file">
                             @csrf
-                            <input type="file" class="custom-file-input" id="smart_file" name="smart_file" accept=".xlsx,.xls,.csv" required>
+                            <input type="file" class="custom-file-input" id="smart_file" name="smart_file" accept=".xlsx,.xls" required>
                             <label class="custom-file-label" for="smart_file">Choisisser votre fichier</label>
                         </div>
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="submit" id="btn-import">Importer</button>
                         </div>
                     </div>
-                    <small id="file_add_help" class="form-text text-muted">Les extensions autorisé : xlsx, xls, csv</small>
+                    <small id="file_add_help" class="form-text text-muted">Les extensions autorisé : xlsx, xls</small>
                 </form>
             </div>
         </div>
@@ -96,7 +96,6 @@
                 </div>
             </div>
         </div> --}}
-        
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="table-responsive table--no-card m-b-30">

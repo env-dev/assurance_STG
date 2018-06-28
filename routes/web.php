@@ -1,5 +1,8 @@
 <?php
-
+    use \Maatwebsite\Excel\Sheet;
+    use Maatwebsite\Excel\Concerns\WithEvents;
+    use Maatwebsite\Excel\Events\BeforeExport;
+    use Maatwebsite\Excel\Events\AfterSheet;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +56,7 @@ Route::group(['middleware' => ['auth']], function() {
 Auth::routes();
 
 
+Route::get('/statistics', 'DashboardController@statistics');
 
 Route::get('/no', function(){
 //     dd(Auth::user()->unreadNotifications->where('data.type','sinister')->count());

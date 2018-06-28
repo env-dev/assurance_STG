@@ -74,8 +74,8 @@
                                     <i class="zmdi zmdi-money"></i>
                                 </div>
                                 <div class="text">
-                                    <h2>$1,060,386</h2>
-                                    <span>Total des gains</span>
+                                    <h2>$300,060,386</h2>
+                                    <span>Revenue</span>
                                 </div>
                             </div>
                             <div class="overview-chart">
@@ -123,21 +123,9 @@
                 <div class="col-lg-6">
                     <div class="au-card chart-percent-card">
                         <div class="au-card-inner">
-                            <h3 class="title-2 tm-b-5">char par %</h3>
+                            <h3 class="title-2 tm-b-5">Solides Smartphone by Model</h3>
                             <div class="row no-gutters">
-                                <div class="col-xl-6">
-                                    <div class="chart-note-wrap">
-                                        <div class="chart-note mr-0 d-block">
-                                            <span class="dot dot--blue"></span>
-                                            <span>produits</span>
-                                        </div>
-                                        <div class="chart-note mr-0 d-block">
-                                            <span class="dot dot--red"></span>
-                                            <span>services</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6">
+                                <div class="col-xl-12">
                                     <div class="percent-chart">
                                         <canvas id="percent-chart"></canvas>
                                     </div>
@@ -156,4 +144,7 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+<script src="{{ asset('js/chartjs.js') }}"></script>
 @endsection
