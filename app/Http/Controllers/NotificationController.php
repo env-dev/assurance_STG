@@ -17,14 +17,14 @@ class NotificationController extends Controller
     }
 
     public function readRegisterNotifcation(){
-        if(Auth::user()->hasRol('aon')){
+        if(Auth::user()->hasRole('aon')){
             Auth::user()->unreadNotifications->where('data.type','registration')->markAsRead();
         }
         return redirect('listing-registrations');
     }
 
     public function readSinisterNotifcation(){
-        if(Auth::user()->hasRol('aon')){
+        if(Auth::user()->hasRole('aon')){
             Auth::user()->unreadNotifications->where('data.type','sinister')->markAsRead();
         }
         return redirect('listing-registrations');

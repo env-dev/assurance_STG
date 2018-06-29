@@ -113,7 +113,7 @@
                                         </div>
                                     </div>
                                     <div class="notifi__footer">
-                                        <a id="read-all" title="Lis tout" href="#">Marque tous comme lu</a>
+                                        <a id="read-all" onclick="$.ajax({url:'read-all'});"title="Lis tout" href="#">Marque tous comme lu</a>
                                     </div>
                                     @else
                                     <div class="notifi__title text-center">
