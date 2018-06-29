@@ -1,8 +1,5 @@
 <?php
-    use \Maatwebsite\Excel\Sheet;
-    use Maatwebsite\Excel\Concerns\WithEvents;
-    use Maatwebsite\Excel\Events\BeforeExport;
-    use Maatwebsite\Excel\Events\AfterSheet;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +12,6 @@
 */
 
 Route::group(['middleware' => ['auth']], function() {
-    
     
     Route::group(['middleware' => ['role:admin']], function() {
         Route::get('/', 'DashboardController');
@@ -45,17 +41,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
 
     // Notifications
-
     Route::get('read-registrations', 'NotificationController@readRegisterNotifcation');
     Route::get('read-sinisters', 'NotificationController@readSinisterNotifcation');
     Route::get('read-all', 'NotificationController@readRegisterNotifcation');
     Route::post('import-smartphones', 'SmartphoneController@import');
 
-
 });
 
 Auth::routes();
-
 
 Route::get('/statistics', 'DashboardController@statistics');
 

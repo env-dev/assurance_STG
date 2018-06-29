@@ -268,6 +268,7 @@ $('#import-form').submit(function(e){
             $('#response').html('<div class="alert alert-warning">'+response+'</div>');
             btn.prop("disabled",false);
             btn.html('Importer');
+            getSmartphones();
         },
         error: function(error){
             $('#response').html('<div class="alert alert-danger">'+error+'</div>');

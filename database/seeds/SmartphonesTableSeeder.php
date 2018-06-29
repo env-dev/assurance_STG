@@ -15,6 +15,9 @@ class SmartphonesTableSeeder extends Seeder
         for($i = 1; $i <= 5; $i++){
             App\Smartphone::create([
                 'imei' => $faker->randomNumber(8),
+                'imei2' => $faker->randomNumber(8),
+                'sn' => $faker->randomNumber(8),
+                'wifi' => $faker->randomNumber(8),
                 'brand_model_id' => $i,
             ]);
         }
