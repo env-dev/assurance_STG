@@ -50,7 +50,8 @@
                         </select>
                     @endrole
                     @role('agence')
-                        <input type="text" name="agency" id="" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
+                        <input type="text" name="agence_name" id="" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
+                        <input type="text" name="agency" id="" class="form-control" value="{{ Auth::user()->agence->id }}" readonly>
                     @endrole
                     </div>
                 </div>
