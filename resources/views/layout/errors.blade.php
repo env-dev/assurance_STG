@@ -177,5 +177,5 @@ a.more-link {
     <span>{{$code[2]}}</span>
 </section>
 <div class="link-container">
-    <a href="{{ url()->previous() }}" class="more-link">Save Me</a>
+    <a href="{{ url('/') }}" class="more-link">Save Me</a>
 </div>
