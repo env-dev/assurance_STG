@@ -11,7 +11,7 @@
 </div>
 <div class="col-md-12">
     <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter une souscription</a>
-    <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export') }}" target="_blank" id="export">Exporter</a>
+    <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export-registrations') }}" target="_blank" id="export">Exporter</a>
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">
         <table class="table table-borderless table-data3 text-center" id="registration-list">
@@ -317,7 +317,7 @@
 
         $("#export").on("click", function(e){
             e.preventDefault();
-            window.location = '/export';
+            window.location = '/export-registrations';
             swal({
                 title: 'Export est effectuer',
                 text: '',

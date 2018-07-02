@@ -2,7 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Response;
+use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
+use App\Helpers\PDFClass;
+use App\Helpers\ExcelDoc;
+use Carbon\Carbon;
+use App\Avenant;
+use Excel;
+
 
 class AvenantController extends Controller
 {
@@ -92,5 +100,62 @@ class AvenantController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getAvenant($id)
+    {
+        $avenant = Avenant::where('id', $id)
+        ->first();
+        $avenant->registration->smartphone;
+        $avenant->registration->client;
+
+        return response()->json($avenant);
+    }
+
+    public function listingAvenants(Request $request)
+    {
+        $avenants = Avenant::with('registration')
+        ->orderBy('effective_date', 'desc')
+        ->get();
+
+        if($request->ajax()) {
+            return Datatables::of($avenants)
+            ->addIndexColumn()
+            ->addColumn('edit', function ($avenants) {
+                $link = '
+                <button type="button" class="consult_avenant item btn btn-info" data-toggle="modal" data-id="'.$avenants->id.'" data-target="#consult_avenant">
+                    <i class="zmdi zmdi-eye"></i>
+                </button>';
+                return $link;
+            })
+            ->addColumn('ref_reg', function ($avenants){
+                return $avenants->registration->mandat_num;
+            })
+            
+            ->editColumn('extension_added', function($avenants){
+                return (($avenants->extension_added == 110) ? 'F2' : 'F3');
+            })
+            ->rawColumns(['edit', 'ref_reg'])
+            ->make(true);
+        }
+        return view('avenants.listing-avenants', compact('registrations', 'avenants'));
+    }
+
+    public function export()
+    {
+        $avenants = Avenant::whereDate('created_at', 'like', '2018-06-25%')->get();
+        
+        if (!$avenants->isEmpty()) {
+            $file_name = time().'_Liste_des_avenants.xlsx';
+            $total_surprime = 0;
+            foreach ($avenants as $avenant) {
+                $avenant->registration->client;
+                $avenant->registration->smartphone;
+                $total_surprime += $avenant->add_premium;
+            }
+            // $excel = Excel::store(new ExcelDoc($registrations), $file_name);
+            return Excel::download(new ExcelDoc($avenants, 'export.avenants', 'avenants', $total_surprime), $file_name);
+            // return response()->json(['msg' => 'Votre export est effectué.', 'name' => $file_name, 'file' => public_path('\storage\export\\').$file_name, 'excel' => $excel]);
+        }
     }
 }

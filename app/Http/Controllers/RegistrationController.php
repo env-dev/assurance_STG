@@ -287,11 +287,14 @@ class RegistrationController extends Controller
     {
         // $registrations = Registration::whereDate('created_at', Carbon::yesterday()->toDateString())->get();
         $registrations = Registration::whereDate('created_at', 'like', '2018-06-26%')->get();
-        
         if (!$registrations->isEmpty()) {
             $file_name = time().'_Liste_des_souscriptions.xlsx';
+            foreach ($registrations as $registration) {
+                $registration->smartphone->model->brand;
+                $registration->client;
+            }
             // $excel = Excel::store(new ExcelDoc($registrations), $file_name);
-            return Excel::download(new ExcelDoc($registrations), $file_name);
+            return Excel::download(new ExcelDoc($registrations, 'export.registrations', 'registrations', null), $file_name);
             // return response()->json(['msg' => 'Votre export est effectué.', 'name' => $file_name, 'file' => public_path('\storage\export\\').$file_name, 'excel' => $excel]);
         }
         // return response()->json(['msg' => 'Aucune souscriptions est faite aujourd\'hui']);
