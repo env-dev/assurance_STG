@@ -35,13 +35,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
     Route::get('/getRegistration/{id}', 'RegistrationController@getRegistration');
     Route::get('/check-status/{id}', 'RegistrationController@checkStatus');
-    Route::get('/export', 'RegistrationController@export');
-
+    Route::get('/export-registrations', 'RegistrationController@export');
+    
     Route::resource('registration', 'RegistrationController');
     Route::resource('avenants', 'AvenantController');
     Route::get('listing-registrations', 'RegistrationController@listingRegistrations');
     Route::post('listing-new-registrations', 'RegistrationController@listingNewRegistrations');
-
+    
+    Route::get('getAvenants', 'AvenantController@listingAvenants');
+    Route::get('/getAvenant/{id}', 'AvenantController@getAvenant');
+    Route::get('listing-avenants', 'AvenantController@listingAvenants');
+    Route::get('export-avenants', 'AvenantController@export');
     // Notifications
     Route::get('read-registrations', 'NotificationController@readRegisterNotifcation');
     Route::get('read-sinisters', 'NotificationController@readSinisterNotifcation');

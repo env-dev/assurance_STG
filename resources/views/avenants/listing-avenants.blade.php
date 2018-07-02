@@ -3,36 +3,35 @@
 @section('css')
 @endsection
 
-@section('title','Liste des avenants')
+@section('title','La liste des avenants')
 
 @section('content')
 <div class="col-4 offset-md-4">
     <h2>La liste des Avenants</h2>
 </div>
 <div class="col-md-12">
-    <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter un avenant</a>
-    <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export') }}" target="_blank" id="export">Exporter</a>
+<a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export-avenants') }}" target="_blank" id="export">Exporter</a>
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">
-        <table class="table table-borderless table-data3 text-center" id="registration-list">
+        <table class="table table-borderless table-data3 text-center" id="avenants-list">
             <thead>
                 <tr>
-                    <th>Réf mandat</th>
-                    <th>Date de flux de données</th>
-                    <th>Créer le</th>
-                    <th>Validité</th>
-                    <th>Status</th>
+                    <th>Réf. mandat</th>
+                    <th>Extension ajouté</th>
+                    <th>Date d'effet</th>
+                    <th>Surprime</th>
+                    <th>Réf. souscription</th>
                     <th></th>
                 </tr>
             </thead>
         </table>
-    </div>
+    </div> 
     <!-- Begin consulting registation modal -->
-    <div class="modal fade" id="consult_reg" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
+    <div class="modal fade" id="consult_avenant" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="scrollmodalLabel">Informations sur la souscription</h5>
+                    <h5 class="modal-title" id="scrollmodalLabel">Informations sur l'avenant</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -40,16 +39,25 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-6">
+                            <label class="col-lg-6"> <strong>N° mandat:</strong> </label>
+                            <span class="col-lg-6" id="num_mandat"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="col-lg-6"> <strong>Extension ajouté:</strong> </label>
+                            <span class="col-lg-6" id="extension_added"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="col-lg-6"> <strong>Date d'effet:</strong> </label>
+                            <span class="col-lg-6" id="effective_date"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="col-lg-6"> <strong>Montant ajouté:</strong> </label>
+                            <span class="col-lg-6" id="premium_added"></span>
+                        </div>
+                        <hr>
+                        <div class="col-lg-6">
                             <label class="col-lg-6"> <strong>Nom & prénom:</strong> </label>
                             <span class="col-lg-6" id="full_name_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Email:</strong> </label>
-                            <span class="col-lg-6" id="email_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Date de naissance:</strong> </label>
-                            <span class="col-lg-6" id="birthdate_client"></span>
                         </div>
                         <div class="col-lg-6">
                             <label class="col-lg-6"> <strong>Adresse:</strong> </label>
@@ -72,264 +80,117 @@
                             <span class="col-lg-6" id="id_num_client"></span>
                         </div>
                         <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>IMEI:</strong> </label>
+                            <label class="col-lg-6"> <strong>N° IMEI:</strong> </label>
                             <span class="col-lg-6" id="imei_device"></span>
                         </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Marque:</strong> </label>
-                            <span class="col-lg-6" id="brand_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Modéle:</strong> </label>
-                            <span class="col-lg-6" id="model_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Prix:</strong> </label>
-                            <span class="col-lg-6" id="device_price"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Guarantie:</strong> </label>
-                            <span class="col-lg-6" id="guarantee_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Flux de données:</strong> </label>
-                            <span class="col-lg-6" id="data_flow_date"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Agence:</strong> </label>
-                            <span class="col-lg-6" id="agency_reg"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Prix total TTC:</strong> </label>
-                            <span class="col-lg-6" id="total_price_reg"></span>
+                        <!-- Brand & model infos -->
+                        <div class="row infos_plus b-none">
+                            <div class="col-lg-6">
+                                <label class="col-lg-6"> <strong>Marque:</strong> </label>
+                                <span class="col-lg-6" id="brand_device"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="col-lg-6"> <strong>Modéle:</strong> </label>
+                                <span class="col-lg-6" id="model_device"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="col-lg-6"> <strong>Prix:</strong> </label>
+                                <span class="col-lg-6" id="device_price"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="col-lg-6"> <strong>Guarantie:</strong> </label>
+                                <span class="col-lg-6" id="guarantee_device"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="col-lg-6"> <strong>Agence:</strong> </label>
+                                <span class="col-lg-6" id="agency_reg"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="col-lg-6"> <strong>Prix total TTC:</strong> </label>
+                                <span class="col-lg-6" id="total_price_reg"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="consulted_reg" data-id="0" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-primary" data-id="0" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- END -->
-    <!-- END DATA TABLE-->
-    <div class="modal fade" id="addAvenant" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mediumModalLabel">Informations sur l'avenant</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-body card-block">
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="select" class=" form-control-label">La garantie à ajouter</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select name="select" id="extensions" class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="disabled-input" class=" form-control-label">Surprime TTC</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="hidden" id="price_ttc">
-                                <input type="hidden" id="registration_id">
-                                <input type="text" id="surprime_ttc" placeholder="Surprime..." disabled="" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" id="add_avenant" data-dismiss="modal">Confirmer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END -->
-    
 </div>
 @endsection
 
 @section('js')
 <script>
     $(document).ready(function() {
-        var registrations_list = null;
+        var avenants_list = null;
 
         function initDataTable() {
-            registrations_list = $("#registration-list").DataTable({
+            avenants_list = $("#avenants-list").DataTable({
                 processing: true,
                 serverSide: true,
                 initComplete: function( settings, json ) {
                     getAvenant();
-                    getRegistration();
+                //     getRegistration();
                 },
                 language: {
                     url: "{{ asset('/js/lang/dataTables.french.json') }}"
                 },
-                ajax: "/getRegistrations",
+                ajax: "/getAvenants",
                 columns: [
                     { data: "mandat_num", name: "mandat_num", orderable: false, searchable: true },
-                    { data: "data_flow",name: "data_flow" },
-                    { data: "created_at", name: "created_at" },
-                    { data: "validity", name: "validity", orderable: true, searchable: false },
-                    { data: "new", name: "new" },
+                    { data: "extension_added",name: "extension_added" },
+                    { data: "effective_date", name: "effective_date" },
+                    { data: "add_premium", name: "add_premium", orderable: true, searchable: false },
+                    { data: "ref_reg", name: "ref_reg", orderable: false, searchable: true },
                     { data: "edit", name: "edit", orderable: false, searchable: true },
                 ]
             });
         }
 
-        function refreshDataTable() {
-            registrations_list.destroy();
-            initDataTable();
-        }
 
-        function getAvenant() 
-        {
-            $(".addAvenant").on("click", function(){
-                    var ID = $(this).attr('data-id');
-                    $('#surprime_ttc').val(0);
-                    $('#registration_id').val(ID);
-                    $.ajax({
-                        type:'GET',
-                        url: '/getRegistration/'+ID,
-                        dataType: 'json',
-                        success: function(registration){
-                            $("#price_ttc").val(registration.smartphone.model.price_ttc);
-                            $("#extensions").html();
-                            var extensions = '<option value="0">----</option>';
-                            if (registration.guarantee == 100){
-                                if(registration.avenant.length && registration.avenant[0].extension_added == 110) {
-                                    extensions += '<option value="111">F3</option>';
-                                }else if(registration.avenant.length && registration.avenant[0].extension_added == 111) {
-                                    extensions += 'Pas de guarantie';
-                                }else {
-                                    extensions += '<option value="110">F2</option>';
-                                    extensions += '<option value="111">F3</option>';
-                                }
-                            }else if (registration.guarantee == 110){
-                                extensions += '<option value="111">F3</option>';
-                            }              
-                            $("#extensions").html(extensions);
-                        }
-                    });
-                });
-        }
-        function getRegistration(){
-            $(".consult_reg").on("click", function(){
+        function getAvenant(){
+            $(".consult_avenant").on("click", function(){
                 var ID = $(this).attr('data-id');
 
                 $.ajax({
                     type: 'GET',
-                    url: '/getRegistration/'+ID,
+                    url: '/getAvenant/'+ID,
                     dataType: 'json',
                     success: function(data){
                         var guarantee = 'F1';
-                        var birth_date = data.client.birth_date.split(' ');
-                        var data_flow = data.data_flow.split(' ');
-                        
-                        if (data.guarantee == 110) {
-                            guarantee = 'F2';
-                        }else if(data.guarantee == 111){
-                            guarantee = 'F3';
-                        }
+                        var birth_date = data.registration.client.birth_date.split(' ');
+                        var data_flow = data.registration.data_flow.split(' ');
                         // fill the model with registration data
-                        $("#full_name_client").text(data.client.first_name + ' ' +data.client.last_name);
-                        $("#email_client").text(data.client.email);
+                        $("#extension_added").text(data.extension_added);
+                        $("#effective_date").text(data.effective_date);
+                        $("#premium_added").text(data.add_premium);
+                        $("#full_name_client").text(data.registration.client.first_name + ' ' +data.registration.client.last_name);
+                        $("#email_client").text(data.registration.client.email);
                         $("#birthdate_client").text(birth_date[0]);
-                        $("#address_client").text(data.client.address);
-                        $("#tel_client").text(data.client.tel);
-                        $("#city_client").text(data.client.city);
-                        $("#client_type").text(data.client.nature);
-                        $("#id_num_client").text(data.client.num_id);
-                        $("#id_type").text(data.client.type_id);
-                        $("#imei_device").text(data.smartphone.imei);
-                        $("#brand_device").text(data.smartphone.model.brand.name);
-                        $("#model_device").text(data.smartphone.model.name);
-                        $("#device_price").text(data.smartphone.model.price_ttc);
-                        $("#guarantee_device").text(guarantee);
+                        $("#address_client").text(data.registration.client.address);
+                        $("#tel_client").text(data.registration.client.tel);
+                        $("#city_client").text(data.registration.client.city);
+                        $("#client_type").text(data.registration.client.nature);
+                        $("#id_num_client").text(data.registration.client.num_id);
+                        $("#id_type").text(data.registration.client.type_id);
+                        $("#imei_device").text(data.registration.smartphone.imei);
+                        // $("#brand_device").text(data.registration.smartphone.model.brand.name);
+                        // $("#model_device").text(data.registration.smartphone.model.name);
+                        // $("#device_price").text(data.registration.smartphone.model.price_ttc);
+                        // $("#guarantee_device").text(guarantee);
                         $("#data_flow_date").text(data_flow[0]);
-                        // $("#agency_reg").text(agency);
-                        $("#total_price_reg").text(data.total_ttc);
-                        $("#consulted_reg").attr('data-id', ID);
+                        $("#total_price_reg").text(data.registration.total_ttc);
+                        // $("#consulted_reg").attr('data-id', ID);
                     }
                 });
             });
         }
 
-        initDataTable();
 
-        $('#extensions').on('change', function(){
-            var extension = $(this).val();
-            var price_ttc = parseInt($("#price_ttc").val());
-            
-            if(extension == '110'){
-                $('#surprime_ttc').val((price_ttc * 10)/100);
-            }else if(extension == '111'){
-                $('#surprime_ttc').val((price_ttc * 20)/100);
-            }else{
-                $('#surprime_ttc').val(0.00);
-            }
-        });
-
-        $("#add_avenant").on("click", function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'POST',
-                url: '/avenants',
-                data: {extension_added: $('#extensions').val(), add_premium: $('#surprime_ttc').val(), registration_id: $('#registration_id').val()},
-                dataType: 'json',
-                success: function(response){
-                    if (response.status == 200) {
-                        swal({
-                            title: 'Update réussi',
-                            text: response.message,
-                            icon: "success",
-                        })
-                        refreshDataTable();
-                    }else{
-                        swal({
-                            title: "Echec d'update",
-                            text: response.message,
-                            icon: "error",
-                        })
-                    }
-                }
-            });
-        });
-
-        $("#consulted_reg").on("click", function(e) {
-            var ID = $(this).attr('data-id');
-            $.ajax({
-                type: 'GET',
-                url: '/check-status/'+ID,
-                success: function() {
-                    refreshDataTable();
-                }
-            });
-        });
-
-        // $("#export").on("click", function(e){
-        //     e.preventDefault();
-
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: '/export',
-        //         success: function(response) {
-        //             var a = document.createElement("a");
-        //             a.href = response.file;
-        //             a.download = response.name;
-        //             document.body.appendChild(a);
-        //             a.click();
-        //             a.remove();
-        //         }
-        //     });
-        // });
-    } );
+        initDataTable()
+    })
 </script>
 @endsection

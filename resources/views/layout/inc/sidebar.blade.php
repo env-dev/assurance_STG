@@ -76,6 +76,9 @@
                         </ul>
                     </div>
                 </li>
+                <li class="{{ Request::is('listing-avenants*') ? 'active' : '' }}">
+                    <a href="{{ url('listing-avenants') }}"><i class="fas fa-list-alt"></i>Liste des avenants</a>
+                </li>
                 @endrole
                 @role('admin')
                 <li class="{{ Request::is('appareil*') ? 'active' : '' }}">

@@ -8,24 +8,28 @@ use App\Registration;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ExcelDoc implements FromView, WithEvents
+class ExcelDoc implements FromView, WithEvents, ShouldAutoSize
 {
-    protected $registrations;
+    protected $data;
+    protected $view;
+    protected $data_name;
+    protected $total_surprime;
 
-    public  function __construct($arg) {
-        $this->registrations = $arg;
+    public  function __construct($arg, $view, $data_name, $total_surprime = null) {
+        $this->data = $arg;
+        $this->view = $view;
+        $this->data_name = $data_name;
+        $this->total_suprime = $total_surprime;
     }
 
 
     public function view(): View
     {
-        foreach ($this->registrations as $registration) {
-            $registration->smartphone->model->brand;
-            $registration->client;
-        }
-        return view('export.registrations', [
-            'registrations' => $this->registrations,
+        return view($this->view, [
+             $this->data_name => $this->data,
+            'total_surprime' => $this->total_surprime
         ]);
     }
 

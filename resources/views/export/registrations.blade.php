@@ -39,7 +39,7 @@
             <td>{{ $registration->smartphone->model->price_ttc }}</td>
             <td>{{ $registration->guarantee }}</td>
             <td>{{ $registration->data_flow }}</td>
-            <td>'1 année'</td>
+            <td>{{ $registration->data_flow->diffForHumans() }}</td>
             <td>{{ $registration->total_ttc }}</td>
         </tr>
     @endforeach

@@ -12,6 +12,7 @@ use App\Role;
 use App\Helpers;
 use App\Registration;
 use Auth;
+use Carbon\Carbon;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -43,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
         Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array $style) {
             $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
         });
+
+        Carbon::setLocale('fr');
     }
 
     /**
