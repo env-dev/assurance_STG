@@ -102,8 +102,13 @@ class RegistrationController extends Controller
 
         $pdf = new PDFClass;
         if (request('guarantee') == '110' || request('guarantee') == '111') {
+            Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
             return $pdf->downloadPDF('pdfs.registration', $client, $registration, $smartphone, $agency);
         }
+        
+
+        Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+
         return $pdf->downloadPDF('pdfs.AAM_F1', $client, $registration, $smartphone, $agency);
     }
 
