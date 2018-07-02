@@ -17,7 +17,7 @@ class CreateAvenantTable extends Migration
             $table->increments('id');
             $table->string('mandat_num')->unique();
             $table->integer('extension_added');
-            $table->date('effective Date');
+            $table->date('effective_date');
             $table->decimal('add_premium', 6, 2);
             $table->integer('registration_id')->unsigned();
             $table->timestamps();
