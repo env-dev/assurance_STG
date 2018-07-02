@@ -8,6 +8,8 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 use App\Helpers\RegistrationStatus;
 use App\Registration;
 use App\Agence;
+use Notification;
+
 class User extends Authenticatable
 {
     use Notifiable;
