@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if(Auth::user())
-            if(!Auth::user()->hasPermissionTo('all'))
+            if(!Auth::user()->hasRole('all'))
                 abort('401');
         return $next($request);
     }

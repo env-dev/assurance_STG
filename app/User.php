@@ -42,5 +42,12 @@ class User extends Authenticatable
             return Registration::status(new RegistrationStatus('newAdded'))->count();
     }
 
+    public function notif($type){
+        $users = $this::whereHas('roles', function($query) {
+            $query->whereIn('name', ['admin','aon']);
+        })->get();
+       Notification::send($users, new \App\Notifications\NewRegistrationNotification($type));
+    }
+
 
 }

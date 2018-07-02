@@ -45,12 +45,15 @@ class LoginController extends Controller
 
     public function authenticated()
     {
-        if(Auth::user()->hasRole('admin'))
-            redirect('/');
-        if(Auth::user()->hasRole('aon'))
-            redirect('/listing-registrations');
-        if(Auth::user()->hasRole('agency'))
-            redirect('/registration');
+        if(Auth::user()->hasRole('admin') === true){
+            return redirect('/');
+		}else if(Auth::user()->hasRole('aon')=== true){
+			return redirect('/listing-registrations');
+		}else if(Auth::user()->hasRole('agence')=== true){
+			//dd(Auth::user()->hasRole('agence'));
+			 return redirect('/registration');
+		}
+		return abort(404, 'Unauthorized action.');
     }
     // protected function redirectPath()
     // {   

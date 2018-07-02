@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Notifications\Notifiable;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,17 +58,5 @@ Auth::routes();
 
 
 Route::get('/no', function(){
-//     dd(Auth::user()->unreadNotifications->where('data.type','sinister')->count());
-// return Auth::user()->unreadNotifications[0]['data']['type'];
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
-    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
 
-    // foreach(Auth::user()->unreadNotifications as $notification){
-    //     echo $notification->data['date'];
-    // }
 });
