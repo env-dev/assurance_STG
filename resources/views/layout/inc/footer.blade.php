@@ -22,6 +22,7 @@
         <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <!-- Main JS-->
         <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="{{ asset('js/main.js') }}"></script>

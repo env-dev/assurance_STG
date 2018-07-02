@@ -106,7 +106,7 @@ class AvenantController extends Controller
     {
         $avenant = Avenant::where('id', $id)
         ->first();
-        $avenant->registration->smartphone;
+        $avenant->registration->smartphone->model->brand;
         $avenant->registration->client;
 
         return response()->json($avenant);

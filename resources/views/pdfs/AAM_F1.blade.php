@@ -141,23 +141,23 @@
 				</tr>
 				<tr class="information_client">
 					<td colspan="2">
-                        <label>Nom / Raison sociale: </label>.............<strong> {{ $client->last_name }} </strong>...........................<label>Prénom</label>.................<strong>{{ $client->first_name }}</strong>....................<br>
-                        <label>N* CIN/ RC : </label>.......................................<strong> {{ $client->num_id }} </strong>...........................................<br>
-                        <label>Date d’achat du Smartphone :</label>  ............................................<strong> {{ $client->email }} </strong>.............................................................<br>
+                        <label>Nom / Raison sociale: </label><strong> {{ $client->last_name }} </strong><label>Prénom: </label><strong>{{ $client->first_name }}</strong><br>
+                        <label>N* CIN/ RC : </label><strong> {{ $client->num_id }} </strong><br>
+                        <label>Date d’achat du Smartphone :</label><strong> {{ $client->email }} </strong><br>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="information_client_date">
-                        <label>Fait à </label>....................................., le ....................................<br>
+                        <label>Fait à </label>, le {{ Carbon\Carbon::now()->format('Y/m/d') }}<br>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><strong>Signature du Client</strong><br></td>
+                    <td><strong style="line-height: 8.5em">Signature du Client</strong><br></td>
                 </tr>
                 <tr class="separator">
                     <td colspan="2">
-                            ................    .....................   ......................    .......................   ......................  .....................   ......................  ......................   ...................
+                            --------------------    ---------------------   ---------------------    ---------------------   ---------------------  ---------------------   ---------------------  -------------
                     </td>
                 </tr>
 				<tr class="information_seller">
@@ -178,23 +178,23 @@
                                 <th>Prix de vente</th>
                             </tr>
                             <tr>
+                                <td><strong> {{ $registration->data_flow->format('Y/m/d') }} </strong></td>
                                 <td><strong> {{ $smartphone->model->name }} </strong></td>
-                                <td><strong>{{ $smartphone->model->brand->name }}</strong></td>
+                                <td><strong>  </strong></td>
                                 <td><strong>{{ $smartphone->imei }}</strong></td>
                                 <td><strong> {{ $smartphone->model->price_ttc }} </strong></td>
-                                <td></td>
                             </tr>
                         </table>
                     </td>
                 </tr>
                 <tr class="information_client_date">
                     <td>
-                        <label>Fait à </label>....................................., le ....................................<br>
+                        <label>Fait à </label>, le {{ Carbon\Carbon::now()->format('Y/m/d') }}<br>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Signature du Vendeur<br></td>
+                    <td><strong>Signature du Vendeur</strong><br></td>
                 </tr>
 			</table>
 		</div>

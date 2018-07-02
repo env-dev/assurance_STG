@@ -32,8 +32,8 @@ class UserTableSeeder extends Seeder
             'password' => bcrypt('123456'),
         ]);
 
-        $admin->attachRole(1);
-        $agence->attachRole(2);
-        $aon->attachRole(3);
+        $admin->attachRole(5);
+        $agence->attachRole(6);
+        $aon->attachRole(7);
     }
 }
