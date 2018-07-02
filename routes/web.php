@@ -15,6 +15,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::group(['middleware' => ['role:admin']], function() {
         Route::get('/', 'DashboardController');
+        Route::get('/statistics', 'DashboardController@statistics');
         Route::get('/appareil', 'HomeController@index');
         Route::resource('agency', 'AgenceController');
         Route::resource('users', 'UserController');
@@ -23,6 +24,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::resource('brands','BrandController');
         Route::resource('models','ModelController');
         Route::resource('smartphones','SmartphoneController');
+        Route::post('import-smartphones', 'SmartphoneController@import');
         Route::resource('agences','AgenceController');
         Route::resource('cities','CityController');
     });
@@ -44,24 +46,22 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('read-registrations', 'NotificationController@readRegisterNotifcation');
     Route::get('read-sinisters', 'NotificationController@readSinisterNotifcation');
     Route::get('read-all', 'NotificationController@readRegisterNotifcation');
-    Route::post('import-smartphones', 'SmartphoneController@import');
 
 });
 
 Auth::routes();
 
-Route::get('/statistics', 'DashboardController@statistics');
 
 Route::get('/no', function(){
 //     dd(Auth::user()->unreadNotifications->where('data.type','sinister')->count());
 // return Auth::user()->unreadNotifications[0]['data']['type'];
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
-     Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('registration'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
+    //  Auth::user()->notify(new \App\Notifications\NewRegistrationNotification('sinister'));
 
     // foreach(Auth::user()->unreadNotifications as $notification){
     //     echo $notification->data['date'];
