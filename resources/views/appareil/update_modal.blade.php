@@ -43,5 +43,17 @@
         <label for="imei_modal" class="control-label mb-1">IMEI</label>
         <input id="imei_modal" name="imei_modal" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
     </div>
+    <div class="form-group">
+        <label for="imei2_modal" class="control-label mb-1">IMEI 2</label>
+        <input id="imei2_modal" name="imei2_modal" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+    </div>
+    <div class="form-group">
+        <label for="sn_modal" class="control-label mb-1">SN</label>
+        <input id="sn_modal" name="sn_modal" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+    </div>
+    <div class="form-group">
+        <label for="wifi_modal" class="control-label mb-1">WIFI</label>
+        <input id="wifi_modal" name="wifi_modal" type="text" class="form-control" aria-required="true" aria-invalid="false" value="">
+    </div>
 @endmodal
 <!-- End Appareil Modal -->

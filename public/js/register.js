@@ -188,6 +188,7 @@ function getUsers(){
                     <td>\
                     <button type="button" class="btn btn-danger delete-user" data-id="'+user.id+'" title="Supprimer"><i class="fa fa-times"></i></button>\
                     <button type="button" class="btn btn-info update-user" data-id="'+user.id+'" title="Modifier"><i class="fa fa-pencil-square-o"></i></button>\
+                    <button type="button" class="btn btn-secondary update-pass-user" data-id="'+user.id+'" title="Changer Mot de passe"><i class="fas fa-key"></i></button>\
                     </td>\
                 </tr>\
                 ';
@@ -458,6 +459,45 @@ $('body').on('click','.update-user',function(){
         });
     });
 });
+
+$('body').on('click','.update-pass-user',function(){
+    // Get user Information
+    var id = $(this).data('id');
+    var url = 'change-password'+'/'+id; 
+    var paswd = $('#password_modal');
+    var conf_paswd = $('#conf_password_modal');
+    // Show Modal
+    $('.updateModalUserPassword').modal('toggle');
+    $('.update-data').unbind('click').click(function(e){
+        e.preventDefault();
+        var validation = [
+            {'field': paswd, 'type': 'text'},
+            {'field': conf_paswd, 'type': 'text'},
+        ];
+        if(!inputsValidation(validation)) return;
+        if(paswd.val() == conf_paswd.val()){
+            formData = $('form#update-userpass-frm').serialize();
+            // Send Updated Data
+            $.ajax({
+                type:'PUT',
+                data: formData,
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    swalSuccess('','Mis à jour avec succés')
+                    getUsers();
+                },
+                error: function (data) {
+                    errorMessages(data);
+                }
+            });
+        }else{
+            alert("La confirmation du mot de passe ne correspond pas")
+        }
+
+    });
+});
+
 //#endregion
 
 //#region Delete Section

@@ -430,14 +430,18 @@ $('body').on('click','.update-model',function(){
 $('body').on('click','.update-appareil',function(){
     var imei_field = $('#imei_modal');
     var imei2_field = $('#imei2_modal');
+    var sn_field = $('#sn_modal');
+    var wifi_field = $('#wifi_modal');
     var appareil_model_field = $('#appareil_model_modal');
     
     // Get appareil Information
     var id = $(this).data('id');
-      $.get(url_smartphones+'/'+id, function (data) {
+    $.get(url_smartphones+'/'+id, function (data) {
         // get field values
         imei_field.val(data.imei);
         imei2_field.val(data.imei2);
+        sn_field.val(data.sn);
+        wifi_field.val(data.wifi);
         appareil_model_field.val(data.brand_model_id);
     });
      
@@ -450,6 +454,8 @@ $('body').on('click','.update-appareil',function(){
             data: {
                 imei: imei_field.val(),
                 imei2: imei2_field.val(),
+                sn: sn_field.val(),
+                wifi: wifi_field.val(),
                 brand_model_id: appareil_model_field.val()
             },
             url: url_smartphones+'/'+id,

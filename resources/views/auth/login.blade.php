@@ -6,7 +6,7 @@
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="#">
-                            <img src="{{ asset('images/logo.png') }}" alt="STG MAROC">
+                            <img src="{{ asset('images/logo.png') }}" alt="STG TELECOM">
                         </a>
                     </div>
                     <div class="login-form">
@@ -18,12 +18,12 @@
                         <form action="{{ route('login') }}" method="post">
                             @csrf
                             <div class="form-group">
-                                <label>Username</label>
-                                <input class="au-input au-input--full" type="text" name="username" placeholder="{{ __('username') }}" value="{{ old('username') }}" required>
+                                <label>Nom d'utilisateur</label>
+                                <input class="au-input au-input--full" type="text" name="username" placeholder="Nom d'utilisateur" value="{{ old('username') }}" required>
                             </div>
                             <div class="form-group">
-                                <label>Password</label>
-                                <input class="au-input au-input--full" type="password" name="password" placeholder="{{ __('password') }}" required>
+                                <label>Mot de passe</label>
+                                <input class="au-input au-input--full" type="password" name="password" placeholder="Mot de passe" required>
                             </div>
                             <div class="login-checkbox">
                                 <!--<label>
@@ -33,7 +33,7 @@
                                     <a href="#">Forgotten Password?</a>
                                 </label>-->
                             </div>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Authentifié</button>
                         </form>
                     </div>
                 </div>

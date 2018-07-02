@@ -107,6 +107,19 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function changePassword(Request $request,$id){
+        $user = User::find($id);
+        if($user){
+            $request->validate([
+                'password' => 'required|confirmed|min:6',
+            ]);
+            $user->password = Hash::make($request->password);
+            $user->saveOrFail();
+            return response()->json($user);
+        }
+        return response()->json($user);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -117,7 +130,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         // // Remove All Roles 
-        // $user->detachRoles();
+        $user->detachRoles();
         return response()->json($user->delete());
 
     }
