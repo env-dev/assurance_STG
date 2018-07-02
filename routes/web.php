@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/appareil', 'HomeController@index');
         Route::resource('agency', 'AgenceController');
         Route::resource('users', 'UserController');
+        Route::put('change-password/{id}', 'UserController@changePassword');
         Route::resource('roles', 'RoleController');
         Route::resource('permissions','PermissionController');
         Route::resource('brands','BrandController');

@@ -79,3 +79,23 @@
 </form>
 @endmodal
 <!-- End Update User Modal -->
+
+<!-- Update User Modal -->
+@modal(['section' => 'UserPassword','title' => 'Modifier Mot de passe Utilisateur'])
+<form action="" method="post" id="update-userpass-frm">
+        <div class="form-group row">
+            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
+            <div class="col-md-6">
+                <input id="password_modal" type="password" class="form-control" name="password" value="" required autofocus>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Confirmation de Mot de passe') }}</label>
+            <div class="col-md-6">
+                <input id="conf_password_modal" type="password" class="form-control" name="password_confirmation" value="" required>
+            </div>
+        </div>
+</form>
+@endmodal
+<!-- End Update User Modal -->

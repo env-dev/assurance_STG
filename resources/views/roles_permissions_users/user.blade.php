@@ -87,6 +87,7 @@
                         <td>
                             <button type="button" class="btn btn-danger delete-user" data-id="{{ $user->id }}" title="Supprimer"><i class="fa fa-times"></i></button>
                             <button type="button" class="btn btn-info update-user" data-id="{{ $user->id }}" title="Modifier"><i class="far fa-edit"></i></button>
+                            <button type="button" class="btn btn-secondary update-pass-user" data-id="{{ $user->id }}" title="Changer Mot de passe"><i class="fas fa-key"></i></button>
                         </td>
                     </tr>
                     @endforeach

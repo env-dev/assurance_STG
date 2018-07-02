@@ -83,10 +83,14 @@ class SmartphoneController extends Controller
         if($phone){
             $phone->imei = $request->imei;
             $phone->imei2 = $request->imei2;
+            $phone->sn = $request->sn;
+            $phone->wifi = $request->wifi;
             $phone->brand_model_id = $request->brand_model_id;
             $request->validate([
                 'imei' => 'required|unique:smartphones,imei,'.$phone->id,
                 'imei2' => 'required|unique:smartphones,imei2,'.$phone->id,
+                'sn' => 'unique:smartphones,sn,'.$phone->id,
+                'wifi' => 'unique:smartphones,wifi,'.$phone->id,
                 'brand_model_id' => 'required|numeric'
             ]);
             return response()->json($phone->saveOrFail());
