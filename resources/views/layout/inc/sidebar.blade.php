@@ -71,9 +71,7 @@
                                 @role(['agence'])
                                 <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('registration') }}"><i class="far fa-plus-square"></i>Ajouter souscription</a></li>
                                 @endrole
-                                @role(['admin','aon'])
                                 <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste souscriptions</a></li>
-                                @endrole
                             </ul>
                     </div>
                 </li>

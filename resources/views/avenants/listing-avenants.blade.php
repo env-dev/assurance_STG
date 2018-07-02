@@ -1,6 +1,11 @@
 @extends('layout.main')
 
 @section('css')
+<style>
+.infos_plus {
+    padding: 0 15px;
+}
+</style>
 @endsection
 
 @section('title','La liste des avenants')
@@ -84,7 +89,11 @@
                             <span class="col-lg-6" id="imei_device"></span>
                         </div>
                         <!-- Brand & model infos -->
-                        <div class="row infos_plus b-none">
+                        <div class="col-lg-6 text-right">
+                            <button type="button" data-toggle="collapse" data-target="#infos_plus" aria-expanded="false" aria-controls="infos_plus"><i class="fas fa-arrow-circle-down" style="font-size: 55px;"></i></button>
+                        </div>
+                        <hr>
+                        <div class="row infos_plus collapse" id="infos_plus">
                             <div class="col-lg-6">
                                 <label class="col-lg-6"> <strong>Marque:</strong> </label>
                                 <span class="col-lg-6" id="brand_device"></span>
@@ -177,13 +186,12 @@
                         $("#id_num_client").text(data.registration.client.num_id);
                         $("#id_type").text(data.registration.client.type_id);
                         $("#imei_device").text(data.registration.smartphone.imei);
-                        // $("#brand_device").text(data.registration.smartphone.model.brand.name);
-                        // $("#model_device").text(data.registration.smartphone.model.name);
-                        // $("#device_price").text(data.registration.smartphone.model.price_ttc);
-                        // $("#guarantee_device").text(guarantee);
+                        $("#brand_device").text(data.registration.smartphone.model.brand.name);
+                        $("#model_device").text(data.registration.smartphone.model.name);
+                        $("#device_price").text(data.registration.smartphone.model.price_ttc);
+                        $("#guarantee_device").text(guarantee);
                         $("#data_flow_date").text(data_flow[0]);
                         $("#total_price_reg").text(data.registration.total_ttc);
-                        // $("#consulted_reg").attr('data-id', ID);
                     }
                 });
             });

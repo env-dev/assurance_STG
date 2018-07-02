@@ -152,6 +152,7 @@ class RegistrationController extends Controller
         $registration = Registration::with(['smartphone.model.brand', 'client'])
         ->where('id', $id)
         ->first();
+
         $agency = Agence::find($registration->agency_id);
         $pdf = new PDFClass;
         if ($registration->guarantee == 100) { //If guarantee is F1
@@ -206,6 +207,12 @@ class RegistrationController extends Controller
         $registrations = Registration::with('smartphone.model.brand')
         ->orderBy('data_flow', 'desc')
         ->get();
+        if (Auth::user()->HasRole('agence')) {
+            $registrations = Registration::with('smartphone.model.brand')
+                ->where('agency_id', Auth::user()->agence_id)
+                ->orderBy('data_flow', 'desc')
+                ->get();
+        }
         $new_registrations = Registration::status(new RegistrationStatus('newAdded'))->count();
         // dd(Datatables::of($registrations)->make(true));
         if($request->ajax()) {
@@ -214,7 +221,7 @@ class RegistrationController extends Controller
             ->addColumn('edit', function ($registrations) {
                 $avenant = Avenant::where('registration_id', $registrations->id)->latest('created_at')->first();
                 $link = '
-                <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg">
+                <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg" data-backdrop="static" data-keyboard="false">
                     <i class="zmdi zmdi-eye"></i>
                 </button>';
                 if ($registrations->isValidRegistration() && ($registrations->guarantee < 111)) {
@@ -279,7 +286,7 @@ class RegistrationController extends Controller
     public function checkStatus($id) 
     {
         $registration = Registration::where('id', $id)->first();
-        if($registration && Auth::User()->hasRole('admin'))
+        if($registration && Auth::User()->hasRole('aon'))
         {
             $registration->new = 0;
             $registration->save();

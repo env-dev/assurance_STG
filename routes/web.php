@@ -50,6 +50,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/getAvenant/{id}', 'AvenantController@getAvenant');
     Route::get('listing-avenants', 'AvenantController@listingAvenants');
     Route::get('export-avenants', 'AvenantController@export');
+
+    Route::resource('claims', 'claimController');
+    Route::get('listing-claims', 'claimController@listingclaims');
+    Route::post('listing-new-claims', 'claimController@listingNewclaims');
     // Notifications
     Route::get('read-registrations', 'NotificationController@readRegisterNotifcation');
     Route::get('read-sinisters', 'NotificationController@readSinisterNotifcation');
