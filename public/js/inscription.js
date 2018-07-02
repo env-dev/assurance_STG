@@ -1,3 +1,18 @@
+$.ajax({
+    url:"agency",
+    type:"GET",
+    success: function(agencies){
+        //console.log(agencies);
+        $('#agencies').html('');
+        var options='<option value="0"></option>';
+        $.each(agencies, function(key,agence){
+            console.log(options);
+            options+='<option value="'+agence.id+'">'+agence.full_name+'</option>';
+        });
+        $('#agencies').html(options);
+    }
+})
+
 // ---------- AutoComplite function
 $( function() {
     $( "#get_imei" ).autocomplete({

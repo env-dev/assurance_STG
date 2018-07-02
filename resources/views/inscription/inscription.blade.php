@@ -45,7 +45,13 @@
                         <label for="text-input" class=" form-control-label">Agence</label>
                     </div>
                     <div class="col-12 col-md-9">
-                    <input type="text" name="agency" id="" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
+                    @role('admin')
+                        <select id="agencies" class="form-control" name="agency">
+                        </select>
+                    @endrole
+                    @role('agence')
+                        <input type="text" name="agency" id="" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
+                    @endrole
                     </div>
                 </div>
                 <div class="row form-group">

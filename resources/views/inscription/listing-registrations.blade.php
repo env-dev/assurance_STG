@@ -10,7 +10,9 @@
     <h2>La liste des Souscriptions</h2>
 </div>
 <div class="col-md-12">
+    @role(['admin','agence'])
     <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter une souscription</a>
+    @endrole
     <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export-registrations') }}" target="_blank" id="export">Exporter</a>
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">

@@ -13,8 +13,11 @@
 
 Route::group(['middleware' => ['auth']], function() {
     
+    Route::get('/', function(){
+        return view('index');
+    });
     Route::group(['middleware' => ['role:admin']], function() {
-        Route::get('/', 'DashboardController');
+        Route::get('/dashboard', 'DashboardController');
         Route::get('/statistics', 'DashboardController@statistics');
         Route::get('/appareil', 'HomeController@index');
         Route::resource('agency', 'AgenceController');

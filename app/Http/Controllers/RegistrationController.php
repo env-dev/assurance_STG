@@ -81,7 +81,7 @@ class RegistrationController extends Controller
         $price_smartphone = $smartphone->model->price_ttc;
         $smartphone->model->brand;
         
-        $agency = Agence::where('full_name', request('agency'))->first();
+        $agency = Agence::find(request('agency'))->first();
         $registration = new Registration;
 
         $registration->mandat_num = str_random(10);
@@ -96,7 +96,7 @@ class RegistrationController extends Controller
         $registration->total_ttc = $total_ttc;
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
-        $registration->agency_id = Auth::user()->agence->id;
+        $registration->agency_id = Auth::user()->agence->id ?? $agency->id;
 
         $registration->save();
 
