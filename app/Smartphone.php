@@ -10,7 +10,9 @@ class Smartphone extends Model
 
     protected $guarded=[];
     protected $dates = ['deleted_at'];
-
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+    ];
     public function registration()
     {
         return $this->hasOne(Registration::class);

@@ -10,15 +10,20 @@
                         </a>
                     </div>
                     <div class="login-form">
+                        @if($errors->has('username'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('username') }} 
+                            </div>
+                        @endif
                         <form action="{{ route('login') }}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label>Username</label>
-                                <input class="au-input au-input--full" type="text" name="username" placeholder="Username" value="{{ old('username') }}" required>
+                                <input class="au-input au-input--full" type="text" name="username" placeholder="{{ __('username') }}" value="{{ old('username') }}" required>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input class="au-input au-input--full" type="password" name="password" placeholder="*********" required>
+                                <input class="au-input au-input--full" type="password" name="password" placeholder="{{ __('password') }}" required>
                             </div>
                             <div class="login-checkbox">
                                 <!--<label>
