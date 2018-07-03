@@ -72,7 +72,7 @@
                             <span class="col-lg-6" id="client_type"></span>
                         </div>
                         <div class="col-lg-6">
-                            <label class="col-lg-6" id="id_type"></label>
+                            <label class="col-lg-6" id="id_type"><strong></strong></label>
                             <span class="col-lg-6" id="id_num_client"></span>
                         </div>
                         <div class="col-lg-6">
@@ -209,17 +209,21 @@
                             $("#extensions").html();
                             var extensions = '<option value="0">----</option>';
                             if (registration.guarantee == 100){
-                                if(registration.avenant.length && registration.avenant[0].extension_added == 110) {
-                                    extensions += '<option value="111">F3</option>';
-                                }else if(registration.avenant.length && registration.avenant[0].extension_added == 111) {
-                                    extensions += 'Pas de guarantie';
-                                }else {
+                                // if(registration.avenant.length && registration.avenant[0].extension_added == 110) {
+                                if(!registration.avenant.length) {
                                     extensions += '<option value="110">F2</option>';
-                                    extensions += '<option value="111">F3</option>';
                                 }
-                            }else if (registration.guarantee == 110){
-                                extensions += '<option value="111">F3</option>';
-                            }              
+                                // else if(registration.avenant.length && registration.avenant[0].extension_added == 111) {
+                                //     extensions += 'Pas de guarantie';
+                                // }else {
+                                //     extensions += '<option value="110">F2</option>';
+                                //     extensions += '<option value="111">F3</option>';
+                                // }
+                                // extensions += '<option value="110">F2</option>';
+                            }
+                            // else if (registration.guarantee == 110){
+                            //     extensions += '<option value="111">F3</option>';
+                            // }           
                             $("#extensions").html(extensions);
                         }
                     });
@@ -235,8 +239,10 @@
                     dataType: 'json',
                     success: function(data){
                         var guarantee = 'F1';
-                        var birth_date = data.client.birth_date.split(' ');
-                        var data_flow = data.data_flow.split(' ');
+                        var registration = data.registration;
+                        var agency = data.agency;
+                        var birth_date = registration.client.birth_date.split(' ');
+                        var data_flow = registration.data_flow.split(' ');
                         
                         if (data.guarantee == 110) {
                             guarantee = 'F2';
@@ -244,23 +250,23 @@
                             guarantee = 'F3';
                         }
                         // fill the model with registration data
-                        $("#full_name_client").text(data.client.first_name + ' ' +data.client.last_name);
-                        $("#email_client").text(data.client.email);
+                        $("#full_name_client").text(registration.client.first_name + ' ' +registration.client.last_name);
+                        $("#email_client").text(registration.client.email);
                         $("#birthdate_client").text(birth_date[0]);
-                        $("#address_client").text(data.client.address);
-                        $("#tel_client").text(data.client.tel);
-                        $("#city_client").text(data.client.city);
-                        $("#client_type").text(data.client.nature);
-                        $("#id_num_client").text(data.client.num_id);
-                        $("#id_type").text(data.client.type_id);
-                        $("#imei_device").text(data.smartphone.imei);
-                        $("#brand_device").text(data.smartphone.model.brand.name);
-                        $("#model_device").text(data.smartphone.model.name);
-                        $("#device_price").text(data.smartphone.model.price_ttc);
+                        $("#address_client").text(registration.client.address);
+                        $("#tel_client").text(registration.client.tel);
+                        $("#city_client").text(registration.client.city);
+                        $("#client_type").text(registration.client.nature);
+                        $("#id_num_client").text(registration.client.num_id);
+                        $("#id_type strong").text(registration.client.type_id);
+                        $("#imei_device").text(registration.smartphone.imei);
+                        $("#brand_device").text(registration.smartphone.model.brand.name);
+                        $("#model_device").text(registration.smartphone.model.name);
+                        $("#device_price").text(registration.smartphone.model.price_ttc);
                         $("#guarantee_device").text(guarantee);
                         $("#data_flow_date").text(data_flow[0]);
-                        // $("#agency_reg").text(agency);
-                        $("#total_price_reg").text(data.total_ttc);
+                        $("#agency_reg").text(agency.full_name);
+                        $("#total_price_reg").text(registration.total_ttc);
                         $("#consulted_reg").attr('data-id', ID);
                     }
                 });
@@ -319,15 +325,35 @@
             });
         });
 
-        $("#export").on("click", function(e){
-            e.preventDefault();
-            window.location = '/export-registrations';
-            swal({
-                title: 'Export est effectuer',
-                text: '',
-                icon: "success",
-            })
-        });
+        $("#export").on("click", function(e) {
+            var self = $(this);
+            if (self.attr('canExport') == undefined) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'export-registrations',
+                    success: function(response) {
+                        if (response.status != undefined) {
+                            swal({
+                                title: 'Export',
+                                text: response.msg,
+                                icon: "error",
+                            })
+                            return;
+                        }
+                        self.attr('canExport', true);
+                        self.trigger('click');
+                    }
+                })
+            }else{
+                swal({
+                    title: 'Export',
+                    text: 'L\'export est effectué',
+                    icon: "success",
+                })
+                window.location.target = '_blank';
+                window.location = '/export-registrations';
+            }
+        })
 
         $("#print_reg").on("click", function(e) {
             e.preventDefault();

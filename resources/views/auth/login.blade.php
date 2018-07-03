@@ -33,7 +33,7 @@
                                     <a href="#">Forgotten Password?</a>
                                 </label>-->
                             </div>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Authentifié</button>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">S'authentifier</button>
                         </form>
                     </div>
                 </div>

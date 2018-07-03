@@ -81,7 +81,7 @@
                             <span class="col-lg-6" id="client_type"></span>
                         </div>
                         <div class="col-lg-6">
-                            <label class="col-lg-6" id="id_type"></label>
+                            <label class="col-lg-6" id="id_type"><strong></strong></label>
                             <span class="col-lg-6" id="id_num_client"></span>
                         </div>
                         <div class="col-lg-6">
@@ -89,8 +89,8 @@
                             <span class="col-lg-6" id="imei_device"></span>
                         </div>
                         <!-- Brand & model infos -->
-                        <div class="col-lg-6 text-right">
-                            <button type="button" data-toggle="collapse" data-target="#infos_plus" aria-expanded="false" aria-controls="infos_plus"><i class="fas fa-arrow-circle-down" style="font-size: 55px;"></i></button>
+                        <div class="col-lg-12 text-center"  data-toggle="collapse" data-target="#infos_plus" aria-expanded="false" aria-controls="infos_plus" style="/* background: #434343; */border-bottom: 1px solid black;margin-bottom: 15px;">
+                            <button type="button"><i class="fa fa-angle-double-down"></i></button>
                         </div>
                         <hr>
                         <div class="row infos_plus collapse" id="infos_plus">
@@ -170,28 +170,34 @@
                     dataType: 'json',
                     success: function(data){
                         var guarantee = 'F1';
-                        var birth_date = data.registration.client.birth_date.split(' ');
-                        var data_flow = data.registration.data_flow.split(' ');
+                        var avenant = data.avenant;
+                        var agency = data.agency;
+                        var extension_added = (avenant.extension_added == 110) ? 'F2':'';
+                        var effective_date = avenant.effective_date.split(' ');
+                        var birth_date = avenant.registration.client.birth_date.split(' ');
+                        var data_flow = avenant.registration.data_flow.split(' ');
                         // fill the model with registration data
-                        $("#extension_added").text(data.extension_added);
-                        $("#effective_date").text(data.effective_date);
-                        $("#premium_added").text(data.add_premium);
-                        $("#full_name_client").text(data.registration.client.first_name + ' ' +data.registration.client.last_name);
-                        $("#email_client").text(data.registration.client.email);
+                        $("#num_mandat").text(avenant.mandat_num);
+                        $("#extension_added").text(extension_added);
+                        $("#effective_date").text(effective_date[0]);
+                        $("#premium_added").text(avenant.add_premium);
+                        $("#full_name_client").text(avenant.registration.client.first_name + ' ' +avenant.registration.client.last_name);
+                        $("#email_client").text(avenant.registration.client.email);
                         $("#birthdate_client").text(birth_date[0]);
-                        $("#address_client").text(data.registration.client.address);
-                        $("#tel_client").text(data.registration.client.tel);
-                        $("#city_client").text(data.registration.client.city);
-                        $("#client_type").text(data.registration.client.nature);
-                        $("#id_num_client").text(data.registration.client.num_id);
-                        $("#id_type").text(data.registration.client.type_id);
-                        $("#imei_device").text(data.registration.smartphone.imei);
-                        $("#brand_device").text(data.registration.smartphone.model.brand.name);
-                        $("#model_device").text(data.registration.smartphone.model.name);
-                        $("#device_price").text(data.registration.smartphone.model.price_ttc);
+                        $("#address_client").text(avenant.registration.client.address);
+                        $("#tel_client").text(avenant.registration.client.tel);
+                        $("#city_client").text(avenant.registration.client.city);
+                        $("#client_type").text(avenant.registration.client.nature);
+                        $("#id_num_client").text(avenant.registration.client.num_id);
+                        $("#id_type strong").text(avenant.registration.client.type_id);
+                        $("#imei_device").text(avenant.registration.smartphone.imei);
+                        $("#brand_device").text(avenant.registration.smartphone.model.brand.name);
+                        $("#model_device").text(avenant.registration.smartphone.model.name);
+                        $("#device_price").text(avenant.registration.smartphone.model.price_ttc);
                         $("#guarantee_device").text(guarantee);
                         $("#data_flow_date").text(data_flow[0]);
-                        $("#total_price_reg").text(data.registration.total_ttc);
+                        $("#agency_reg").text(agency.full_name);
+                        $("#total_price_reg").text(avenant.registration.total_ttc);
                     }
                 });
             });
@@ -199,6 +205,36 @@
 
 
         initDataTable()
+
+        $("#export").on("click", function(e) {
+            var self = $(this);
+            if (self.attr('canExport') == undefined) {
+                e.preventDefault();
+                $.ajax({
+                    url: 'export-avenants',
+                    success: function(response) {
+                        if (response.status != undefined) {
+                            swal({
+                                title: 'Export',
+                                text: response.msg,
+                                icon: "error",
+                            })
+                            return;
+                        }
+                        self.attr('canExport', true);
+                        self.trigger('click');
+                    }
+                })
+            }else{
+                swal({
+                    title: 'Export',
+                    text: 'L\'export est effectué',
+                    icon: "success",
+                })
+                window.location.target = '_blank';
+                window.location = 'export-avenants';
+            }
+        })
     })
 </script>
 @endsection

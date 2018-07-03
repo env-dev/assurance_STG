@@ -53,11 +53,10 @@ class RegistrationController extends Controller
             'first_name'  => 'required|min:3',
             'birth_date'  => 'required',
             'city' => 'required',
-            'agency' => 'required',
+            'agency' => 'required|integer',
             'nature' => 'required',
             'num_id' => 'required',
             'imei' => 'required',
-            'date_flow_data' => 'required',
         ];
 
         $this->validate($request,$rules);
@@ -75,7 +74,7 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        $client->save();
+        // $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $price_smartphone = $smartphone->model->price_ttc;
@@ -85,23 +84,26 @@ class RegistrationController extends Controller
         $registration = new Registration;
 
         $registration->mandat_num = str_random(10);
-        $registration->data_flow = request('date_flow_data');
+        // $registration->data_flow = request('date_flow_data');
+        $registration->data_flow = \Carbon\Carbon::now();
         $registration->guarantee = request('guarantee');
         $total_ttc = $price_smartphone;
         if(request('guarantee') == '110'){
             $total_ttc = $price_smartphone + ($price_smartphone * 10)/100;
-        }else if(request('guarantee') == '111'){
-            $total_ttc = $price_smartphone + ($price_smartphone * 20)/100;
         }
+        // }else if(request('guarantee') == '111'){
+        //     $total_ttc = $price_smartphone + ($price_smartphone * 20)/100;
+        // }
         $registration->total_ttc = $total_ttc;
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
         $registration->agency_id = Auth::user()->agence->id ?? $agency->id;
 
-        $registration->save();
+        // $registration->save();
 
         $pdf = new PDFClass;
-        if (request('guarantee') == '110' || request('guarantee') == '111') {
+        // if (request('guarantee') == '110' || request('guarantee') == '111') {
+        if (request('guarantee') == '110') {
             Auth::user()->notif('registration');
             return $pdf->downloadPDF('pdfs.registration', $client, $registration, $smartphone, $agency);
         }
@@ -138,7 +140,8 @@ class RegistrationController extends Controller
         }])
         ->where('id', $id)
         ->first();
-        return response()->json($registration);
+        $agency = Agence::find($registration->agency_id);
+        return response()->json(compact('registration', 'agency'));
     }
 
     /**
@@ -224,20 +227,25 @@ class RegistrationController extends Controller
                 <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg" data-backdrop="static" data-keyboard="false">
                     <i class="zmdi zmdi-eye"></i>
                 </button>';
-                if ($registrations->isValidRegistration() && ($registrations->guarantee < 111)) {
-                    if ($avenant) {
-                        if ($avenant->extension_added < 111) {
-                            $link .= 
-                            '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
-                                <i class="zmdi zmdi-plus-circle"></i>
-                            </button>';
-                        }
-                    }else {
+                if (Auth::user()->HasRole('agence') && $registrations->isValidRegistration() && ($registrations->guarantee <= 110)) {
+                    if (!$avenant) {
                         $link .= 
                             '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
                                 <i class="zmdi zmdi-plus-circle"></i>
                             </button>';
+                        // if ($avenant->extension_added < 111) {
+                        //     $link .= 
+                        //     '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
+                        //         <i class="zmdi zmdi-plus-circle"></i>
+                        //     </button>';
+                        // }
                     }
+                    // else {
+                    //     $link .= 
+                    //         '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
+                    //             <i class="zmdi zmdi-plus-circle"></i>
+                    //         </button>';
+                    // }
                 }
                 return $link;
             })
@@ -297,17 +305,17 @@ class RegistrationController extends Controller
     public function export()
     {
         // $registrations = Registration::whereDate('created_at', Carbon::yesterday()->toDateString())->get();
-        $registrations = Registration::whereDate('created_at', 'like', '2018-06-26%')->get();
+        $registrations = Registration::whereDate('created_at', \Carbon\Carbon::now()->format('Y-m-d').'%')->get();
         if (!$registrations->isEmpty()) {
             $file_name = time().'_Liste_des_souscriptions.xlsx';
             foreach ($registrations as $registration) {
                 $registration->smartphone->model->brand;
                 $registration->client;
             }
-            // $excel = Excel::store(new ExcelDoc($registrations), $file_name);
             return Excel::download(new ExcelDoc($registrations, 'export.registrations', 'registrations', null), $file_name);
+            // $excel = Excel::store(new ExcelDoc($registrations), $file_name);
             // return response()->json(['msg' => 'Votre export est effectué.', 'name' => $file_name, 'file' => public_path('\storage\export\\').$file_name, 'excel' => $excel]);
         }
-        // return response()->json(['msg' => 'Aucune souscriptions est faite aujourd\'hui']);
+        return response()->json(['msg' => 'Aucune souscriptions est faite aujourd\'hui', 'status' => 404]);
     }
 }

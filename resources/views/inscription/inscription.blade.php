@@ -20,13 +20,13 @@
                         <select name="guarantee" id="guarantee" class="form-control">
                             <option value="100">Selectionnez une garantie</option>
                             <option value="110">F2</option>
-                            <option value="111">F3</option>
+                            <!-- <option value="111">F3</option> -->
                         </select>
                         <small class="form-text text-muted">La garantie F1 est inclu par defaut</small>
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col col-md-3">
+                    <!-- <div class="col col-md-3">
                         <label for="text-input" class=" form-control-label">Date flux de données</label>
                     </div>
                     <div class="col-12 col-md-9">
@@ -38,7 +38,20 @@
                                 </div>
                             </div>
                         </div>
+                    </div> -->
+                    <!-- <div class="col col-md-3">
+                        <label for="text-input" class=" form-control-label">Date flux de données</label>
                     </div>
+                    <div class="col-12 col-md-9">
+                        <div class="input-group date" id="date_flow_data" data-target-input="nearest">
+                            <input type="text" name="date_flow_data" id="flow_data" class="form-control datetimepicker-input" data-target="#date_flow_data" required/>
+                            <div class="input-group-append" data-target="#date_flow_data" data-toggle="datetimepicker">
+                                <div class="input-group-text">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3">
@@ -50,8 +63,8 @@
                         </select>
                     @endrole
                     @role('agence')
-                        <input type="text" name="agence_name" id="" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
-                        <input type="text" name="agency" id="" class="form-control" value="{{ Auth::user()->agence->id }}" readonly>
+                        <input type="text" name="agence_name" id="agence_name" class="form-control" value="{{ Auth::user()->agence->full_name }}" readonly>
+                        <input type="hidden" name="agency" value="{{ Auth::user()->agence->id }}">
                     @endrole
                     </div>
                 </div>
@@ -65,7 +78,7 @@
                 </div>
         </div>
         <div class="card-footer">
-            <button type="submit" id="saveRegistration" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#scrollmodal">
+            <button id="saveRegistration" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#scrollmodal">
                 <i class="fa fa-dot-circle-o"></i> Enregistrer
             </button>
         </div>

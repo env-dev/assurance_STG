@@ -21,7 +21,7 @@ class ExcelDoc implements FromView, WithEvents, ShouldAutoSize
         $this->data = $arg;
         $this->view = $view;
         $this->data_name = $data_name;
-        $this->total_suprime = $total_surprime;
+        $this->total_surprime = $total_surprime;
     }
 
 

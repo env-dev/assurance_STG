@@ -61,7 +61,8 @@ $(function() {
       }
     });
   
-    $(".next-step").click(function(e) {
+    $(".next-step").click(function(e) {  
+        e.preventDefault();
       var $active = $('.nav-pills li a.active');
       nextTab($active);
     });
@@ -152,9 +153,9 @@ $(function(){
         var modelName = $("#modelName").text();
         var smartphonePrice = $("#smartphonePrice").text();
         // Fin infos souscription
-        var guarantee = $("#guarantee").val();
+        var guarantee = ($("#guarantee").val() == '100') ? 'F1' : 'F2';
         var date_flow_data = $("#flow_data").val();
-        var agency = $("#agency").val();
+        var agency = $("#agence_name").val();
         var total_ttc = $("#total_ttc").val();
 
         $("#full_name_client").text(name + ' ' +first_name);
@@ -179,5 +180,9 @@ $(function(){
 
     $("#confirmRegistration").on("click", function(e){
         jQuery("#inscriptionForm").submit();
+    });
+
+    $('.tel').mask("00-00-00-00-00", {
+        placeholder: "__-__-__-__-__"
     });
 });

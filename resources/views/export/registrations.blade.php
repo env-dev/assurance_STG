@@ -37,9 +37,9 @@
             <td>{{ $registration->smartphone->model->name }}</td>
             <td>{{ $registration->smartphone->imei }}</td>
             <td>{{ $registration->smartphone->model->price_ttc }}</td>
-            <td>{{ $registration->guarantee }}</td>
-            <td>{{ $registration->data_flow }}</td>
-            <td>{{ $registration->data_flow->diffForHumans() }}</td>
+            <td>{{ ($registration->guarantee == '100') ? 'F1' : 'F2' }}</td>
+            <td>{{ $registration->data_flow->format('Y/m/d') }}</td>
+            <td>{{ $registration->data_flow->diffForHumans(null, false, true, 1) }}</td>
             <td>{{ $registration->total_ttc }}</td>
         </tr>
     @endforeach

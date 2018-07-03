@@ -9,6 +9,7 @@ use App\Helpers\PDFClass;
 use App\Helpers\ExcelDoc;
 use Carbon\Carbon;
 use App\Avenant;
+use App\Agence;
 use Excel;
 
 
@@ -108,8 +109,9 @@ class AvenantController extends Controller
         ->first();
         $avenant->registration->smartphone->model->brand;
         $avenant->registration->client;
+        $agency = Agence::find($avenant->registration->agency_id);
 
-        return response()->json($avenant);
+        return response()->json(compact('avenant', 'agency'));
     }
 
     public function listingAvenants(Request $request)
@@ -133,7 +135,8 @@ class AvenantController extends Controller
             })
             
             ->editColumn('extension_added', function($avenants){
-                return (($avenants->extension_added == 110) ? 'F2' : 'F3');
+                // return (($avenants->extension_added == 110) ? 'F2' : 'F3');
+                return 'F2';
             })
             ->rawColumns(['edit', 'ref_reg'])
             ->make(true);
@@ -143,7 +146,8 @@ class AvenantController extends Controller
 
     public function export()
     {
-        $avenants = Avenant::whereDate('created_at', 'like', '2018-06-25%')->get();
+        $avenants = Avenant::whereDate('created_at', 'like', \Carbon\Carbon::now()->format('Y-m-d').'%')->get();
+        // $avenants = Avenant::whereDate('created_at', 'like', '2018-06-25%')->get();
         
         if (!$avenants->isEmpty()) {
             $file_name = time().'_Liste_des_avenants.xlsx';
@@ -157,5 +161,6 @@ class AvenantController extends Controller
             return Excel::download(new ExcelDoc($avenants, 'export.avenants', 'avenants', $total_surprime), $file_name);
             // return response()->json(['msg' => 'Votre export est effectué.', 'name' => $file_name, 'file' => public_path('\storage\export\\').$file_name, 'excel' => $excel]);
         }
+        return response()->json(['msg' => 'Aucun avenant est effectué aujourd\'hui', 'status' => 404]);
     }
 }

@@ -30,7 +30,7 @@
             <td>{{ $avenant->registration->client->email }}</td>
             <td>{{ $avenant->registration->smartphone->imei }}</td>
             <td>{{ ($avenant->extenion_added == 110) ? 'F2' : 'F3' }}</td>
-            <td>{{ $avenant->effective_date->diffForHumans() }}</td>
+            <td>{{ $avenant->effective_date->format('Y/m/d') }}</td>
             <td>{{ $avenant->add_premium }}</td>
         </tr>
     @endforeach
@@ -44,7 +44,7 @@
             <td></td>
             <td></td>
             <td>Total surprime TTC</td>
-            <td>{{ $total_surprime }}</td>
+            <td><strong>{{ $total_surprime }}</strong></td>
         </tr>
     </tbody>
 </table>

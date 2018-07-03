@@ -47,7 +47,7 @@
         <div class="col-6 ">
             <div class="form-group">
                 <label for="address" class="control-label mb-1">Tel</label>
-                <input id="tel" name="tel" type="text" class="form-control" required>
+                <input id="tel" name="tel" type="text" class="form-control tel" required>
                 <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
             </div>
         </div>
