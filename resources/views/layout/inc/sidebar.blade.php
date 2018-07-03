@@ -17,27 +17,36 @@
     <nav class="navbar-mobile">
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
-                <li>
-                    <a href="{{ url('/') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-                </li>
-                @role(['admin','agence'])
-                <li>
-                    <a href="{{ url('registration') }}"><i class="fas fa-address-book"></i>Inscription</a>
+                @role('admin')
+                <li class="{{ Request::is('/dashboard') ? 'active' : '' }}">
+                    <a href="{{ url('/dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
                 @endrole
+                <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
+                    <!-- <a href="#submenu1"><i class="fas fa-list-alt"></i>Les souscriptions</a> -->
+                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i class="fas fa-align-left"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
+                    <div class="collapse" id="submenu1" aria-expanded="false">
+                        <ul class="flex-column pl-4 nav">
+                                @role(['agence','admin'])
+                                <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('registration') }}"><i class="far fa-plus-square"></i>Ajouter souscription</a></li>
+                                @endrole
+                                <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste souscriptions</a></li>
+                            </ul>
+                    </div>
+                </li>
                 @role(['admin','aon'])
-                <li>
-                    <a href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste des souscriptions</a>
+                <li class="{{ Request::is('listing-avenants*') ? 'active' : '' }}">
+                    <a href="{{ url('listing-avenants') }}"><i class="fas fa-list-alt"></i>Liste des avenants</a>
                 </li>
                 @endrole
                 @role('admin')
-                <li class="active">
+                <li class="{{ Request::is('appareil*') ? 'active' : '' }}">
                     <a  href="{{ url('appareil') }}"><i class="fas fa-mobile-alt"></i>Gestion des Appareils</a>
                 </li>
-                <li class="active">
+                <li class="{{ Request::is('users*') ? 'active' : '' }}">
                     <a  href="{{ url('users') }}"><i class="fas fa-users"></i>Gestion Utilisateur</a>
                 </li>
-                <li class="active">
+                <li class="{{ Request::is('agency*') ? 'active' : '' }}">
                     <a  href="{{ url('agency') }}"><i class="fas fa-store-alt"></i>Agences</a>
                 </li>
                 @endrole
@@ -58,17 +67,16 @@
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
                 @role('admin')
-                <li class="{{ Request::is('/') ? 'active' : '' }}">
-                    <a href="{{ url('/') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                <li class="{{ Request::is('/dashboard') ? 'active' : '' }}">
+                    <a href="{{ url('/dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
                 @endrole
-                
                 <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
                     <!-- <a href="#submenu1"><i class="fas fa-list-alt"></i>Les souscriptions</a> -->
                     <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i class="fas fa-align-left"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
                     <div class="collapse" id="submenu1" aria-expanded="false">
                         <ul class="flex-column pl-4 nav">
-                                @role(['agence'])
+                                @role(['agence','admin'])
                                 <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('registration') }}"><i class="far fa-plus-square"></i>Ajouter souscription</a></li>
                                 @endrole
                                 <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('listing-registrations') }}"><i class="fas fa-list-alt"></i>Liste souscriptions</a></li>
@@ -80,7 +88,6 @@
                     <a href="{{ url('listing-avenants') }}"><i class="fas fa-list-alt"></i>Liste des avenants</a>
                 </li>
                 @endrole
-               
                 @role('admin')
                 <li class="{{ Request::is('appareil*') ? 'active' : '' }}">
                     <a  href="{{ url('appareil') }}"><i class="fas fa-mobile-alt"></i>Gestion des Appareils</a>
