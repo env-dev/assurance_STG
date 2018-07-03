@@ -87,7 +87,9 @@ function errorMessages(data){
 
 $(function(){
     // INIT
-    $("select").select2();
+    $("select").select2({
+        theme: "classic"
+    });
     agenceInputMasks()
 
     // View Agency's Information

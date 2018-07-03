@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="STG">
+    <link rel="shortcut icon" href="{{asset('images/icon/favicon.png')}}">
     <meta name="author" content="STG">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

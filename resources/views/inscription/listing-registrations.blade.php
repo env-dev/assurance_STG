@@ -13,7 +13,7 @@
     @role(['admin','agence'])
     <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter une souscription</a>
     @endrole
-    @role(['aon'])
+    @role(['admin,aon'])
     <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export-registrations') }}" target="_blank" id="export">Exporter</a>
     @endrole
     <!-- DATA TABLE-->
