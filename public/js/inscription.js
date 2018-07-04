@@ -25,7 +25,7 @@ $( function() {
                 $.map( data, function( val, i ) {
                     jsonData.push(val.imei);
                   });
-                response( $.ui.autocomplete.filter(jsonData, $( "#get_imei" ).val()) );
+                response( $.ui.autocomplete.filter(jsonData, $( "#get_imei" ).val()).slice(0, 10) );
             }
         } );
         },
