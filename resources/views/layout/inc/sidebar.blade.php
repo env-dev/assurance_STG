@@ -73,8 +73,8 @@
                 @endrole
                 <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
                     <!-- <a href="#submenu1"><i class="fas fa-list-alt"></i>Les souscriptions</a> -->
-                    <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i class="fas fa-align-left"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
-                    <div class="collapse" id="submenu1" aria-expanded="false">
+                    <a class="nav-link collapsed" href="#submenu2" data-toggle="collapse" data-target="#submenu2"><i class="fas fa-align-left"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
+                    <div class="collapse" id="submenu2" aria-expanded="false">
                         <ul class="flex-column pl-4 nav">
                                 @role(['agence','admin'])
                                 <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('registration') }}"><i class="far fa-plus-square"></i>Ajouter souscription</a></li>
