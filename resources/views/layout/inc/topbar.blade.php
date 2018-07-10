@@ -108,12 +108,9 @@
                                             <i class="zmdi zmdi-file-text"></i>
                                         </div>
                                         <div class="content">
-                                            <p><a href="#">Les nouvelles Sinistres </a><span class="badge badge-secondary float-right">{{ $countSinisters  }}</span></p>
-                                            {{-- <span class="date">{{ $notification->data['date']}}</span> --}}
+                                            <p><a href="{{url('read-sinisters')}}">Les nouvelles Sinistres </a><span class="badge badge-secondary float-right">{{ $countSinisters  }}</span></p>
+                                            {{-- <span class="date">{{ $notification->data['date'] }}</span> --}}
                                         </div>
-                                    </div>
-                                    <div class="notifi__footer">
-                                        <a id="read-all" onclick="$.ajax({url:'read-all'});"title="Lis tout" href="#">Marque tous comme lu</a>
                                     </div>
                                     @else
                                     <div class="notifi__title text-center">
@@ -122,6 +119,35 @@
                                     @endif
                                 </div>
                                 @endrole
+                                <!-- Notifs for Agency
+                                @role(['agence'])
+                                <i class="zmdi zmdi-notifications"></i>
+                                <span class="quantity">{{ $countAonDecision }}</span>
+                                <div class="notifi-dropdown js-dropdown">
+                                @if($countAonDecision > 0)
+                                    <div class="notifi__title text-center">
+                                        <p class="">Vous avez {{ $countAonDecision  }} notifications </p>
+                                    </div>
+                                AonDecision
+                                <div class="notifi__item">
+                                    <div class="bg-c3 img-cir img-40">
+                                        <i class="zmdi zmdi-file-text"></i>
+                                    </div>
+                                    <div class="content">
+                                        <p><a href="{{url('read-aonDecision')}}">Les nouvelles AON décision </a><span class="badge badge-secondary float-right">{{ $countAonDecision  }}</span></p>
+                                        {{-- <span class="date">{{ $notification->data['date'] }}</span> --}}
+                                    </div>
+                                </div>
+                                <div class="notifi__footer">
+                                    <a id="read-all" onclick="$.ajax({url:'read-all'});"title="Lis tout" href="#">Marque tous comme lu</a>
+                                </div>
+                                @else
+                                <div class="notifi__title text-center">
+                                    <p class="">Vous avez aucune notifications </p>
+                                </div>
+                                @endif
+                                </div>
+                                @endrole -->
                             </div>
                         </div>
                         <div class="account-wrap">

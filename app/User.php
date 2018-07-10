@@ -51,5 +51,15 @@ class User extends Authenticatable
        Notification::send($users, new \App\Notifications\NewRegistrationNotification($type));
     }
 
+    public function aonDecisionNotif($type, $agence_id) {
+        $users = $this::whereHas('roles', function($query) {
+            $query->where('name', 'agence');
+        })
+        ->where('agence_id', $agence_id)
+        ->get();
+
+        Notification::send($users, new \App\Notifications\NewRegistrationNotification($type));
+    }
+
 
 }

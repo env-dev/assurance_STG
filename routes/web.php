@@ -51,12 +51,19 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('listing-avenants', 'AvenantController@listingAvenants');
     Route::get('export-avenants', 'AvenantController@export');
 
-    Route::resource('claims', 'claimController');
-    Route::get('listing-claims', 'claimController@listingclaims');
-    Route::post('listing-new-claims', 'claimController@listingNewclaims');
+    Route::resource('sinisters', 'SinisterController');
+    Route::get('/listing-sinisters', 'SinisterController@listingSinisters');
+    Route::get('/getSinisters', 'SinisterController@listingSinisters');
+    Route::get('/getSinister/{id}', 'SinisterController@getSinister');
+    
+    Route::post('setAonDecision/{id}', 'SinisterController@setAonDecision');
+    Route::post('setReparationStatus/{id}', 'SinisterController@setReparationStatus');
+    
+    Route::resource('/listing-reparations', 'ReparationController');
     // Notifications
     Route::get('read-registrations', 'NotificationController@readRegisterNotifcation');
     Route::get('read-sinisters', 'NotificationController@readSinisterNotifcation');
+    Route::get('read-aonDecision', 'NotificationController@readAonDecisionNotifcation');
     Route::get('read-all', 'NotificationController@readRegisterNotifcation');
 
 });

@@ -14,6 +14,7 @@ use App\Smartphone;
 use App\Client;
 use App\Agence;
 use App\Avenant;
+use App\Sinister;
 use Carbon\Carbon;
 use Auth;
 use Excel;
@@ -74,7 +75,7 @@ class RegistrationController extends Controller
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
 
-        // $client->save();
+        $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $price_smartphone = $smartphone->model->price_ttc;
@@ -99,7 +100,7 @@ class RegistrationController extends Controller
         $registration->client_id = $client->id;
         $registration->agency_id = Auth::user()->agence->id ?? $agency->id;
 
-        // $registration->save();
+        $registration->save();
 
         $pdf = new PDFClass;
         // if (request('guarantee') == '110' || request('guarantee') == '111') {
@@ -207,14 +208,13 @@ class RegistrationController extends Controller
         // $new_memberships = $new_memberships->map(function ($item, $key) {
         //    return $item->smartphone;
         // });
-        $registrations = Registration::with('smartphone.model.brand')
+        $registrations = Registration::with(['smartphone.model.brand', 'client'])
         ->orderBy('data_flow', 'desc')
         ->get();
         if (Auth::user()->HasRole('agence')) {
-            $registrations = Registration::with('smartphone.model.brand')
-                ->where('agency_id', Auth::user()->agence_id)
-                ->orderBy('data_flow', 'desc')
-                ->get();
+                $registrations = $registrations->filter(function ($value, $key) {
+                    return $value->agency_id = Auth::user()->agence_id;
+                });
         }
         $new_registrations = Registration::status(new RegistrationStatus('newAdded'))->count();
         // dd(Datatables::of($registrations)->make(true));
@@ -223,11 +223,22 @@ class RegistrationController extends Controller
             ->addIndexColumn()
             ->addColumn('edit', function ($registrations) {
                 $avenant = Avenant::where('registration_id', $registrations->id)->latest('created_at')->first();
+                $sinister = Sinister::where('registration_id', $registrations->id)->first();
+                
                 $link = '
-                <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg" data-backdrop="static" data-keyboard="false">
+                <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg" data-backdrop="static" data-keyboard="false" title="Consulter">
                     <i class="zmdi zmdi-eye"></i>
                 </button>';
-                if (Auth::user()->HasRole('agence') && $registrations->isValidRegistration() && ($registrations->guarantee <= 110)) {
+
+                // if (Auth::user()->HasRole(['admin', 'agence']) && (!$sinister || $sinister->status == 11)) {
+                if (Auth::user()->HasRole(['admin', 'agence'])) {
+                    $link .= '
+                    <button type="button" class="add_sinister item btn btn-outline-warning" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#add_sinister" data-backdrop="static" data-keyboard="false" title="Déclarer un sinistre">
+                    <i class="fas fa-exclamation-circle"></i>
+                    </button>';
+                }
+
+                if (Auth::user()->HasRole('agence') && $registrations->isValidRegistration() && ($registrations->guarantee < 110)) {
                     if (!$avenant) {
                         $link .= 
                             '&nbsp;<button type="button" class="item btn btn-success addAvenant" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#addAvenant" title="Ajouter un avenant">
@@ -266,6 +277,9 @@ class RegistrationController extends Controller
             ->editColumn('new', function($registrations){
                 return ($registrations->new ? '<h4><span class="badge badge-success">Nouveau</span></h4>' : '<h4><span class="badge badge-secondary">Vu</span></h4>');
             })
+            ->editColumn('data_flow', function($registrations){
+                return $registrations->data_flow->format('Y-m-d');
+            })
             ->make(true);
         }
         return view('inscription.listing-registrations', compact('registrations', 'new_registrations'));
@@ -281,7 +295,7 @@ class RegistrationController extends Controller
 
     public function get_imei()
     {
-        return response()->json(Smartphone::select('imei')->whereNull('deleted_at')->get());
+        return response()->json(Smartphone::select('imei')->doesntHave('registration')->get());
     }
 
     public function getSmartphoneByImei( $imei )

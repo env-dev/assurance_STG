@@ -88,6 +88,20 @@
                     <a href="{{ url('listing-avenants') }}"><i class="fas fa-list-alt"></i>Liste des avenants</a>
                 </li>
                 @endrole
+                <li class="{{ Request::is('claims*') ? 'active' : '' }}">
+                    <a class="nav-link collapsed" href="#claims" data-toggle="collapse" data-target="#claims"><i class="fas fa-align-left"></i>Les sinistres &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
+                    <div class="collapse" id="claims" aria-expanded="false">
+                        <ul class="flex-column pl-4 nav">
+                                @role(['agence','admin'])
+                                <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('listing-registrations') }}"><i class="far fa-plus-square"></i>Ajouter sinistre</a></li>
+                                @endrole
+                                <li class="nav-item"><a class="nav-link py-0 my-3" href="{{ url('listing-sinisters') }}"><i class="fas fa-list-alt"></i>Liste sinistre</a></li>
+                            </ul>
+                    </div>
+                </li>
+                <li class="{{ Request::is('listing-reparations*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('listing-reparations') }}"><i class="fas fa-align-left"></i>Les reparations &nbsp;&nbsp;</i></a>
+                </li>
                 @role('admin')
                 <li class="{{ Request::is('appareil*') ? 'active' : '' }}">
                     <a  href="{{ url('appareil') }}"><i class="fas fa-mobile-alt"></i>Gestion des Appareils</a>

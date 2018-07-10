@@ -22,6 +22,12 @@ class Smartphone extends Model
     {
         return $this->belongsTo(BrandModel::class, 'brand_model_id');
     }
+
+    public function sinister()
+    {
+        return $this->hasOne(Sinister::class);
+    }
+
     public function trashed_model()
     {
         return $this->belongsTo(BrandModel::class, 'brand_model_id')->withTrashed();

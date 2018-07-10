@@ -27,6 +27,12 @@ class NotificationController extends Controller
         if(Auth::user()->hasRole('aon')){
             Auth::user()->unreadNotifications->where('data.type','sinister')->markAsRead();
         }
-        return redirect('listing-registrations');
+        return redirect('listing-sinisters');
+    }
+    public function readAonDecisionNotifcation(){
+        if(Auth::user()->hasRole('agence')){
+            Auth::user()->unreadNotifications->where('data.type','aonDecision')->markAsRead();
+        }
+        return redirect('listing-sinisters');
     }
 }

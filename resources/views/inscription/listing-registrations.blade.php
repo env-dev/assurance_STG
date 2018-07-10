@@ -1,6 +1,11 @@
 @extends('layout.main')
 
 @section('css')
+<style>
+    .invalid {
+        border-color: red;
+    }
+</style>
 @endsection
 
 @section('title','Nouvelles adhésions')
@@ -22,6 +27,7 @@
             <thead>
                 <tr>
                     <th>Réf mandat</th>
+                    <th>CIN/RC</th>
                     <th>Date de flux de données</th>
                     <th>Créer le</th>
                     <th>Validité</th>
@@ -31,134 +37,10 @@
             </thead>
         </table>
     </div>
-    <!-- Begin consulting registation modal -->
-    <div class="modal fade" id="consult_reg" tabindex="-1" role="dialog" aria-labelledby="scrollmodalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="scrollmodalLabel">Informations sur la souscription</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Nom & prénom:</strong> </label>
-                            <span class="col-lg-6" id="full_name_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Email:</strong> </label>
-                            <span class="col-lg-6" id="email_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Date de naissance:</strong> </label>
-                            <span class="col-lg-6" id="birthdate_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Adresse:</strong> </label>
-                            <span class="col-lg-6" id="address_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Telephone:</strong> </label>
-                            <span class="col-lg-6" id="tel_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Ville:</strong> </label>
-                            <span class="col-lg-6" id="city_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Nature:</strong> </label>
-                            <span class="col-lg-6" id="client_type"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6" id="id_type"><strong></strong></label>
-                            <span class="col-lg-6" id="id_num_client"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>IMEI:</strong> </label>
-                            <span class="col-lg-6" id="imei_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Marque:</strong> </label>
-                            <span class="col-lg-6" id="brand_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Modéle:</strong> </label>
-                            <span class="col-lg-6" id="model_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Prix:</strong> </label>
-                            <span class="col-lg-6" id="device_price"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Guarantie:</strong> </label>
-                            <span class="col-lg-6" id="guarantee_device"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Flux de données:</strong> </label>
-                            <span class="col-lg-6" id="data_flow_date"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Agence:</strong> </label>
-                            <span class="col-lg-6" id="agency_reg"></span>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="col-lg-6"> <strong>Prix total TTC:</strong> </label>
-                            <span class="col-lg-6" id="total_price_reg"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="consulted_reg" data-id="0" data-dismiss="modal">OK</button>
-                    <a class="btn btn-primary" id="print_reg" data-id="0" href="">Imprimer</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END -->
-    <!-- END DATA TABLE-->
-    <div class="modal fade" id="addAvenant" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mediumModalLabel">Informations sur l'avenant</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-body card-block">
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="select" class=" form-control-label">La garantie à ajouter</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select name="select" id="extensions" class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="disabled-input" class=" form-control-label">Surprime TTC</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="hidden" id="price_ttc">
-                                <input type="hidden" id="registration_id">
-                                <input type="text" id="surprime_ttc" placeholder="Surprime..." disabled="" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" id="add_avenant" data-dismiss="modal">Confirmer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END -->
-    
 </div>
+<div>@include('inscription.inc.consult-reg-modal')</div>
+<div>@include('inscription.inc.add-sinister-modal')</div>
+<div>@include('inscription.inc.add-avenant-modal')</div>
 @endsection
 
 @section('js')
@@ -173,6 +55,7 @@
                 initComplete: function( settings, json ) {
                     getAvenant();
                     getRegistration();
+                    clearModal();
                 },
                 language: {
                     url: "{{ asset('/js/lang/dataTables.french.json') }}"
@@ -180,6 +63,7 @@
                 ajax: "/getRegistrations",
                 columns: [
                     { data: "mandat_num", name: "mandat_num", orderable: false, searchable: true },
+                    { data: "client.num_id", name: "client.num_id", orderable: false, searchable: true },
                     { data: "data_flow",name: "data_flow" },
                     { data: "created_at", name: "created_at" },
                     { data: "validity", name: "validity", orderable: true, searchable: false },
@@ -204,7 +88,8 @@
                         type:'GET',
                         url: '/getRegistration/'+ID,
                         dataType: 'json',
-                        success: function(registration){
+                        success: function(data){
+                            var registration = data.registration;
                             $("#price_ttc").val(registration.smartphone.model.price_ttc);
                             $("#extensions").html();
                             var extensions = '<option value="0">----</option>';
@@ -228,6 +113,19 @@
                         }
                     });
                 });
+        }
+
+        function clearModal()
+        {
+            $(".add_sinister").on("click", function() {
+                $('#add_sinister').find('input,select, textarea').removeClass('invalid');
+                $('#place_sinister').val('');
+                $('#cause_sinister').val('');
+                $('#sinister_date').val('');
+                $("#sinister_type").prop('selectedIndex','');
+
+                $("#registration_id").attr('data-id', $(this).attr('data-id'));
+            });
         }
         function getRegistration(){
             $(".consult_reg").on("click", function(){
@@ -385,6 +283,60 @@
                 }
             };
             req.send();
+        });
+        // Claim sinister
+        $("#register_sinister").on("click", function(e) {
+            
+            var registration_id = $("#registration_id").attr('data-id');
+            var date_sinister = $("#sinister_date").val();
+            var place_sinister = $("#place_sinister").val();
+            var cause_sinister = $("#cause_sinister").val();
+            var type_sinister = $("#sinister_type").val();
+
+            function divValid(hash) {
+                var invalids = $(hash).find('input, select, textarea').filter(function(i,el){return !el.checkValidity() }).addClass('invalid');
+                return invalids.length===0
+            }
+            if (!divValid('#add_sinister')) {
+                return false;
+            } 
+
+            $(this).attr('data-dismiss', 'modal');
+            $.ajax({
+                type: "POST",
+                url: 'sinisters',
+                data: {
+                    registration_id: registration_id,
+                    date_sinister: date_sinister,
+                    place_sinister: place_sinister,
+                    cause_sinister: cause_sinister,
+                    type_sinister: type_sinister,
+                },
+                success: function(registred) {
+                    if (registred) {
+                        swal({
+                            title: 'Déclaration du sinistre',
+                            text: 'Sinister est déclaré',
+                            icon: "success",
+                        })
+                    }else{
+                        swal({
+                            title: 'Déclaration du sinistre',
+                            text: 'Sinister  a echoué',
+                            icon: "error",
+                        })
+                    }
+                    refreshDataTable();
+                },
+                error: function(err) {
+                    swal({
+                            title: 'Déclaration du sinistre',
+                            text: 'Sinister  a echoué',
+                            icon: "error",
+                        })
+                    console.log(err.responseText);
+                }
+            });
         });
     } );
 </script>

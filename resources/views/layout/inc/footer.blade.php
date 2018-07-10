@@ -30,7 +30,7 @@
         <script src="{{ asset('js/mask.min.js') }}"></script>
         <script type="text/javascript">
             $(function () {
-                $('#birthdate, #date_flow_data').datetimepicker({
+                $('#birthdate, #date_flow_data, #sinisterDate, #date_rep').datetimepicker({
                     format: 'YYYY-MM-DD'
                 });
             });
