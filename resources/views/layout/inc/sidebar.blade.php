@@ -112,6 +112,9 @@
                 <li class="{{ Request::is('agency*') ? 'active' : '' }}">
                     <a  href="{{ url('agency') }}"><i class="fas fa-store-alt"></i>Agences</a>
                 </li>
+                <li class="{{ Request::is('gestion-stock*') ? 'active' : '' }}">
+                    <a  href="{{ url('gestion-stock') }}"><i class="fas fa-database"></i>Gestion Stock</a>
+                </li>
                 @endrole
             </ul>
         </nav>

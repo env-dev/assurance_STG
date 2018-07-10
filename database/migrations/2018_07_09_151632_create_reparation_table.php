@@ -13,7 +13,7 @@ class CreateReparationTable extends Migration
      */
     public function up()
     {
-        Schema::create('reparation', function (Blueprint $table) {
+        Schema::create('reparations', function (Blueprint $table) {
             $table->increments('id');
             $table->date('data_flow');
             $table->date('date_reparation');
