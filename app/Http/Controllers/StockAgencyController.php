@@ -36,7 +36,7 @@ class StockAgencyController extends Controller
                     $smartphones->where('agency_id', $request->agence);
                     $smartphones->whereIn('smartphones.id', StockAgency::select('smartphone_id')->get()->toArray());
                 } 
-        return response()->json($smartphones->get());
+        return response()->json($smartphones->limit(10)->get());
     }
 
     public function operation(Request $request){
