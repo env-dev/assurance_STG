@@ -18,6 +18,10 @@ class Smartphone extends Model
         return $this->hasOne(Registration::class);
     }
 
+    public function stockAgency(){
+        return $this->belongsTo(StockAgency::class);
+    }
+
     public function model()
     {
         return $this->belongsTo(BrandModel::class, 'brand_model_id');

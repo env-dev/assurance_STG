@@ -38,7 +38,10 @@
 
     <!-- Main CSS-->
     <link href="{{ asset('css/theme.css') }}" rel="stylesheet" media="all">
-    
+    <style>
+        .select2-results__option[aria-selected=true] {
+            background-color: #eadebb !important; }
+    </style>
     <!-- Custom CSS -->
     @yield('css')
 

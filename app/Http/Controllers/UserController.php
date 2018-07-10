@@ -35,6 +35,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $user = new User();
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
@@ -43,14 +45,13 @@ class UserController extends Controller
             'role' => 'required|numeric',
         ]);
 
-        $user =  User::create([
-            'name' => $request['name'],
-            'username' => $request['username'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-            'agence_id' => $request->agence ?? null
-        ]);
-
+        $user->name = $request->name; 
+        $user->username = $request->username; 
+        $user->email = $request->email; 
+        $user->password = Hash::make($request['password']); 
+        $user->agence_id = $request->agence ?? null;
+        
+        $user->save();
         $user->attachRole($request['role']);
 
         return response()->json($user);
