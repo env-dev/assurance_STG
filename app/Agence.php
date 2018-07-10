@@ -20,4 +20,8 @@ class Agence extends Model
     public function user(){
         return $this->hasOne(User::class);
     }
+
+    public function stockAgency(){
+        return $this->belongsTo(StockAgency::class);
+    }
 }

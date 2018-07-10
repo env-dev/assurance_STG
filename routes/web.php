@@ -63,7 +63,9 @@ Route::group(['middleware' => ['auth']], function() {
 
 Auth::routes();
 
+Route::post('stock','StockAgencyController@operation');
+Route::delete('stock','StockAgencyController@operation');
+Route::get('stock/get-imei', 'StockAgencyController@get_imei');
+Route::get('stock/get-agence-info/{id}', 'StockAgencyController@getAgencyInfo');
 
-Route::get('/no', function(){
-
-});
+Route::get('/gestion-stock','StockAgencyController');
