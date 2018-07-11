@@ -31,6 +31,12 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('import-smartphones', 'SmartphoneController@import');
         Route::resource('agences','AgenceController');
         Route::resource('cities','CityController');
+
+        Route::post('stock','StockAgencyController@operation');
+        Route::delete('stock','StockAgencyController@operation');
+        Route::get('stock/get-imei', 'StockAgencyController@get_imei');
+        Route::get('stock/get-agence-info/{id}', 'StockAgencyController@getAgencyInfo');
+        Route::get('/gestion-stock','StockAgencyController');
     });
 
     Route::get('/get_imei', 'RegistrationController@get_imei');
@@ -70,9 +76,3 @@ Route::group(['middleware' => ['auth']], function() {
 
 Auth::routes();
 
-Route::post('stock','StockAgencyController@operation');
-Route::delete('stock','StockAgencyController@operation');
-Route::get('stock/get-imei', 'StockAgencyController@get_imei');
-Route::get('stock/get-agence-info/{id}', 'StockAgencyController@getAgencyInfo');
-
-Route::get('/gestion-stock','StockAgencyController');
