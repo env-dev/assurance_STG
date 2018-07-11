@@ -106,11 +106,12 @@ class RegistrationController extends Controller
         // if (request('guarantee') == '110' || request('guarantee') == '111') {
         if (request('guarantee') == '110') {
             Auth::user()->notif('registration');
+            dump(compact('client', 'registration', 'smartphone', 'agency'));
             return $pdf->downloadPDF('pdfs.registration', $client, $registration, $smartphone, $agency);
         }
         
         Auth::user()->notif('registration');
-
+        dump(compact('client', 'registration', 'smartphone', 'agency'));
         return $pdf->downloadPDF('pdfs.AAM_F1', $client, $registration, $smartphone, $agency);
     }
 
@@ -166,7 +167,7 @@ class RegistrationController extends Controller
                 return $pdf->downloadPDF('pdfs.registration', $registration->client, $registration, $registration->smartphone, $agency); //Download the suited pdf
             }
             return $pdf->downloadPDF('pdfs.AAM_F1', $registration->client, $registration, $registration->smartphone, $agency);
-        }else if($registration->guarantee == 110) { //If guarantee is F1
+        }else if($registration->guarantee == 110) { //If guarantee is F2
             $avenant = Avenant::where('registration_id', $registration->id)->latest()->first(); //Get last avenant added
             if ($avenant) {
                 $registration->guarantee = $avenant->extension_added; //Change guarantee by the avenant guarantee to be used in view
@@ -208,6 +209,9 @@ class RegistrationController extends Controller
         // $new_memberships = $new_memberships->map(function ($item, $key) {
         //    return $item->smartphone;
         // });
+        if ($request->session()->has('downloadFile')) {
+            # code...
+        }
         $registrations = Registration::with(['smartphone.model.brand', 'client'])
         ->orderBy('data_flow', 'desc')
         ->get();
@@ -222,8 +226,8 @@ class RegistrationController extends Controller
             return Datatables::of($registrations)
             ->addIndexColumn()
             ->addColumn('edit', function ($registrations) {
-                $avenant = Avenant::where('registration_id', $registrations->id)->latest('created_at')->first();
-                $sinister = Sinister::where('registration_id', $registrations->id)->first();
+                $avenant = Avenant::where('registration_id', $registrations->id)->latest()->first();
+                $sinister = Sinister::where('registration_id', $registrations->id)->latest()->first();
                 
                 $link = '
                 <button type="button" class="consult_reg item btn btn-info" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#consult_reg" data-backdrop="static" data-keyboard="false" title="Consulter">
@@ -232,10 +236,19 @@ class RegistrationController extends Controller
 
                 // if (Auth::user()->HasRole(['admin', 'agence']) && (!$sinister || $sinister->status == 11)) {
                 if (Auth::user()->HasRole(['admin', 'agence'])) {
-                    $link .= '
-                    <button type="button" class="add_sinister item btn btn-outline-warning" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#add_sinister" data-backdrop="static" data-keyboard="false" title="Déclarer un sinistre">
-                    <i class="fas fa-exclamation-circle"></i>
-                    </button>';
+                    if ($sinister) {
+                        if ($sinister->status != 0) {
+                            $link .= '
+                                    <button type="button" class="add_sinister item btn btn-outline-warning" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#add_sinister" data-backdrop="static" data-keyboard="false" title="Déclarer un sinistre">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    </button>';
+                        }
+                    }else {
+                        $link .= '
+                        <button type="button" class="add_sinister item btn btn-outline-warning" data-toggle="modal" data-id="'.$registrations->id.'" data-target="#add_sinister" data-backdrop="static" data-keyboard="false" title="Déclarer un sinistre">
+                        <i class="fas fa-exclamation-circle"></i>
+                        </button>';
+                    }
                 }
 
                 if (Auth::user()->HasRole('agence') && $registrations->isValidRegistration() && ($registrations->guarantee < 110)) {
