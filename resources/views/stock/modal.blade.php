@@ -1,5 +1,5 @@
 <!-- Bulk Smartphone Insertion Modal -->
-@modal(['section' => 'BulkInsertion','title' => 'Modifier Marque','update'=>false])
+@modal(['section' => 'BulkInsertion','title' => 'Gestion Stock','update'=>false])
     {{-- <h4 class="text-info m-b-10">#1 Choisire une Agence</h4>
     <div class="form-group">
         <label for="agence_modal" class="control-label mb-1">Agence</label>
@@ -28,7 +28,7 @@
                         <input type="hidden" name="action" id="action" value="classic1">
                         <div class="form-group">
                             <label for="imei_modal" class="control-label mb-1">IMEI 1</label>
-                            <select id="imei_modal" name="imei_modal[]"class="form-control" aria-required="true" aria-invalid="false" multiple>
+                            <select id="imei_modal" name="imei_modal[]"class="form-control" aria-required="true" aria-invalid="false" multiple required>
                                 {{-- <option value=""></option>
                                 @foreach($smartphones as $smartphone)
                                 <option value="{{ $smartphone->id }}">{{ $smartphone->imei }}</option>
