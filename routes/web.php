@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/gestion-stock','StockAgencyController');
     });
 
-    Route::get('/get_imei', 'RegistrationController@get_imei');
+    Route::get('/get_imei/{id?}', 'RegistrationController@get_imei');
     Route::get('/getAgencies', 'AgenceController@getAgencies');
     Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
     Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');

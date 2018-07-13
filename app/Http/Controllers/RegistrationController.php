@@ -106,12 +106,10 @@ class RegistrationController extends Controller
         // if (request('guarantee') == '110' || request('guarantee') == '111') {
         if (request('guarantee') == '110') {
             Auth::user()->notif('registration');
-            dump(compact('client', 'registration', 'smartphone', 'agency'));
             return $pdf->downloadPDF('pdfs.registration', $client, $registration, $smartphone, $agency);
         }
         
         Auth::user()->notif('registration');
-        dump(compact('client', 'registration', 'smartphone', 'agency'));
         return $pdf->downloadPDF('pdfs.AAM_F1', $client, $registration, $smartphone, $agency);
     }
 
@@ -306,8 +304,11 @@ class RegistrationController extends Controller
         return response()->json($new_memberships);
     }
 
-    public function get_imei()
+    public function get_imei($id = null)
     {
+        if (!is_null($id)) {
+            return response()->json(Smartphone::where('imei', $id)->first());
+        }
         return response()->json(Smartphone::select('imei')->doesntHave('registration')->get());
     }
 

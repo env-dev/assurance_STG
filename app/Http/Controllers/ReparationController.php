@@ -19,7 +19,12 @@ class ReparationController extends Controller
         $reparations = Reparation::with('sinister.registration')->get();
         
         if($request->ajax()) {
-            return Datatables::of($reparations)->addIndexColumn()->make(true);
+            return Datatables::of($reparations)
+            ->addIndexColumn()
+            ->editColumn('sinister.date_sinister', function($reparations){
+                return $reparations->sinister->date_sinister->format('Y-m-d');
+            })
+            ->make(true);
         }
         return view('reparations.listing-reparations');
     }

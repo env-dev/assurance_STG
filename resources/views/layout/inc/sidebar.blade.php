@@ -73,7 +73,7 @@
                 @endrole
                 <li class="{{ Request::is('listing-registrations*') ? 'active' : '' }}">
                     <!-- <a href="#submenu1"><i class="fas fa-list-alt"></i>Les souscriptions</a> -->
-                    <a class="nav-link collapsed" href="#submenu2" data-toggle="collapse" data-target="#submenu2"><i class="fas fa-align-left"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
+                    <a class="nav-link collapsed" href="#submenu2" data-toggle="collapse" data-target="#submenu2"><i class="far fa-address-card"></i>Les souscriptions &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
                     <div class="collapse" id="submenu2" aria-expanded="false">
                         <ul class="flex-column pl-4 nav">
                                 @role(['agence','admin'])
@@ -100,7 +100,7 @@
                     </div>
                 </li>
                 <li class="{{ Request::is('listing-reparations*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ url('listing-reparations') }}"><i class="fas fa-align-left"></i>Les reparations &nbsp;&nbsp;</i></a>
+                    <a class="nav-link" href="{{ url('listing-reparations') }}"><i class="fas fa-wrench"></i>Les reparations &nbsp;&nbsp;</i></a>
                 </li>
                 @role('admin')
                 <li class="{{ Request::is('appareil*') ? 'active' : '' }}">

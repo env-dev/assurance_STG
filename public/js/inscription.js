@@ -15,6 +15,7 @@ $.ajax({
 
 // ---------- AutoComplite function
 $( function() {
+
     $( "#get_imei" ).autocomplete({
         source: function( request, response ) {
         $.ajax( {
@@ -54,22 +55,49 @@ $(function() {
     $('a.nav-link').on('show.bs.tab', function(e) {
       var $target = $(e.target);
       if (!divValid($('.nav-pills li a.active').prop('hash'))) {
-        e.preventDefault();
-      } 
-      if ($target.parent().hasClass('disabled')) {
-        e.preventDefault();
-      }
+          e.preventDefault();
+        } 
+        if ($target.parent().hasClass('disabled')) {
+            e.preventDefault();
+        }
+        if ($target.text() == 'Appareil') {
+            $($target.attr('href')).find('.next-step').attr('disabled', true);
+        }
     });
   
     $(".next-step").click(function(e) {  
         e.preventDefault();
-      var $active = $('.nav-pills li a.active');
-      nextTab($active);
+        var $active = $('.nav-pills li a.active');
+        nextTab($active);
     });
   
     function nextTab(elem) {
       elem.parent().next().removeClass('disabled').find('a.nav-link').click();
     }
+
+    $("#get_imei").on("blur", function() {
+        var imei = $(this).val();
+        var next_step = $($('.nav-pills li a.active').attr('href')).find('.next-step');
+        $.ajax({
+            url: 'get_imei/'+imei,
+            success: function(response) {
+                if (!jQuery.isEmptyObject(response)) {
+                    next_step.attr('disabled', false);
+                }else{
+                    next_step.attr('disabled', true);
+                    swal({
+                            title: 'Erreur IMEI',
+                            text: 'Cette IMEI n\'existe pas.',
+                            icon: 'error'
+                        })
+                }
+            },
+            error: function(err) {
+                console.log(err);
+                return
+            }
+        })
+    })
 });
 
 $(function(){
@@ -113,18 +141,18 @@ $(function(){
                 }
             } );
         },
-        // select: function( event, ui ) {
-        //     $.ajax({
-        //         url: "/getSmartphoneByImei/"+ui.item.value,
-        //         dataType: 'json',
-        //         success: function( data ){
-        //             $('#brandName').text(data.model.brand.name);
-        //             $('#modelName').text(data.model.name);
-        //             $('#smartphonePrice').text(data.model.price_ttc);
-        //             $('#total_ttc').val(data.model.price_ttc);
-        //         }
-        //     });
-        // }
+        select: function( event, ui ) {
+            $.ajax({
+                url: "/getSmartphoneByImei/"+ui.item.value,
+                dataType: 'json',
+                success: function( data ){
+                    $('#brandName').text(data.model.brand.name);
+                    $('#modelName').text(data.model.name);
+                    $('#smartphonePrice').text(data.model.price_ttc);
+                    $('#total_ttc').val(data.model.price_ttc);
+                }
+            });
+        }
     });
 
     $("#saveRegistration").on("click", function(e){
@@ -179,7 +207,37 @@ $(function(){
     });
 
     $("#confirmRegistration").on("click", function(e){
-        jQuery("#inscriptionForm").submit();
+        var req = new XMLHttpRequest();
+        var myForm = document.getElementById('inscriptionForm');
+        var formData = new FormData(myForm);
+        
+        req.open("POST", "/registration", true);
+        req.responseType = "blob";
+        req.onreadystatechange = function () {
+            if (req.readyState === 4 && req.status === 200) {
+
+                // test for IE
+
+                if (typeof window.navigator.msSaveBlob === 'function') {
+                window.navigator.msSaveBlob(req.response, new Date().getTime() + "Contrat_de_souscription.pdf");
+                } else {
+                var blob = req.response;
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = new Date().getTime() + "Contrat_de_souscription.pdf";
+
+                // append the link to the document body
+
+                document.body.appendChild(link);
+
+                link.click();
+                link.remove();
+            }
+            window.location = '/listing-registrations';
+        }
+    };
+    req.send(formData);
+        // jQuery("#inscriptionForm").submit();
     });
 
     $('.tel').mask("00-00-00-00-00", {
