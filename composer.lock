@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d85ae86c428e78867657e572abd3995c",
+    "content-hash": "1fc492a55a3f3f52d13f01a2fac5c066",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -238,64 +238,6 @@
                 }
             ],
             "time": "2016-06-13T19:28:20+00:00"
-        },
-        {
-            "name": "beyondcode/laravel-dump-server",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beyondcode/laravel-dump-server.git",
-                "reference": "e1e7f8f1d211c19375db6e5a9be9e9931da3bc6f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beyondcode/laravel-dump-server/zipball/e1e7f8f1d211c19375db6e5a9be9e9931da3bc6f",
-                "reference": "e1e7f8f1d211c19375db6e5a9be9e9931da3bc6f",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "5.6.*",
-                "illuminate/http": "5.6.*",
-                "illuminate/support": "5.6.*",
-                "php": "^7.1",
-                "symfony/var-dumper": "^4.1.1"
-            },
-            "require-dev": {
-                "larapack/dd": "^1.0",
-                "phpunit/phpunit": "^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "BeyondCode\\DumpServer\\DumpServerServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "BeyondCode\\DumpServer\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marcel Pociot",
-                    "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondcode.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Symfony Var-Dump Server for Laravel",
-            "homepage": "https://github.com/beyondcode/laravel-dump-server",
-            "keywords": [
-                "beyondcode",
-                "laravel-dump-server"
-            ],
-            "time": "2018-07-09T19:02:36+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
