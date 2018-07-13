@@ -13,11 +13,10 @@ use File;
 
 class StockAgencyController extends Controller
 {
-    
     public function __construct(){
 
     }
-
+    
     public function __invoke(){
         return view('stock.index',['agencies' => Agence::select('id','reference','name')->get()]); //'smartphones' => Smartphone::select('id','imei')->get()
     }
@@ -132,9 +131,6 @@ class StockAgencyController extends Controller
         $action = $request->action;
         $errors = [];
         
-        // return response()->json([$request->all()]);
-        // return response()->json([DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', [1,2,3,4,5])->toSql()]);
-
         if ($action == "classic1"){
             return response()->json(DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $request->imei_modal)->delete());
         }
@@ -175,6 +171,7 @@ class StockAgencyController extends Controller
         else
             return null;
     }
+
     public function getAgencyInfo($id){
         return DB::table('agences')
                 ->join('stock_agencies','agences.id','stock_agencies.agency_id')        
@@ -183,6 +180,7 @@ class StockAgencyController extends Controller
                 ->select(DB::raw('smartphones.'))
                 ->count();
     }
+
     private function checkExists($imei){
         $sp = Smartphone::where('imei',$imei)->first();
         if($sp){
