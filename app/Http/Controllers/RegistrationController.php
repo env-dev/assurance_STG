@@ -26,8 +26,16 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->session()->has('reg_id')) {
+            $registration = Registration::find($request->session()->get('reg_id'));
+            $avenant = Avenant::where('registration_id', $registration->id)->first();
+            if ($avenant) {
+                return view('inscription.main')->with('guarantee', $avenant->extension_added);
+            }
+            return view('inscription.main')->with('guarantee', $registration->guarantee);
+        }
         return view('inscription.main');
     }
 
@@ -102,6 +110,8 @@ class RegistrationController extends Controller
 
         $registration->save();
 
+        Session::flush();
+        
         $pdf = new PDFClass;
         // if (request('guarantee') == '110' || request('guarantee') == '111') {
         if (request('guarantee') == '110') {
@@ -304,20 +314,33 @@ class RegistrationController extends Controller
         return response()->json($new_memberships);
     }
 
-    public function get_imei($id = null)
+    public function get_imei($imei = null, Request $request)
     {
-        if (!is_null($id)) {
-            return response()->json(Smartphone::where('imei', $id)->first());
+        if (!is_null($imei)) {
+            return response()->json(Smartphone::where('imei', $imei)->first());
+        }
+        $errors = [];
+        if ($request->imeiList) {
+            $imeiList = explode(',', $request->imeiList);
+            foreach ($imeiList as $imei) {
+                if ($imei && !(Smartphone::where('imei', trim($imei))->first())) {
+                    array_push($errors, $imei);
+                }
+            }
+            if ($errors) {
+                return response()->json(['errors' => $errors, 'status' => 0]);
+            }
+            return response()->json(['status' => 1]);
         }
         return response()->json(Smartphone::select('imei')->doesntHave('registration')->get());
     }
 
-    public function getSmartphoneByImei( $imei )
-    {
-        $smartphone = Smartphone::where('imei', $imei)->first();
-        $smartphone->model->brand;
-        return response()->json($smartphone);
-    }
+    // public function getSmartphoneByImei( $imei )
+    // {
+    //     $smartphone = Smartphone::where('imei', $imei)->first();
+    //     $smartphone->model->brand;
+    //     return response()->json($smartphone);
+    // }
 
     public function checkStatus($id) 
     {

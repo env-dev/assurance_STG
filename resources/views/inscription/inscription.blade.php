@@ -17,12 +17,16 @@
                         <label for="select" class=" form-control-label">La garantie</label>
                     </div>
                     <div class="col-12 col-md-9">
+                    @if(!empty($guarantee))
+                        <input type="text" name="guarantee" id="guarantee" class="form-control" value="{{ ($guarantee == 100) ? 'F1' : 'F2' }}" readonly>
+                    @else
                         <select name="guarantee" id="guarantee" class="form-control">
-                            <option value="100">Selectionnez une garantie</option>
+                            <option value="100">F1</option>
                             <option value="110">F2</option>
                             <!-- <option value="111">F3</option> -->
                         </select>
                         <small class="form-text text-muted">La garantie F1 est inclu par defaut</small>
+                    @endif
                     </div>
                 </div>
                 <div class="row form-group">

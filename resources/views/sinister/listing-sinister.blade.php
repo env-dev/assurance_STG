@@ -166,21 +166,25 @@
 
         $("#confirmAonDecision").on("click", function(e) {
             var ID = $(this).attr("data-id");
+            var decision = $(this).attr("data-decision");
             if ($(this).attr("data-decision")) {
                 $.ajax({
                     type: 'POST',
                     url: 'setAonDecision/'+ID,
                     data : {decision: $(this).attr("data-decision")},
                     success: function(response) {
-                        if (!response) {
+                        if (response) {
                             swal({
-                                title: 'Décision AON',
+                                title: 'Décision prise',
                                 text: 'L\'opération  a echoué',
                                 icon: "error",
                             })
+                            if (decision == 'CHG') {
+                                window.location = 'registration';
+                            }
                         }
                         swal({
-                            title: 'Décision AON',
+                            title: 'Décision prise',
                             text: 'L\'opération  a réussi',
                             icon: "success",
                         })
