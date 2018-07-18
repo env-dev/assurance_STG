@@ -86,8 +86,11 @@ class RegistrationController extends Controller
         $client->save();
 
         $smartphone = Smartphone::where('imei', request('imei'))->first();
+        $smartphone->status = 3;
         $price_smartphone = $smartphone->model->price_ttc;
         $smartphone->model->brand;
+
+        $smartphone->save();
         
         $agency = Agence::find(request('agency'))->first();
         $registration = new Registration;
@@ -212,14 +215,6 @@ class RegistrationController extends Controller
 
     public function listingRegistrations(Request $request)
     {
-        // $new_memberships = Registration::with('smartphone.model.brand')->where('new', 1)->get();
-        // $new_memberships = Registration::status(new RegistrationStatus('newAdded'))->get();
-        // $new_memberships = $new_memberships->map(function ($item, $key) {
-        //    return $item->smartphone;
-        // });
-        if ($request->session()->has('downloadFile')) {
-            # code...
-        }
         $registrations = Registration::with(['smartphone.model.brand', 'client'])
         ->orderBy('data_flow', 'desc')
         ->get();
@@ -294,7 +289,7 @@ class RegistrationController extends Controller
                         <i class="zmdi zmdi-close-circle-o"></i>
                     </span>';
             })
-            ->rawColumns(['edit', 'validity', 'new'])
+            ->rawColumns(['edit', 'validity', 'new', 'data_flow', 'smartphone.imei'])
             ->editColumn('new', function($registrations){
                 return ($registrations->new ? '<h4><span class="badge badge-success">Nouveau</span></h4>' : '<h4><span class="badge badge-secondary">Vu</span></h4>');
             })
