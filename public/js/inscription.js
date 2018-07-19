@@ -15,6 +15,12 @@ $.ajax({
 
 // ---------- AutoComplite function
 $( function() {
+    function split( val ) {
+        return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+        return split( term ).pop();
+    }
 
     $( "#get_imei" ).autocomplete({
         source: function( request, response ) {
@@ -26,21 +32,29 @@ $( function() {
                 $.map( data, function( val, i ) {
                     jsonData.push(val.imei);
                   });
-                response( $.ui.autocomplete.filter(jsonData, $( "#get_imei" ).val()).slice(0, 10) );
+                // response( $.ui.autocomplete.filter(jsonData, $( "#get_imei" ).val()).slice(0, 10) );
+                response( $.ui.autocomplete.filter(jsonData, extractLast(request.term)).slice(0, 10) );
             }
         } );
         },
         select: function( event, ui ) {
-            $.ajax({
-                url: "/getSmartphoneByImei/"+ui.item.value,
-                dataType: 'json',
-                success: function( data ){
-                    $('#brandName').text(data.model.brand.name);
-                    $('#modelName').text(data.model.name);
-                    $('#smartphonePrice').text(data.model.price_ttc);
-                    $('#total_ttc').val(data.model.price_ttc);
-                }
-            });
+            var terms = split( this.value );
+            // remove the current input
+            terms.pop();
+            if (terms.includes(ui.item.value)) {
+                swal({
+                    title: 'Erreur IMEI',
+                    text: 'Cet IMEI vous l\'avez deja selectionné.',
+                    icon: 'error'
+                })
+            }else{
+                // add the selected item
+                terms.push( ui.item.value );
+            }
+            // add placeholder to get the comma-and-space at the end
+            terms.push( "" );
+            this.value = terms.join( ", " );
+            return false;
         }
     });
 } );
@@ -60,44 +74,83 @@ $(function() {
         if ($target.parent().hasClass('disabled')) {
             e.preventDefault();
         }
-        if ($target.text() == 'Appareil') {
-            $($target.attr('href')).find('.next-step').attr('disabled', true);
-        }
+        // if ($target.text() == 'Appareil') {
+        //     $($target.attr('href')).find('.next-step').attr('disabled', true);
+        // }
     });
   
-    $(".next-step").click(function(e) {  
+    $(".next-step").click(function(e) {
         e.preventDefault();
         var $active = $('.nav-pills li a.active');
         nextTab($active);
     });
   
     function nextTab(elem) {
-      elem.parent().next().removeClass('disabled').find('a.nav-link').click();
+        if (elem.parent().next().text().trim() == 'Inscription') {
+            if ($("#get_imei").val().split(',')) {
+                var Imei_List = $("#get_imei").val();
+                checkImeiExistence(Imei_List, elem);
+            }
+        }else{
+            elem.parent().next().removeClass('disabled').find('a.nav-link').click();
+        }
     }
 
-    $("#get_imei").on("blur", function() {
-        var imei = $(this).val();
-        var next_step = $($('.nav-pills li a.active').attr('href')).find('.next-step');
+    function checkImeiExistence(imeiList, elem) {
+        $('.overlay').css('display', 'block');
         $.ajax({
-            url: 'get_imei/'+imei,
-            success: function(response) {
-                if (!jQuery.isEmptyObject(response)) {
-                    next_step.attr('disabled', false);
-                }else{
-                    next_step.attr('disabled', true);
+            type: 'POST',
+            url: 'get_imei/',
+            data: {imeiList: imeiList},
+            success: function(response, status) {
+                if (response.status == 0 || response.status == undefined) {
+                    var msg = '';
+
+                    $('.overlay').css('display', 'none');
+                    elem.parent().next().addClass('disabled');
+                    response.errors.forEach(function(err) {
+                        msg += err+', ';
+                    })
                     swal({
                             title: 'Erreur IMEI',
-                            text: 'Cette IMEI n\'existe pas.',
+                            text: 'Les IMEIs ' +msg+ ' sont erronés.',
                             icon: 'error'
                         })
+                    return
                 }
+                $('.overlay').css('display', 'none');
+                elem.parent().next().removeClass('disabled').find('a.nav-link').click();
             },
             error: function(err) {
                 console.log(err);
                 return
             }
         })
-    })
+    };
+
+    // $("#get_imei").on("blur", function() {
+    //     var imei = $(this).val();
+    //     var next_step = $($('.nav-pills li a.active').attr('href')).find('.next-step');
+    //     $.ajax({
+    //         url: 'get_imei/'+imei,
+    //         success: function(response) {
+    //             if (!jQuery.isEmptyObject(response)) {
+    //                 next_step.attr('disabled', false);
+    //             }else{
+    //                 next_step.attr('disabled', true);
+    //                 swal({
+    //                         title: 'Erreur IMEI',
+    //                         text: 'Cette IMEI n\'existe pas.',
+    //                         icon: 'error'
+    //                     })
+    //             }
+    //         },
+    //         error: function(err) {
+    //             console.log(err);
+    //             return
+    //         }
+    //     })
+    // })
 });
 
 $(function(){

@@ -43,9 +43,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     });
 
-    Route::get('/get_imei/{id?}', 'RegistrationController@get_imei');
+    Route::match(['get', 'post'], '/get_imei/{id?}', 'RegistrationController@get_imei');
     Route::get('/getAgencies', 'AgenceController@getAgencies');
-    Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
+    // Route::get('/getSmartphoneByImei/{imei}', 'RegistrationController@getSmartphoneByImei');
     Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
     Route::get('/getRegistration/{id}', 'RegistrationController@getRegistration');
     Route::get('/check-status/{id}', 'RegistrationController@checkStatus');

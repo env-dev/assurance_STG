@@ -9,11 +9,12 @@
                         <label for="text-input" class=" form-control-label">L'IMEI</label>
                     </div>
                     <div class="col-12 col-md-9 ui-widget">
-                        <input type="text" id="get_imei" name="imei" placeholder="imei" class="form-control" required>
-                        <small class="form-text text-muted">L'imei de l'appareil</small>
+                        <!-- <input type="text" id="get_imei" name="imei" placeholder="imei" class="form-control" required> -->
+                        <textarea id="get_imei" name="imei" placeholder="imei" class="form-control" required></textarea>
+                        <small class="form-text text-muted">Les 'imei' des l'appareils</small>
                     </div>
                 </div>
-                <div class="row form-group">
+                <!-- <div class="row form-group">
                     <div class="col col-md-6">
                         <label class=" form-control-label">La Marque</label>
                     </div>
@@ -28,7 +29,7 @@
                     <div class="col-12 col-md-6">
                         <p class="form-control-static" id="modelName">No model</p>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="row form-group">
                     <div class="col col-md-6">
                         <label class=" form-control-label">Image</label>
@@ -37,7 +38,7 @@
                         <img src="http://via.placeholder.com/150x100" class="img-thumbnail" alt="X1">
                     </div>
                 </div> -->
-                <div class="row form-group">
+                <!-- <div class="row form-group">
                     <div class="col col-md-12">
                         <div class="input-group">
                             <div class="input-group-addon">
@@ -47,7 +48,7 @@
                             <div class="input-group-addon">.00</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
         </div>
         <div class="card-footer">
             <button href="#pills-inscription" class="next-step btn btn-primary btn-sm float-right">

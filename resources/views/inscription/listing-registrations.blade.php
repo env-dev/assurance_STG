@@ -27,6 +27,7 @@
             <thead>
                 <tr>
                     <th>Réf mandat</th>
+                    <th>IMEI</th>
                     <th>CIN/RC</th>
                     <th>Date de flux de données</th>
                     <th>Créer le</th>
@@ -62,13 +63,14 @@
                 },
                 ajax: "/getRegistrations",
                 columns: [
-                    { data: "mandat_num", name: "mandat_num", orderable: false, searchable: true },
+                    { data: "mandat_num", name: "mandat_num", orderable: false},
+                    { data: "smartphone.imei", name: "smartphone.imei", orderable: false, searchable: true },
                     { data: "client.num_id", name: "client.num_id", orderable: false, searchable: true },
                     { data: "data_flow",name: "data_flow" },
                     { data: "created_at", name: "created_at" },
-                    { data: "validity", name: "validity", orderable: true, searchable: false },
+                    { data: "validity", name: "validity"},
                     { data: "new", name: "new" },
-                    { data: "edit", name: "edit", orderable: false, searchable: true },
+                    { data: "edit", name: "edit", orderable: false, searchable: false },
                 ]
             });
         }

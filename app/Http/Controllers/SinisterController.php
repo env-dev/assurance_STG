@@ -194,6 +194,7 @@ class SinisterController extends Controller
         if ($request->decision == 'REP') {
             $sinister->status = 10;
         }elseif ($request->decision == 'CHG') {
+            $request->session()->put('reg_id', $sinister->registration->id);
             $sinister->status = 2;
         }elseif ($request->decision == 'REJ') {
             $sinister->status = 4;
@@ -217,6 +218,6 @@ class SinisterController extends Controller
         
         $sinister->status = 11;
 
-        return response()->json((!$sinister->save() || !$reparation->save()));
+        return response()->json(($sinister->save() && $reparation->save()));
     }
 }

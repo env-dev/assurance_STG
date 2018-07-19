@@ -17,7 +17,7 @@
                 <tr>
                     <th>Réf mandat</th>
                     <th>Date du sinistre</th>
-                    <th>La décision AON</th>
+                    <th>La décision prise</th>
                     <th>La date de réparation</th>
                 </tr>
             </thead>
