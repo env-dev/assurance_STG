@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\Smartphone;
 use App\BrandModel;
+use App\StockAgency;
+use App\Agence;
+use App\Client;
+use App\Registration;
 use App\Helpers\SimpleXLSX;
 use File;
 class SmartphoneController extends Controller
@@ -161,5 +165,53 @@ class SmartphoneController extends Controller
             return response()->json("No File is uploaded");
         }
         
+    }
+
+
+    public function phoneStatus(Request $request){
+        if($request->ajax()){
+            $phones = Smartphone::with('model')->get();
+
+            return Datatables::of($phones)
+            ->addColumn('actions', function ($phone) {
+                if($phone->status == 2)
+                    return '<button class="btn btn-outline-info agence" data-id="'.$phone->id.'"  title="Info">&nbsp;<i class="fas fa-info"></i>&nbsp;</button>';
+                elseif($phone->status == 3)
+                    return '<button class="btn btn-outline-success client" data-id="'.$phone->id.'"  title="Info">&nbsp;<i class="fas fa-info"></i>&nbsp;</button>';
+                else
+                    return 'No Infos';
+            })
+            ->editColumn('status', function($phone){
+                if($phone->status == 1)
+                    return '<span class="badge badge-pill badge-dark">STG Stock</span>';
+                elseif($phone->status == 2)
+                    return '<span class="badge badge-pill badge-info">Agency Stock</span>';
+                else
+                    return '<span class="badge badge-pill badge-success">Selled</span>';
+            })
+            ->rawColumns(['actions','status'])
+            ->make(true); 
+        }
+        return view('stock.phone_status',['smartphones'=> Smartphone::with('model')->get()]);
+    }
+
+    public function phoneStatusInfo(Request $request){
+
+        $lookingFor = $request->lookingFor;
+        $idSmartphone = $request->idSmartphone;
+
+        if($lookingFor == 'agence'){
+            $agenceID = StockAgency::where('smartphone_id',$idSmartphone)->first()->agency_id;
+            return response()->json(Agence::with('city')->where('id',$agenceID)->first());
+        }
+        
+        if($lookingFor == 'client'){
+            $registrationInfos = Registration::where('smartphone_id',$idSmartphone)->select('agency_id','client_id')->first();
+            $client = Client::findOrFail($registrationInfos->client_id);
+            $agence = Agence::with('city')->where('id',$registrationInfos->agency_id)->first();
+            return response()->json(["agence"=>$agence,"client" => $client]);
+        }
+
+        return null;
     }
 }

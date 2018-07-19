@@ -262,13 +262,15 @@ $('#import-form').submit(function(e){
         type:'POST',
         url:'import-smartphones',
         data: new FormData($(this)[0]),
+        dataType:'json',
+        cache:false,
         contentType:false,
         processData:false,
         success: function(response){
             $('#response').html('<div class="alert alert-warning">'+response+'</div>');
             btn.prop("disabled",false);
             btn.html('Importer');
-            getSmartphones();
+           setTimeout(function(){getSmartphones();},3000);
         },
         error: function(error){
             $('#response').html('<div class="alert alert-danger">'+error+'</div>');

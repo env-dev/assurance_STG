@@ -18,7 +18,7 @@ class StockAgencyController extends Controller
     }
     
     public function __invoke(){
-        return view('stock.index',['agencies' => Agence::select('id','reference','name')->get()]); //'smartphones' => Smartphone::select('id','imei')->get()
+        return view('stock.index',['agencies' => Agence::all()]); //'smartphones' => Smartphone::select('id','imei')->get()
     }
 
     public function get_imei(Request $request){
@@ -55,15 +55,18 @@ class StockAgencyController extends Controller
         $agence = $request->agence;
         $action = $request->action;
         $errors = [];
-
+        $ref = $this->referenceGenerator($agence);
         if ($action == "classic1"){
             $list_imei = $request->imei_modal;
             foreach($list_imei as $smartphoneID){
                 $stock_agency = new StockAgency();
+                $stock_agency->reference = $ref;
                 $stock_agency->smartphone_id = $smartphoneID;
                 $stock_agency->agency_id = $agence;
                 $stock_agency->save();
             }
+            // Change Smartphone Status to 2 (is in agency stock)
+            Smartphone::whereIn('id',$list_imei)->update(['status' => 2]);
             return response()->json([true],200);
         }
         else if ($action == "classic2"){
@@ -72,6 +75,7 @@ class StockAgencyController extends Controller
                 $check = $this->checkExists($imei);
                 if($check[0]){
                     $stock_agency = new StockAgency();
+                    $stock_agency->reference = $ref;
                     $stock_agency->smartphone_id = $check[1];
                     $stock_agency->agency_id = $agence;
                     $stock_agency->save();
@@ -82,6 +86,7 @@ class StockAgencyController extends Controller
             if($errors)
                 return response()->json([false,$errors],412);
 
+            Smartphone::whereIn('imei',$list_imei)->update(['status' => 2]);
             return response()->json([true],200);
         }
         else if ($action == "bulk"){
@@ -91,12 +96,15 @@ class StockAgencyController extends Controller
                 if ($extension == "xlsx" || $extension == "xls" || $extension == "csv") {
                     $path = $file->getRealPath();
                     $xlsx = new SimpleXLSX($path);
+                    $list_imei=[];
                     if($xlsx->success()) {
                         foreach ( array_slice($xlsx->rows(),1) as $ex_model) {
                             $imei = $ex_model[2]; //  IMEI
                             $check = $this->checkExists($imei);
                             if($check[0]){
+                                array_push($list_imei,$check[1]);
                                 $insert[] = [
+                                'reference' => $ref,
                                 'smartphone_id' => $check[1], //Smartphone::select('id')->where('imei',$imei)->first(),
                                 'agency_id' => $agence,
                                 'created_at' => now(),
@@ -107,12 +115,13 @@ class StockAgencyController extends Controller
                             }
                         }
                         if(!empty($insert)){
-                            if(StockAgency::insert($insert))
-                                return response()->json(["The data is inserted successfully",$errors],200);  
-                            else
+                            if(StockAgency::insert($insert)){
+                                Smartphone::whereIn('id',$list_imei)->update(['status' => 2]);
+                                return response()->json(["The data is inserted successfully",$errors],200);
+                            }
                                 return response()->json(["An error occured while inserting the data",$errors],412);  
                         }else{
-                            return response()->json(["An error occured while inserting the data",$errors],412);  
+                            return response()->json(["The Inserted List is empty",$errors],412);  
                         }
                     } else {
                         return response()->json($xlsx->error(),412);
@@ -132,7 +141,9 @@ class StockAgencyController extends Controller
         $errors = [];
         
         if ($action == "classic1"){
-            return response()->json(DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $request->imei_modal)->delete());
+            $deleteSt = DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $request->imei_modal)->delete();
+            $update = Smartphone::whereIn('id',$request->imei_modal)->update(['status' => 1]);
+            return response()->json([$deleteSt,$update]);
         }
         else if ($action == "classic2"){
             $list_imei = explode("\n",$request->imei_list_modal);
@@ -142,7 +153,9 @@ class StockAgencyController extends Controller
                     if($s)
                         $list_imei_ids[] = $s->id;
             }
-            return response()->json(DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $list_imei_ids)->delete());
+            $deleteSt = DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $list_imei_ids)->delete();
+            $update = Smartphone::whereIn('id',$list_imei_ids)->update(['status' => 1]);
+            return response()->json([$deleteSt,$update]);
         }
         else if ($action == "bulk"){
             if($request->hasFile('smart_file')){
@@ -158,7 +171,9 @@ class StockAgencyController extends Controller
                             if($s)
                                 $list_imei_ids[] = $s->id;
                         }
-                        return response()->json([DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $list_imei_ids)->delete()]);
+                        $deleteSt = DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $list_imei_ids)->delete();
+                        $update = Smartphone::whereIn('id',$list_imei_ids)->update(['status' => 1]);
+                        return response()->json([$deleteSt,$update]);
                         //return response()->json(['ok',DB::table('stock_agencies')->where('agency_id',$agence)->whereIn('smartphone_id', $list_imei_ids)->delete()]);
                     } else {
                         return response()->json($xlsx->error());
@@ -174,11 +189,12 @@ class StockAgencyController extends Controller
 
     public function getAgencyInfo($id){
         return DB::table('agences')
+                ->select(DB::raw('stock_agencies.reference as ref_cmd, COUNT("stock_agencies.reference") as count, date_format(stock_agencies.created_at,"%m-%d-%Y") as date'))
                 ->join('stock_agencies','agences.id','stock_agencies.agency_id')        
                 ->join('smartphones','smartphones.id','stock_agencies.smartphone_id')        
                 ->where('agences.id',$id)
-                ->select(DB::raw('smartphones.'))
-                ->count();
+                ->groupBy('stock_agencies.reference','stock_agencies.created_at')
+                ->get();
     }
 
     private function checkExists($imei){
@@ -191,5 +207,11 @@ class StockAgencyController extends Controller
             return array(false,"<b>{$imei}</b> is not exists in our records");
         }
         return array(true ,$sp->id);
+    }
+
+
+    private function referenceGenerator($agence)
+    {
+        return 'A-'.$agence.'-'.strtotime("now");
     }
 }

@@ -97,3 +97,23 @@
     </div>
 @endmodal
 <!-- End Bulk Smartphone Insertion Modal -->
+
+<!-- Bulk Smartphone Insertion Modal -->
+@modal(['section' => 'CommandDetails','title' => 'Commands Details','update'=>false, 'lg'=>'modal-lg'])
+    <table id="table-cmd" class="table table-hover table-bordered table-striped table-earning text-center">
+        <thead>
+            <th>#</th>
+            <th>Reference</th>
+            <th>Nombre Totale Telephone</th>
+            <th>Date D'effet</th>
+        </thead>
+        <tbody></tbody>
+    </table>
+@endmodal
+<!-- End Bulk Smartphone Insertion Modal -->
+
+<!-- Bulk Smartphone Insertion Modal -->
+@modal(['section' => 'SmartphoneDetails','title' => 'Smartphone Details','update'=>false , 'lg' => 'modal-lg'])
+    <div id="details"></div>
+@endmodal
+<!-- End Bulk Smartphone Insertion Modal -->

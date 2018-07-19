@@ -15,4 +15,8 @@ class Client extends Model
     {
         return $this->hasMany(Registration::class);
     }
+
+    public function fullName() {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

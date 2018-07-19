@@ -112,8 +112,14 @@
                 <li class="{{ Request::is('agency*') ? 'active' : '' }}">
                     <a  href="{{ url('agency') }}"><i class="fas fa-store-alt"></i>Agences</a>
                 </li>
-                <li class="{{ Request::is('gestion-stock*') ? 'active' : '' }}">
-                    <a  href="{{ url('gestion-stock') }}"><i class="fas fa-database"></i>Gestion Stock</a>
+                <li>
+                    <a class="nav-link collapsed" href="#stock" data-toggle="collapse" data-target="#stock"><i class="fas fa-calculator"></i> Gestion Stock &nbsp;&nbsp;<i class="fas fa-caret-square-down"></i></a>
+                    <div class="collapse" id="stock" aria-expanded="false">
+                        <ul class="flex-column pl-4 nav">
+                            <li class="nav-item {{ Request::is('gestion*') ? 'active' : '' }}"><a  href="{{ url('gestion-stock') }}"><i class="fas fa-database"></i> Gestion Stock</a></li>     
+                            <li class="nav-item {{ Request::is('status*') ? 'active' : '' }}"><a  href="{{ url('status') }}"><i class="fas fa-mobile"></i> Smarphone Etat</a></li>
+                        </ul>
+                    </div>
                 </li>
                 @endrole
             </ul>

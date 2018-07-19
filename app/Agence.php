@@ -12,6 +12,7 @@ class Agence extends Model
     use SoftDeletes, CascadeSoftDeletes;
     
     protected $guarded=[];
+    protected $dates = ['created_at'];
 
     public function city(){
         return $this->belongsTo(City::class);

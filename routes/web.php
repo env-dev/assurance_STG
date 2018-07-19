@@ -37,6 +37,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('stock/get-imei', 'StockAgencyController@get_imei');
         Route::get('stock/get-agence-info/{id}', 'StockAgencyController@getAgencyInfo');
         Route::get('/gestion-stock','StockAgencyController');
+
+        Route::get('status','SmartphoneController@phoneStatus');
+        Route::get('statusInfo','SmartphoneController@phoneStatusInfo');
+
     });
 
     Route::get('/get_imei/{id?}', 'RegistrationController@get_imei');
@@ -72,6 +76,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('read-aonDecision', 'NotificationController@readAonDecisionNotifcation');
     Route::get('read-all', 'NotificationController@readRegisterNotifcation');
 
+
+
+    
+    
 });
 
 Auth::routes();
