@@ -108,18 +108,15 @@ $(function() {
 
                     $('.overlay').css('display', 'none');
                     elem.parent().next().addClass('disabled');
-                    if(response.errors.length>0){
-                        response.errors.forEach(function(err) {
-                            msg += err+', ';
+                    response.errors.forEach(function(err) {
+                        msg += err+', ';
+                    })
+                    swal({
+                            title: 'Erreur IMEI',
+                            text: 'Les IMEIs ' +msg+ ' sont erronés.',
+                            icon: 'error'
                         })
-                        
-                        swal({
-                                title: 'Erreur IMEI',
-                                text: 'Les IMEIs ' +msg+ ' sont erronés.',
-                                icon: 'error'
-                            })
-                    }
-                    return;
+                    return
                 }
                 $('.overlay').css('display', 'none');
                 elem.parent().next().removeClass('disabled').find('a.nav-link').click();
