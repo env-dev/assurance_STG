@@ -12,17 +12,21 @@
                     <table id="phones-in-stock" class="table table-borderless table-striped table-earning text-center">
                         <thead>
                             <th>Reference</th>
+                            <th>Responsable</th>
                             <th>Nom D'agence</th>
+                            <th>Joined on</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
                             @foreach($agencies as $agency)
                             <tr>
                                 <td>{{$agency->reference}}</td>
+                                <td>{{$agency->full_name}}</td>
                                 <td>{{$agency->name}}</td>
+                                <td>{{ $agency->created_at->format('d-m-Y') }}</td>
                                 <td>
                                     <button class="btn btn-outline-danger delete" data-id="{{$agency->id}}" data-toggle="tooltip" data-placement="top" title="Remove smartphone from agency stock"><i class="fas fa-times"></i></button>
-                                    {{-- <button class="btn btn-outline-info info" data-id="{{$agency->id}}" data-toggle="tooltip" data-placement="top" title="Info">&nbsp;<i class="fas fa-info"></i>&nbsp;</button> --}}
+                                    <button class="btn btn-outline-info info" data-id="{{$agency->id}}" data-toggle="tooltip" data-placement="top" title="Commandes">&nbsp;<i class="fas fa-info"></i>&nbsp;</button>
                                     <button class="btn btn-outline-secondary insert" data-id="{{$agency->id}}"  data-toggle="tooltip" data-placement="top" title="Insert New Or Bulk Phone to Agency"><i class="fas fa-mobile-alt"></i></button>
                                 </td>
                             </tr>
@@ -63,6 +67,14 @@ function swalError(title='',text=''){
          title: title,
          text: text,
          icon: "success",
+     })
+}
+
+function swalInfo(title='',text=''){
+     swal({
+         title: title,
+         text: text,
+         icon: "info",
      })
 }
 
@@ -118,21 +130,36 @@ $(function(){
         requestType = 'delete';
     });
 
-    // $('.info').click(function(){
-    //     agence = $(this).data('id');
-    //     //$('.updateModalBulkInsertion').modal('toggle');
-    //     $.ajax({
-    //         url:'stock/get-agence-info/'+agence,
-    //         dataType:'json',
-    //         success:function(response){
-    //             console.log(response);
-    //         },
-    //         error:function(error){
-    //             console.log(error);
-    //         }
-    //     });
-    //     $
-    // });
+    $('.info').click(function(){
+        agence = $(this).data('id');
+        $.ajax({
+            url:'stock/get-agence-info/'+agence,
+            dataType:'json',
+            success:function(commands){
+                if(commands.length>0){
+                    var line='';
+                    $.each(commands, function(k,command){
+                        line+= '<tr>'+
+                            '<td>'+ (k+1) +'</td>'+
+                            '<td>'+command.ref_cmd+'</td>'+
+                            '<td>'+command.count+'</td>'+
+                            '<td>'+command.date+'</td>'+
+                            '</tr>';
+                    });
+                        
+                    $('#table-cmd tbody').html(line);
+                        
+                    $('.updateModalCommandDetails').modal('toggle');
+                }else{
+                    swalInfo('Aucune Commande');
+                }
+            },
+            error:function(error){
+                console.log(error);
+            }
+        });
+        $
+    });
 
 
 
