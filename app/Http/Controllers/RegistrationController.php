@@ -85,6 +85,7 @@ class RegistrationController extends Controller
 
         $client->save();
 
+        //STore more than smartpone here
         $smartphone = Smartphone::where('imei', request('imei'))->first();
         $smartphone->status = 3;
         $price_smartphone = $smartphone->model->price_ttc;
@@ -316,7 +317,7 @@ class RegistrationController extends Controller
         }
         $errors = [];
         if ($request->imeiList) {
-            $imeiList = explode(',', $request->imeiList);
+            $imeiList = array_filter(explode(',', $request->imeiList));
             foreach ($imeiList as $imei) {
                 if ($imei && !(Smartphone::where('imei', trim($imei))->first())) {
                     array_push($errors, $imei);

@@ -99,7 +99,7 @@ $(function() {
     function checkImeiExistence(imeiList, elem) {
         $('.overlay').css('display', 'block');
         $.ajax({
-            type: 'POST',
+            // type: 'POST',
             url: 'get_imei/',
             data: {imeiList: imeiList},
             success: function(response, status) {

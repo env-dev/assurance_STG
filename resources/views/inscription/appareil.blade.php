@@ -10,7 +10,7 @@
                     </div>
                     <div class="col-12 col-md-9 ui-widget">
                         <!-- <input type="text" id="get_imei" name="imei" placeholder="imei" class="form-control" required> -->
-                        <textarea id="get_imei" name="imei" placeholder="imei" class="form-control" required></textarea>
+                        <textarea id="get_imei" name="imeiList" placeholder="imei" class="form-control" required></textarea>
                         <small class="form-text text-muted">Les 'imei' des l'appareils</small>
                     </div>
                 </div>
