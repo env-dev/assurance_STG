@@ -87,9 +87,17 @@ $(function() {
   
     function nextTab(elem) {
         if (elem.parent().next().text().trim() == 'Inscription') {
-            if ($("#get_imei").val().split(',')) {
-                var Imei_List = $("#get_imei").val();
-                checkImeiExistence(Imei_List, elem);
+            var Imei_List = $("#get_imei").val().split(',').filter(function(x){
+                return (x.trim() !== (undefined || null || ''));
+              });
+            if (Imei_List.length) {
+                checkImeiExistence(Imei_List.toString(), elem);
+            }else{
+                swal({
+                    title: 'Erreur IMEI',
+                    text: "Verifiez Les IMEIs insérés.",
+                    icon: 'error'
+                })
             }
         }else{
             elem.parent().next().removeClass('disabled').find('a.nav-link').click();
@@ -99,7 +107,6 @@ $(function() {
     function checkImeiExistence(imeiList, elem) {
         $('.overlay').css('display', 'block');
         $.ajax({
-            // type: 'POST',
             url: 'get_imei/',
             data: {imeiList: imeiList},
             success: function(response, status) {

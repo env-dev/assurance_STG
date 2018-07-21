@@ -124,7 +124,11 @@
                             <tr>
                                 <td>{{ $agency->full_name }}</td>
                                 <td>{{ $agency->reference }}</td>
-                                <td>{{ $registration->mandat_num }}</td>
+                                @if($pdf_Registration)
+                                <td>{{ $pdf_Registration->mandat_num }}</td>
+                                @else
+                                <td>-------</td>
+                                @endif
                             </tr>
                         </table>
                 </td>
@@ -153,6 +157,7 @@
                                 <th>Valeur assurée TTC</th>
                                 <th>Réf facture d'achat</th>
                             </tr>
+                            @foreach($smartphones as $smartphone)
                             <tr>
                                 <td><strong> {{ $smartphone->model->name }} </strong></td>
                                 <td><strong>{{ $smartphone->model->brand->name }}</strong></td>
@@ -160,17 +165,21 @@
                                 <td><strong> {{ $smartphone->model->price_ttc }} </strong></td>
                                 <td></td>
                             </tr>
+                            @endforeach
                         </table>
                     </td>
 				</tr>
+                @if($pdf_Registration)
 				<tr>
 					<td colspan="2">
                         <fieldset>
                             <legend>Garanties</legend>
-                            <p style="display: inline-block; margin-right: 20px;">Casse accidentelle toutes causes et oxydation</p><span class="checkGuarantee"><strong>{{ ($registration->guarantee == '110') ? 'F2' : 'F3' }}</strong></span>
+                            <p style="display: inline-block; margin-right: 20px;">Casse accidentelle toutes causes et oxydation</p><span class="checkGuarantee"><strong>{{ ($pdf_Registration->guarantee == '110') ? 'F2' : 'F3' }}</strong></span>
                         </fieldset>
                     </td>
 				</tr>
+                @endif
+                @if($pdf_Registration)
 				<tr>
                     <td colspan="2">
                         <table class="shown">
@@ -180,13 +189,14 @@
                                 <th>Prime totale TTC</th>
                             </tr>
                             <tr>
-                                <td><strong>{{ $registration->data_flow->format('d/m/Y') }}</strong></td>
-                                <td><strong>{{ $registration->data_flow->addDays(5)->format('d/m/Y') }}</strong></td>
-                                <td><strong> {{ $registration->total_ttc }} </strong></td>
+                                <td><strong>{{ $pdf_Registration->data_flow->format('d/m/Y') }}</strong></td>
+                                <td><strong>{{ $pdf_Registration->data_flow->addDays(5)->format('d/m/Y') }}</strong></td>
+                                <td><strong> {{ $pdf_Registration->total_ttc }} </strong></td>
                             </tr>
                         </table>
                     </td>
 				</tr>
+                @endif
 				<tr>
                     <td colspan="2">
                         <fieldset>
@@ -241,7 +251,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <label>Fait à </label>....................................., le ....................................<br>
+                        <label>Fait à </label>....................................., le {{ Carbon\Carbon::now()->format('Y/m/d') }}<br>
                     </td>
                 </tr>
                 <tr>

@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-12 col-md-9">
                     @role('admin')
-                        <select id="agencies" class="form-control" name="agency">
+                        <select id="agencies" class="form-control" name="agency" required>
                         </select>
                     @endrole
                     @role('agence')

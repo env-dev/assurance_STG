@@ -177,13 +177,19 @@
                                 <th>N°IMEI</th>
                                 <th>Prix de vente</th>
                             </tr>
-                            <tr>
-                                <td><strong> {{ $registration->data_flow->format('Y/m/d') }} </strong></td>
-                                <td><strong> {{ $smartphone->model->name }} </strong></td>
-                                <td><strong>  </strong></td>
-                                <td><strong>{{ $smartphone->imei }}</strong></td>
-                                <td><strong> {{ $smartphone->model->price_ttc }} </strong></td>
-                            </tr>
+                            @foreach($smartphones as $smartphone)
+                                <tr>
+                                    @if($pdf_Registration)
+                                        <td><strong> {{ $pdf_Registration->data_flow->format('Y/m/d') }} </strong></td>
+                                    @else
+                                        <td><strong>-------------</strong></td>
+                                    @endif
+                                    <td><strong> {{ $smartphone->model->name }} </strong></td>
+                                    <td><strong>  </strong></td>
+                                    <td><strong>{{ $smartphone->imei }}</strong></td>
+                                    <td><strong> {{ $smartphone->model->price_ttc }} </strong></td>
+                                </tr>
+                            @endforeach
                         </table>
                     </td>
                 </tr>

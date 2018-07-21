@@ -18,6 +18,7 @@ use App\Sinister;
 use Carbon\Carbon;
 use Auth;
 use Excel;
+use Session;
 
 class RegistrationController extends Controller
 {
@@ -65,7 +66,7 @@ class RegistrationController extends Controller
             'agency' => 'required|integer',
             'nature' => 'required',
             'num_id' => 'required',
-            'imei' => 'required',
+            'imeiList' => 'required',
         ];
 
         $this->validate($request,$rules);
@@ -82,49 +83,69 @@ class RegistrationController extends Controller
         $client->type_id = request('type_id');
         $client->num_id = request('num_id');
         $client->birth_date = request('birth_date');
-
-        $client->save();
-
-        //STore more than smartpone here
-        $smartphone = Smartphone::where('imei', request('imei'))->first();
-        $smartphone->status = 3;
-        $price_smartphone = $smartphone->model->price_ttc;
-        $smartphone->model->brand;
-
-        $smartphone->save();
         
-        $agency = Agence::find(request('agency'))->first();
-        $registration = new Registration;
-
-        $registration->mandat_num = str_random(10);
-        // $registration->data_flow = request('date_flow_data');
-        $registration->data_flow = \Carbon\Carbon::now();
-        $registration->guarantee = request('guarantee');
-        $total_ttc = $price_smartphone;
-        if(request('guarantee') == '110'){
-            $total_ttc = $price_smartphone + ($price_smartphone * 10)/100;
-        }
-        // }else if(request('guarantee') == '111'){
-        //     $total_ttc = $price_smartphone + ($price_smartphone * 20)/100;
-        // }
-        $registration->total_ttc = $total_ttc;
-        $registration->smartphone_id = $smartphone->id;
-        $registration->client_id = $client->id;
-        $registration->agency_id = Auth::user()->agence->id ?? $agency->id;
-
-        $registration->save();
+        
+        $client->save();
+        
+        //STore more than smartpone here
+        $imeiList = array_filter(array_map(function($imei) {
+            return trim($imei);
+        }, explode(',', $request->imeiList)));
+        $agency = Agence::find(request('agency'));
+        $agency_id = Auth::user()->hasRole('admin') ? $agency->id : Auth::user()->agence->id;
+        $pdf_Registration = $smartphones = $price_smartphone = null;
 
         Session::flush();
-        
         $pdf = new PDFClass;
-        // if (request('guarantee') == '110' || request('guarantee') == '111') {
-        if (request('guarantee') == '110') {
-            Auth::user()->notif('registration');
-            return $pdf->downloadPDF('pdfs.registration', $client, $registration, $smartphone, $agency);
+
+        if (count($imeiList) > 1) {
+            $smartphones = Smartphone::whereIn('imei', $imeiList)->get();
+            $smartphones->status = 3;
+            $smartphones->each(function($item, $key) use($client, $agency_id){
+                $price_smartphone = $item->model->price_ttc;
+                $item->model->brand;
+    
+                $registration = new Registration;
+                $registration->mandat_num = str_random(10);
+                $registration->data_flow = \Carbon\Carbon::now();
+                $total_ttc = $price_smartphone;
+                if(request('guarantee') == '110'){
+                    $total_ttc = $price_smartphone + ($price_smartphone * 10)/100;
+                }
+                $registration->total_ttc = $total_ttc;
+                $registration->smartphone_id = $item->id;
+                $registration->client_id = $client->id;
+                $registration->agency_id = $agency_id;
+                $registration->guarantee = request('guarantee');
+                $registration->save();
+                $item->save();
+            });
+        }else {
+            $smartphones = Smartphone::where('imei', $imeiList[0])->get();
+            $smartphones[0]->model->brand;
+            $smartphones[0]->status = 3;
+            $price_smartphone = $smartphones[0]->model->price_ttc;
+            $pdf_Registration = new Registration;
+            $pdf_Registration->mandat_num = str_random(10);
+            $pdf_Registration->data_flow = \Carbon\Carbon::now();
+            $total_ttc = $price_smartphone;
+            if(request('guarantee') == '110'){
+                $total_ttc = $price_smartphone + ($price_smartphone * 10)/100;
+            }
+            $pdf_Registration->total_ttc = $total_ttc;
+            $pdf_Registration->smartphone_id = $smartphones[0]->id;
+            $pdf_Registration->client_id = $client->id;
+            $pdf_Registration->agency_id = $agency_id;
+            $pdf_Registration->guarantee = request('guarantee');
+            $pdf_Registration->save();
+            $smartphones->save();
+
         }
-        
         Auth::user()->notif('registration');
-        return $pdf->downloadPDF('pdfs.AAM_F1', $client, $registration, $smartphone, $agency);
+        if (request('guarantee') == '110') {
+            return $pdf->downloadPDF('pdfs.registration', $client, $pdf_Registration, $smartphones, $agency);
+        }
+        return $pdf->downloadPDF('pdfs.AAM_F1', $client, $pdf_Registration, $smartphones, $agency);
     }
 
     /**
