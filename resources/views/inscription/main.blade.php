@@ -56,11 +56,13 @@
                 </ul>
             </div>
             <div class="card-body">
-                @if (session('msg'))
-                    <div class="alert alert-success text-center">
-                        {{ session('msg') }}
+            @isset($msg)
+                @if(!empty($msg))
+                    <div class="alert alert-primary text-center" role="alert">
+                        {{ $msg }}
                     </div>
-                @endif
+                @endif    
+            @endisset
                 <div class="default-tab">
                     <form action="{{ action('RegistrationController@store') }}" id="inscriptionForm" method="post" enctype="multipart/form-data" class="form-horizontal" >
                         {{ csrf_field() }}  

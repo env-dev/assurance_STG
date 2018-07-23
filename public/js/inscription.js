@@ -293,7 +293,7 @@ $(function(){
                 link.click();
                 link.remove();
             }
-            window.location = '/listing-registrations';
+            // window.location = '/listing-registrations';
         }
     };
     req.send(formData);

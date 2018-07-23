@@ -29,13 +29,14 @@ class RegistrationController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->session()->has('reg_id')) {
+        if ($request->session()->has('reg_id')) { //In case the device has to change, create a new registration, with the old guarantee.
+            $msg = 'Vous êtes rediregé pour ajouter une nouvelle souscription.';
             $registration = Registration::find($request->session()->get('reg_id'));
             $avenant = Avenant::where('registration_id', $registration->id)->first();
             if ($avenant) {
-                return view('inscription.main')->with('guarantee', $avenant->extension_added);
+                return view('inscription.main')->with(['guarantee' => $avenant->extension_added, 'msg' => $msg]);
             }
-            return view('inscription.main')->with('guarantee', $registration->guarantee);
+            return view('inscription.main')->with(['guarantee' => $registration->guarantee, 'msg' => $msg]);
         }
         return view('inscription.main');
     }
@@ -95,7 +96,7 @@ class RegistrationController extends Controller
         $agency_id = Auth::user()->hasRole('admin') ? $agency->id : Auth::user()->agence->id;
         $pdf_Registration = $smartphones = $price_smartphone = null;
 
-        Session::flush();
+        $request->session()->forget('reg_id');
         $pdf = new PDFClass;
 
         if (count($imeiList) > 1) {
@@ -117,8 +118,8 @@ class RegistrationController extends Controller
                 $registration->client_id = $client->id;
                 $registration->agency_id = $agency_id;
                 $registration->guarantee = request('guarantee');
-                $registration->save();
-                $item->save();
+                // $registration->save();
+                // $item->save();
             });
         }else {
             $smartphones = Smartphone::where('imei', $imeiList[0])->get();
@@ -137,8 +138,8 @@ class RegistrationController extends Controller
             $pdf_Registration->client_id = $client->id;
             $pdf_Registration->agency_id = $agency_id;
             $pdf_Registration->guarantee = request('guarantee');
-            $pdf_Registration->save();
-            $smartphones->save();
+            // $pdf_Registration->save();
+            // $smartphones->save();
 
         }
         Auth::user()->notif('registration');
@@ -242,7 +243,7 @@ class RegistrationController extends Controller
         ->get();
         if (Auth::user()->HasRole('agence')) {
                 $registrations = $registrations->filter(function ($value, $key) {
-                    return $value->agency_id = Auth::user()->agence_id;
+                    return $value->agency_id == Auth::user()->agence_id;
                 });
         }
         $new_registrations = Registration::status(new RegistrationStatus('newAdded'))->count();

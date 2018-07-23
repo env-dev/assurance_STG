@@ -113,7 +113,7 @@ class SinisterController extends Controller
         ->get();
         if (Auth::user()->HasRole('agence')) {
             $sinisters = $sinisters->filter(function ($value, $key) {
-                return $value->registration->agency_id = Auth::user()->agence_id;
+                return $value->registration->agency_id == Auth::user()->agence_id;
             });
         }
 
