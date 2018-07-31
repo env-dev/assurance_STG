@@ -371,10 +371,14 @@ class RegistrationController extends Controller
         }
     }
 
-    public function export()
+    public function export(Request $request)
     {
         // $registrations = Registration::whereDate('created_at', Carbon::yesterday()->toDateString())->get();
-        $registrations = Registration::whereDate('created_at', \Carbon\Carbon::now()->format('Y-m-d').'%')->get();
+        $exportDate = explode(' ', $request->exportDates);
+        $from = trim($exportDate[0]);
+        $to = trim($exportDate[2]);
+        // $registrations = Registration::whereDate('created_at', \Carbon\Carbon::now()->format('Y-m-d').'%')->get();
+        $registrations = Registration::whereBetween('created_at', [$from." 00:00:00", $to." 23:59:59"])->get();
         if (!$registrations->isEmpty()) {
             $file_name = time().'_Liste_des_souscriptions.xlsx';
             foreach ($registrations as $registration) {
@@ -385,6 +389,6 @@ class RegistrationController extends Controller
             // $excel = Excel::store(new ExcelDoc($registrations), $file_name);
             // return response()->json(['msg' => 'Votre export est effectué.', 'name' => $file_name, 'file' => public_path('\storage\export\\').$file_name, 'excel' => $excel]);
         }
-        return response()->json(['msg' => 'Aucune souscriptions est faite aujourd\'hui', 'status' => 404]);
+        return response()->json(['msg' => 'Aucune souscriptions a été trouvé.', 'status' => 404]);
     }
 }

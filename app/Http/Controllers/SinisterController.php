@@ -125,7 +125,7 @@ class SinisterController extends Controller
                 <button type="button" class="consult_sinister item btn btn-info" data-toggle="modal" data-id="'.$sinisters->id.'" data-target="#consult_sinister" data-backdrop="static" data-keyboard="false">
                     <i class="zmdi zmdi-eye"></i>
                 </button>';
-                if (Auth::user()->hasRole(['admin', 'agence']) && is_null($sinisters->aon_decision)) {
+                if (Auth::user()->hasRole(['admin', 'aon']) && is_null($sinisters->aon_decision)) {
                     $link .= '<select name="aon_decision" class="aon_decision ml-1" data-id="'.$sinisters->id.'">
                                 <option value="">Prennez une décision</option>
                                 <option value="REP">Réparation</option>
@@ -134,7 +134,7 @@ class SinisterController extends Controller
                                 <option value="SAV">SAV STG</option>
                             </select>';
                 }
-                if(Auth::user()->hasRole(['admin', 'agence']) && $sinisters->status == 10) {
+                if(Auth::user()->hasRole(['admin', 'aon']) && $sinisters->status == 10) {
                     $link .= '<button type="button" class="confirmRep item btn btn-outline-success ml-1" data-toggle="modal" data-id="'.$sinisters->id.'" data-target="#confirm_reparation" data-backdrop="static" data-keyboard="false" title="Confirmer la réparation">
                     <i class="zmdi zmdi-check-circle-u"></i></button>';
                 }

@@ -19,14 +19,14 @@
     <a class="btn btn-primary m-l-10 m-b-10" href="{{ url('registration') }}" id="new_memberships" >Ajouter une souscription</a>
     @endrole
     @role(['admin','aon'])
-    <a class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export-registrations') }}" target="_blank" id="export">Exporter</a>
+    <button class="btn btn-outline-dark m-l-10 m-b-10" href="{{ url('export-registrations') }}" data-toggle="modal" data-target="#export-pick-date">Exporter</button>
     @endrole
     <!-- DATA TABLE-->
     <div class="table-responsive m-b-40">
         <table class="table table-borderless table-data3 text-center" id="registration-list">
             <thead>
                 <tr>
-                    <th>Réf mandat</th>
+                    <!-- <th>Réf mandat</th> -->
                     <th>IMEI</th>
                     <th>CIN/RC</th>
                     <th>Date de flux de données</th>
@@ -42,6 +42,7 @@
 <div>@include('inscription.inc.consult-reg-modal')</div>
 <div>@include('inscription.inc.add-sinister-modal')</div>
 <div>@include('inscription.inc.add-avenant-modal')</div>
+<div>@include('inscription.inc.pick-export-date-modal')</div>
 @endsection
 
 @section('js')
@@ -63,7 +64,7 @@
                 },
                 ajax: "/getRegistrations",
                 columns: [
-                    { data: "mandat_num", name: "mandat_num", orderable: false},
+                    // { data: "mandat_num", name: "mandat_num", orderable: false},
                     { data: "smartphone.imei", name: "smartphone.imei", orderable: false, searchable: true },
                     { data: "client.num_id", name: "client.num_id", orderable: false, searchable: true },
                     { data: "data_flow",name: "data_flow" },
@@ -227,32 +228,72 @@
 
         $("#export").on("click", function(e) {
             var self = $(this);
-            if (self.attr('canExport') == undefined) {
-                e.preventDefault();
-                $.ajax({
-                    url: 'export-registrations',
-                    success: function(response) {
-                        if (response.status != undefined) {
-                            swal({
-                                title: 'Export',
-                                text: response.msg,
-                                icon: "error",
-                            })
-                            return;
+            var exportDates = $('#registration_export_date').val();
+            // if (self.attr('canExport') == undefined) {
+            //     e.preventDefault();
+            //     // ------
+                var req = new XMLHttpRequest();
+                    req.open("GET", "export-registrations/" + exportDates, true);
+                    req.responseType = "blob";
+                    req.onreadystatechange = function () {
+                        if (req.readyState === 4 && req.status === 200) {
+
+                            // test for IE
+                            if (this.getResponseHeader('content-type') === 'application/json') {
+                                obj = JSON.parse(req.response);
+                                swal({
+                                        title: 'Export',
+                                        text: obj.msg,
+                                        icon: "error",
+                                    })
+                                    return;
+                            }
+                            if (typeof window.navigator.msSaveBlob === 'function') {
+                            window.navigator.msSaveBlob(req.response, new Date().getTime() + "_Liste_des_souscriptions.xlsx");
+                            } else {
+                                var blob = req.response;
+                                var link = document.createElement('a');
+                                link.href = window.URL.createObjectURL(blob);
+                                link.download = new Date().getTime() + "_Liste_des_souscriptions.xlsx";
+
+                                // append the link to the document body
+
+                                document.body.appendChild(link);
+
+                                link.click();
+                                link.remove();
+                            }
                         }
-                        self.attr('canExport', true);
-                        self.trigger('click');
-                    }
-                })
-            }else{
-                swal({
-                    title: 'Export',
-                    text: 'L\'export est effectué',
-                    icon: "success",
-                })
-                window.location.target = '_blank';
-                window.location = '/export-registrations';
-            }
+                    };
+                    self.attr('data-dismiss', 'modal')
+                    req.send();
+                    // --------
+                // $.ajax({
+                //     type: 'PUT',
+                //     url: 'export-registrations',
+                //     data: {exportDates: exportDates},
+                //     success: function(response) {
+                //         if (response.status == '404') {
+                //             swal({
+                //                 title: 'Export',
+                //                 text: response.msg,
+                //                 icon: "error",
+                //             })
+                //             return;
+                //         }
+                //         self.attr('canExport', true);
+                //         self.trigger('click');
+                //     }
+                // })
+            // }else{
+            //     swal({
+            //         title: 'Export',
+            //         text: 'L\'export est effectué',
+            //         icon: "success",
+            //     })
+            //     window.location.target = '_blank';
+            //     window.location = '/export-registrations';
+            // }
         })
 
         $("#print_reg").on("click", function(e) {

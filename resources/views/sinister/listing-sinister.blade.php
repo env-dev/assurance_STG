@@ -19,7 +19,7 @@
         <table class="table table-borderless table-data3 text-center" id="sinisters-list">
             <thead>
                 <tr>
-                    <th>Réf mandat</th>
+                    <!-- <th>Réf mandat</th> -->
                     <th>CIN/RC</th>
                     <th>Date flux de données</th>
                     <th>Créer le</th>
@@ -111,7 +111,7 @@
                 },
                 ajax: "/getSinisters",
                 columns: [
-                    { data: "registration.mandat_num", name: "registration.mandat_num", orderable: false, searchable: true },
+                    // { data: "registration.mandat_num", name: "registration.mandat_num", orderable: false, searchable: true },
                     { data: "registration.client.num_id", name: "registration.client.num_id", orderable: false, searchable: true },
                     { data: "data_flow",name: "data_flow" },
                     { data: "created_at", name: "created_at" },
@@ -191,7 +191,7 @@
                         refreshDataTable();
                     },
                     error: function(err) {
-    
+                        console.log(err)
                     }
                 });
             }else{

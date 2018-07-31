@@ -50,7 +50,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/getRegistrations', 'RegistrationController@listingRegistrations');
     Route::get('/getRegistration/{id}', 'RegistrationController@getRegistration');
     Route::get('/check-status/{id}', 'RegistrationController@checkStatus');
-    Route::get('/export-registrations', 'RegistrationController@export');
+    Route::get('/export-registrations/{exportDates}', 'RegistrationController@export');
     
     Route::resource('registration', 'RegistrationController');
     Route::resource('avenants', 'AvenantController');

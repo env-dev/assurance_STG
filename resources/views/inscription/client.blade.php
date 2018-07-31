@@ -28,13 +28,12 @@
         <div class="col-6">
             <label for="birthdate" class="control-label mb-1">Date de naissance</label>
             <div class="input-group">
-            <div class="input-group date" id="birthdate" data-target-input="nearest">
-                <input type="text" name="birth_date" id="birth_date" class="form-control datetimepicker-input" data-target="#birthdate" required/>
-                <div class="input-group-append" data-target="#birthdate" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                <div class="input-group date" id="birthdate" data-target-input="nearest">
+                    <input type="text" name="birth_date" id="birth_date" class="form-control datetimepicker-input" data-target="#birthdate" required/>
+                    <div class="input-group-append" data-target="#birthdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                 </div>
-            </div>
-
             </div>
         </div>
         <div class="col-6 ">

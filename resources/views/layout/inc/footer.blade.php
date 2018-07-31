@@ -20,6 +20,7 @@
         <script src="{{ asset('vendor/chartjs/Chart.bundle.min.js') }}"></script>
         <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -33,6 +34,12 @@
                 $('#birthdate, #date_flow_data, #sinisterDate, #date_rep').datetimepicker({
                     format: 'YYYY-MM-DD'
                 });
+                $('#registration_export_date').daterangepicker({
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                });
+                
             });
         </script>
         
