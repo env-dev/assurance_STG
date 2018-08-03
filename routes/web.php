@@ -11,6 +11,12 @@
 |
 */
 
+// Public Route for public registration
+
+Route::get('/public-registration','RegistrationController@publicIndex');
+Route::post('/public-registration','RegistrationController@publicRegister');
+Route::get('/check-imeis','SmartphoneController@checkImeis');
+
 Route::group(['middleware' => ['auth']], function() {
     
     Route::get('/', function(){
@@ -84,4 +90,5 @@ Route::group(['middleware' => ['auth']], function() {
 });
 
 Auth::routes();
+
 

@@ -391,4 +391,13 @@ class RegistrationController extends Controller
         }
         return response()->json(['msg' => 'Aucune souscriptions a été trouvé.', 'status' => 404]);
     }
+
+
+    public function publicIndex(){
+        return view('public');
+    }
+
+    public function publicRegister(Request $request){
+
+    }
 }

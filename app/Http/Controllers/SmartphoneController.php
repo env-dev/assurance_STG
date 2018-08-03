@@ -214,4 +214,16 @@ class SmartphoneController extends Controller
 
         return null;
     }
+
+    public function checkImeis(Request $request){
+        if($request->ajax()){
+            $imei1 = $request->imei1;
+            $imei2 = $request->imei2;
+            $smartphone = Smartphone::where('imei',$imei1)->where('imei2',$imei2);
+            if($smartphone->count() > 0)
+                return response()->json(['status'=>true,'registred'=>$smartphone->has('registration')->count()]);
+            
+            return response()->json(['status'=>false,'msg'=>'IMEI1 OR IMEI2 is incorrect']);
+        }
+    }
 }
