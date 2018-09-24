@@ -398,6 +398,54 @@ class RegistrationController extends Controller
     }
 
     public function publicRegister(Request $request){
+        $rules = [
+            'last_name'  => 'required|min:3',
+            'first_name'  => 'required|min:3',
+            'city' => 'required',
+            'nature' => 'required',
+            'num_id' => 'required',
+            'type_id' => 'required',
+            'date_flow' => 'required',
+            'imei' => 'required',
+        ];
+        $this->validate($request,$rules);
+        // Create de client
+        $client = new Client;
 
+        $client->first_name = request('first_name');
+        $client->last_name = request('last_name');
+        $client->tel = request('tel');
+        $client->email = request('email');
+        $client->city = request('city');
+        $client->address = request('address') ?? 'No address';
+        $client->nature = request('nature');
+        $client->type_id = request('type_id');
+        $client->num_id = request('num_id');
+        $client->birth_date = \Carbon\Carbon::now(); //request('birth_date');
+        $client->save();
+        // Save the smartphone
+        $smartphone = Smartphone::where('imei', request('imei'))->first();
+        if (is_null($smartphone)) {
+            return response()->json(["msg" => "Le smartphone n'existe pas", 'code' => 0]);
+        }
+        $smartphone->model->brand;
+        $smartphone->status = 3;
+        // Create the registration
+        $registration = new Registration;
+        $registration->mandat_num = str_random(10);
+        $registration->guarantee = 100;
+        $registration->data_flow = request('date_flow');
+        $total_ttc = $smartphone->model->price_ttc;
+        if(request('guarantee') == '110'){
+            $total_ttc = $smartphones->model->price_ttc + ($smartphones->model->price_ttc * 10)/100;
+        }
+        $registration->total_ttc = $total_ttc;
+        $registration->smartphone_id = $smartphone->id;
+        $registration->client_id = $client->id;
+        $registration->agency_id = 3;
+        
+        $smartphone->save();
+        $registration->save();
+        return response()->json(["msg" => "Votre souscription est éffectué.", 'code' => 1]);
     }
 }

@@ -226,4 +226,24 @@ class SmartphoneController extends Controller
             return response()->json(['status'=>false,'msg'=>'IMEI1 OR IMEI2 is incorrect']);
         }
     }
+
+    public function info(Request $request){
+		$imei = $request->imei;
+		
+		$smartphone = Smartphone::where('imei',$imei);
+		
+		// if($request->verify == true){
+			// $exists = ($smartphone->count() > 0);
+			// return response()->json(['status'=>200,'data' => $exists],200);	
+		// }
+		
+		if($smartphone->count() > 0)
+			if($smartphone->has('registration')->count()>0)				
+				return response()->json(['status'=>200,'data' => $smartphone->with(['model:id,name','registration.client'])->get()],200);	
+			else
+				return response()->json(['status'=>404,'data'=>'This Smartphone is not registered yet'], 200);
+			
+		return response()->json(['status'=>404,'data'=>'IMEI is incorrect or not exists, please verify it again'], 200);
+		
+	}
 }
