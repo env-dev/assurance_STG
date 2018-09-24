@@ -442,7 +442,7 @@ class RegistrationController extends Controller
         $registration->total_ttc = $total_ttc;
         $registration->smartphone_id = $smartphone->id;
         $registration->client_id = $client->id;
-        $registration->agency_id = 3;
+        $registration->agency_id = 1;
         
         $smartphone->save();
         $registration->save();
