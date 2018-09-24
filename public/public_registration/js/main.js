@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 	
-	$('input[name="birth_date"]').daterangepicker({
+	$('input[name="date_flow"]').daterangepicker({
 		singleDatePicker: true,
 		showDropdowns: true,
 		locale: {
