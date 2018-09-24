@@ -394,7 +394,7 @@ class RegistrationController extends Controller
 
 
     public function publicIndex(){
-        return view('public');
+        return view('public2');
     }
 
     public function publicRegister(Request $request){

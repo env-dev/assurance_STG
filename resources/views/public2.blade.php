@@ -102,8 +102,8 @@
 						</div>
 						<div class="col-xs-12 col-md-6">
 							<div class="wrap-input100 validate-input m-b-23" >
-								<span class="label-input100">Date de naissance</span>
-								<input class="input100 input-register-form " type="text" name="birth_date" id="birth_date" autocomplete="off">
+								<span class="label-input100">Date de vente</span>
+								<input class="input100 input-register-form " type="text" name="date_flow" id="birth_date" autocomplete="off">
 								<span class="focus-input100" ></span>
 							</div>
 						</div>
