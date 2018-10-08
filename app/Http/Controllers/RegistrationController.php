@@ -409,43 +409,53 @@ class RegistrationController extends Controller
             'imei' => 'required',
         ];
         $this->validate($request,$rules);
-        // Create de client
-        $client = new Client;
-
-        $client->first_name = request('first_name');
-        $client->last_name = request('last_name');
-        $client->tel = request('tel');
-        $client->email = request('email');
-        $client->city = request('city');
-        $client->address = request('address') ?? 'No address';
-        $client->nature = request('nature');
-        $client->type_id = request('type_id');
-        $client->num_id = request('num_id');
-        $client->birth_date = \Carbon\Carbon::now(); //request('birth_date');
-        $client->save();
-        // Save the smartphone
-        $smartphone = Smartphone::where('imei', request('imei'))->first();
-        if (is_null($smartphone)) {
-            return response()->json(["msg" => "Le smartphone n'existe pas", 'code' => 0]);
-        }
-        $smartphone->model->brand;
-        $smartphone->status = 3;
-        // Create the registration
-        $registration = new Registration;
-        $registration->mandat_num = str_random(10);
-        $registration->guarantee = 100;
-        $registration->data_flow = request('date_flow');
-        $total_ttc = $smartphone->model->price_ttc;
-        if(request('guarantee') == '110'){
-            $total_ttc = $smartphones->model->price_ttc + ($smartphones->model->price_ttc * 10)/100;
-        }
-        $registration->total_ttc = $total_ttc;
-        $registration->smartphone_id = $smartphone->id;
-        $registration->client_id = $client->id;
-        $registration->agency_id = 1;
         
-        $smartphone->save();
-        $registration->save();
+        // Begin transaction if any of models not saved correctly
+        // if not it will rollback automaticaly the process
+        DB::transaction(function () {
+            
+            // Create de client
+            $client = new Client;
+    
+            $client->first_name = request('first_name');
+            $client->last_name = request('last_name');
+            $client->tel = request('tel');
+            $client->email = request('email');
+            $client->city = request('city');
+            $client->address = request('address') ?? 'No address';
+            $client->nature = request('nature');
+            $client->type_id = request('type_id');
+            $client->num_id = request('num_id');
+            $client->birth_date = \Carbon\Carbon::now(); //request('birth_date');
+            $client->save();
+
+            // Save the smartphone
+            $smartphone = Smartphone::where('imei', request('imei'))->first();
+            if (is_null($smartphone)) {
+                return response()->json(["msg" => "Le smartphone n'existe pas", 'code' => 0]);
+            }
+
+            $smartphone->status = 3;
+            $smartphone->save();
+
+            // Create the registration
+            $registration = new Registration;
+            $registration->mandat_num = str_random(10);
+            $registration->guarantee = 100;
+            $registration->data_flow = request('date_flow');
+            $total_ttc = $smartphone->model->price_ttc;
+            if(request('guarantee') == '110'){
+                $total_ttc = $smartphones->model->price_ttc + ($smartphones->model->price_ttc * 10)/100;
+            }
+            $registration->total_ttc = $total_ttc;
+            $registration->smartphone_id = $smartphone->id;
+            $registration->client_id = $client->id;
+            $registration->agency_id = 1;
+
+            $registration->save();
+
+        });
+        // End transaction
         return response()->json(["msg" => "Votre souscription est éffectué.", 'code' => 1]);
     }
 }

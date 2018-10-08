@@ -1,6 +1,14 @@
 
 $(document).ready(function(){
-	
+	function disableLoading(element,html='<img src="/public_registration/images/loading.svg" style="width:100px; height:100%;"/>'){
+        element.html(html);
+        element.prop('disabled',true);
+    }
+    function ableLoading(element, html='Inscrire'){
+        element.html(html);
+        element.prop('disabled',false);
+    }
+
 	$('input[name="date_flow"]').daterangepicker({
 		singleDatePicker: true,
 		showDropdowns: true,
@@ -48,9 +56,9 @@ $(document).ready(function(){
     var imei1,imei2,status;
     $('.validate-form').on('submit',function(e){
         e.preventDefault();
+        disableLoading($('#btn-imei'));
         var c = check(mainInput);
         if(c){
-			$('#btn-imei').html('<img src="/public_registration/images/loading.svg" style="width:100px; height:100%;"/>');
             imei1 = $('#imei1').val();
             imei2 = $('#imei2').val();
 
@@ -112,10 +120,10 @@ $(document).ready(function(){
                             icon: "error",
                         });
                     }
-					$('#btn-imei').html('Valider');
+					ableLoading($('#btn-imei'),'Valider');
                 },
                 error: function(error){
-					$('#btn-imei').html('Valider');
+					ableLoading($('#btn-imei'),'Valider');
                     console.log(error);
                 },
             });
@@ -127,45 +135,62 @@ $(document).ready(function(){
 
     $('.validate-form-modal').on('submit',function(e){
         e.preventDefault();
+        e.stopPropagation();
+        disableLoading($('.register-form-btn'));
+
+        var formData = $(this).serialize();
+        console.log(formData);
         var cm = check(modalInput,true);
         if(cm){
-			$('#btn-client').html('<img src="/public_registration/images/loading.svg" style="width:100px; height:100%;"/>');
-            var form = document.querySelector("#client-info");
-            var formData = new FormData(form);
-            var req = new XMLHttpRequest();
-            
-            req.open("POST", "/public-registration", true);
-            req.responseType = "";
-            req.onreadystatechange = function () {
-                if (req.readyState === 4 && req.status === 200) {
-                    // test for IE
-                    if (typeof window.navigator.msSaveBlob === 'function') {
-                        window.navigator.msSaveBlob(req.response, new Date().getTime() + "Contrat_de_souscription.pdf");
-                    } else {
-                        if (JSON.parse(req.response).code == 1) {
-                            swal({
-                                title: 'Félicitation',
-                                text: 'Votre souscription est effectué.',
-                                icon: 'success'
-                            }).then((ok) => {
-                                if (ok) {
-                                    window.location = '/public-registration';
-                                }
-                            });                            
-                        }else{
-                            swal({
-                                title: 'Ooops!!',
-                                text: 'Une erreur est survenu, reéssayez svp.',
-                                icon: 'error'
-                            })
-                        }
+
+            $.ajax({
+                type:'POST',
+                url:'/public-registration',
+                dataType: 'json',
+                data:formData,          
+                success: function(response){
+                    if (response.code == 1) {
+                        swal({
+                            title: 'Félicitation',
+                            text: 'Votre souscription est effectué.',
+                            icon: 'success'
+                        }).then((ok) => {
+                            if (ok) {
+                                window.location = '/public-registration';
+                            }
+                        });                            
+                    }else{
+                        swal({
+                            title: 'Ooops!!',
+                            text: 'Une erreur est survenu, reéssayez svp.',
+                            icon: 'error'
+                        })
                     }
-					$('#btn-client').html('Inscrire');
+
+                    ableLoading($('.register-form-btn'));
+                },
+                error: function(response){
+                    console.log(response);
+                    var errors = "";
+                    if (response.status == 404) {
+                        errors = response.responseJSON.message;
+                    } else if (response.status == 422) {
+                        $.each(response.responseJSON.errors, function (field, error) {
+                            errors += "- " + error[0] + "\n";
+                        });
+                    } else if (response.status == 412) {
+                        errors = response.responseJSON.message;
+                    } else if (response.status == 500) {
+                        errors = "Message: " + response.responseJSON.message +
+                            "\nFile: " + response.responseJSON.file.split('\\').slice(-1)[0] + ":" + response.responseJSON.line;
+                    }
+                    swal("Error", errors, "error");
+                    ableLoading($('.register-form-btn'));
                 }
-            };
-            req.send(formData);
+            });          
         }
-        return cm;
+        ableLoading($('.register-form-btn'));
+        return false;
     });
 
 
