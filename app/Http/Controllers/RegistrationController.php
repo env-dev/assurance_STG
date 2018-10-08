@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Auth;
 use Excel;
 use Session;
+use DB;
 
 class RegistrationController extends Controller
 {
