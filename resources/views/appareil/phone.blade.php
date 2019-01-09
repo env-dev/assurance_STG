@@ -106,6 +106,7 @@
                         <th>Marque</th>
                         <th>Model</th>
                         <th>IMEI</th>
+                        <th>IMEI 2</th>
                         <th>action</th>
                     </tr>
                 </thead>

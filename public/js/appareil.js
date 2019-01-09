@@ -66,6 +66,7 @@ function getBrands(){
               { data: "model.brand.name",name: "model.brand.name" },
               { data: "model.name",name: "model.name" },
               { data: "imei",name: "imei" },
+              { data: "imei2",name: "imei2" },
               { data: "actions", name: "actions", orderable: false, searchable: false },
           ]
      });
