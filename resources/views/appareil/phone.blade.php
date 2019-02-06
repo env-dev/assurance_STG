@@ -1,6 +1,6 @@
 <div class="row" id="phone">
     <div class="col-sm-12 col-md-6">
-        <div class="card">
+        {{-- <div class="card">
             <div class="card-header">Ajouter bulk Appareils</div>
             <div class="card-body">
                 <form id="import-form" enctype="multipart/form-data">
@@ -18,8 +18,8 @@
                     <small id="file_add_help" class="form-text text-muted">Les extensions autorisé : xlsx, xls</small>
                 </form>
             </div>
-        </div>
-        {{-- <div class="accordion" id="accordionExample">
+        </div> --}}
+        <div class="accordion" id="accordionExample">
             @if (Session::has('feedback'))
             <div class="alert alert-warning">
                 {{Session::get('feedback')}}
@@ -35,7 +35,20 @@
                 </div>
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                        
+                        <form id="import-form" enctype="multipart/form-data">
+                            <div id="response"></div>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    @csrf
+                                    <input type="file" class="custom-file-input" id="smart_file" name="smart_file" accept=".xlsx,.xls" required>
+                                    <label class="custom-file-label" for="smart_file">Choisisser votre fichier</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" id="btn-import">Importer</button>
+                                </div>
+                            </div>
+                            <small id="file_add_help" class="form-text text-muted">Les extensions autorisé : xlsx, xls</small>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -64,22 +77,22 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="imei_add" class="control-label mb-1">IMEI</label>
-                                    <input  id="imei_add" name="imei_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
+                                    <input id="imei_add" name="imei_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
                                     <small id="imei_add_help" class="form-text text-muted">IMEI doit être numerique</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="imei_add" class="control-label mb-1">IMEI 2</label>
-                                    <input  id="imei2_add" name="imei2_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
+                                    <input id="imei2_add" name="imei2_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
                                     <small id="imei2_add_help" class="form-text text-muted">IMEI 2 doit être numerique</small>
                                 </div>
                                  <div class="form-group">
                                     <label for="sn_add" class="control-label mb-1">SN</label>
-                                    <input  id="sn_add" name="sn_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
+                                    <input id="sn_add" name="sn_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
                                     <small id="sn_add_help" class="form-text text-muted">SN doit être numerique</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="wifi_add" class="control-label mb-1">WIFI</label>
-                                    <input  id="wifi_add" name="wifi_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
+                                    <input id="wifi_add" name="wifi_add" type="text" class="form-control" aria-required="true" aria-invalid="false" value="" required>
                                     <small id="wifi_add_help" class="form-text text-muted">IMEI doit être numerique</small>
                                 </div>
                                 <br><br>
@@ -95,7 +108,7 @@
                 </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="table-responsive table--no-card m-b-30">
@@ -103,7 +116,6 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Marque</th>
                         <th>Model</th>
                         <th>IMEI</th>
                         <th>IMEI 2</th>

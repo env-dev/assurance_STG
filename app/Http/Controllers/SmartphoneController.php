@@ -25,9 +25,7 @@ class SmartphoneController extends Controller
      */
     public function index()
     {
-        $phones = Smartphone::with('model.brand')->get();
-
-        return Datatables::of($phones)
+        return Datatables::of(Smartphone::query()->with('model:id,name'))
         ->addIndexColumn()
         ->addColumn('actions', function ($phone) {
             return '
@@ -51,11 +49,15 @@ class SmartphoneController extends Controller
         $phone = new Smartphone();
         $phone->imei = $request->imei;
         $phone->imei2 = $request->imei2;
+        $phone->sn = $request->sn;
+        $phone->wifi = $request->wifi;
         $phone->brand_model_id = $request->brand_model_id;
 
         $request->validate([
             'imei' => 'required|unique:smartphones,imei',
             'imei2' => 'required|unique:smartphones,imei2',
+            'sn' => 'unique:smartphones,sn',
+            'wifi' => 'unique:smartphones,wifi',
             'brand_model_id' => 'required|numeric'
         ]);
         return response()->json($phone->saveOrFail());
@@ -225,6 +227,28 @@ class SmartphoneController extends Controller
             
             return response()->json(['status'=>false,'msg'=>'IMEI1 OR IMEI2 is incorrect']);
         }
+        // if($request->ajax()){
+        //     $imei1 = $request->imei1;
+        //     $imei2 = $request->imei2;
+        //     $dc = $request->dc ?? null;
+        //     $smartphone = Smartphone::where('imei',$imei1)->where('imei2',$imei2);
+        //     if(!is_null($dc)){
+        //         $smartphone = $smartphone->where('promo_code',$dc)->where('promo_code_status',0);
+        //         if($smartphone->count() > 0)
+        //             return response()->json(['status'=>true,
+        //                                         'registred'=>$smartphone->has('registration')->count(),
+        //                                         'promo'=>true,
+        //                                         'details'=>$smartphone->with('registration.client')->first()
+        //                                     ]);
+    
+        //         return response()->json(['status'=>false,'msg'=>'information is incorrect, or client alreay benefit from this promo']);
+        //     }else{
+        //         if($smartphone->count() > 0)
+        //             return response()->json(['status'=>true,'registred'=>$smartphone->has('registration')->count(),'promo'=>false]);
+
+        //         return response()->json(['status'=>false,'msg'=>'Your information is incorrect, please verify again']);
+        //     }
+        // }
     }
 
     public function info(Request $request){

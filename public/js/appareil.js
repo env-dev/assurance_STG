@@ -58,17 +58,17 @@ function getBrands(){
          smartphones_table.destroy();
  
      smartphones_table =  $('#smartphones-table').DataTable( {
-         processing: true,
-         serverSide: true,
-          ajax: url_smartphones,
-          columns: [
-              { data: "DT_Row_Index", name: "id" },
-              { data: "model.brand.name",name: "model.brand.name" },
-              { data: "model.name",name: "model.name" },
-              { data: "imei",name: "imei" },
-              { data: "imei2",name: "imei2" },
-              { data: "actions", name: "actions", orderable: false, searchable: false },
-          ]
+        processing: true,
+        serverSide: true,
+        ordering: false,
+        ajax: url_smartphones,
+        columns: [
+            { data: "DT_Row_Index", name: "id" },
+            { data: "model.name",name: "model.name" },
+            { data: "imei",name: "imei" },
+            { data: "imei2",name: "imei2" },
+            { data: "actions", name: "actions", orderable: false, searchable: false },
+        ]
      });
  }
 
@@ -289,6 +289,8 @@ $('#insert-appareil').click(function(e){
     var appareil_model_field = $('#appareil_model_add');
     var imei_field = $('#imei_add');
     var imei2_field = $('#imei2_add');
+    var sn_field = $('#sn_add');
+    var wifi_field = $('#wifi_add');
     
     var validation = [
         {'field': appareil_model_field, 'type': 'text'},
@@ -301,11 +303,14 @@ $('#insert-appareil').click(function(e){
         data: {
             brand_model_id: appareil_model_field.val(),
             imei: imei_field.val(),
-            imei2: imei_field2.val()
+            imei2: imei2_field.val(),
+            sn: sn_field.val(),
+            wifi: wifi_field.val()
         },
         url: url_smartphones,
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             swalSuccess('','Smartphone Inséré avec succès');
                getSmartphones();
                $('input').val('');
